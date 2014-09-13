@@ -62,18 +62,18 @@ var Comment = WinJS.Class.define(function(raw, message_id, client) {
 var Yak = WinJS.Class.define(function(raw, client) {
     this.client = client;
     this.poster_id = raw["posterID"];
-    this.hide_pin = bool(int(raw["hidePin"]));
+    this.hide_pin = Boolean(parseInt(raw["hidePin"]));
     this.handle = raw["handle"];
     this.message_id = raw["messageID"];
     this.delivery_id = raw["deliveryID"];
     this.longitude = raw["longitude"];
-    this.comments = int(raw["comments"]);
+    this.comments = parseInt(raw["comments"]);
     this.time = parse_time(raw["time"]);
     this.latitude = raw["latitude"];
-    this.likes = int(raw["numberOfLikes"]);
+    this.likes = parseInt(raw["numberOfLikes"]);
     this.message = raw["message"];
     this.type = raw["type"];
-    this.liked = int(raw["liked"]);
+    this.liked = parseInt(raw["liked"]);
     this.reyaked = raw["reyaked"];
     }, {
     upvote: function() {
@@ -195,16 +195,15 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
         headers.acceptEncoding.parseAdd("gzip");
 
         console.log(params);
-        console.log(url + query);
         url = Windows.Foundation.Uri(url + query);
 
         return httpClient.getAsync(url);
     },
     parse_yaks: function(text) {
         raw_yaks = text["messages"];
-        yaks = [];
+        var yaks = [];
         for(var raw_yak in raw_yaks) {
-            yaks.push(Yak(raw_yak, self));
+            yaks.push(new Yak(raw_yak, this));
         }
         return yaks;
     },
@@ -212,7 +211,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
         raw_comments = text["comments"];
         comments = [];
         for(var raw_comment in raw_comments) {
-            comments.push(Comment(raw_comment, message_id, self));
+            comments.push(new Comment(raw_comment, message_id, this));
         }
         return comments;
     },
