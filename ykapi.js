@@ -1,3 +1,8 @@
+function parse_time(timestr) {
+    format = "YYYY-MM-DD HH:mm:ss";
+    return moment(timestr, format).format("X");
+}
+
 function Location(latitude, longitude, delta) {
     this.latitude = latitude;
     this.longitude = longitude;
