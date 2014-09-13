@@ -1,8 +1,8 @@
 function Location(latitude, longitude, delta) {
-	this.latitude = latitude;
-	this.longitude = longitude;
-	if(delta == null) {
-		delta = "0.030000";
+    this.latitude = latitude;
+    this.longitude = longitude;
+    if(delta == null) {
+        delta = "0.030000";
     }
     this.delta = delta;
 }
@@ -36,22 +36,22 @@ function Comment(raw, message_id, client) {
     }
     this.delete = function() {
         if(this.poster_id == this.client.id) {
-			return this.client.delete_comment(this.comment_id, this.message_id);
-		}
+            return this.client.delete_comment(this.comment_id, this.message_id);
+        }
     }
     this.reply = function(comment) {
-		return this.client.post_comment(this.message_id, comment);
-	}
-	this.get_comment_pretty = function() {
-		var my_action = "";
-		if(this.liked > 0) {
-			my_action = "^";
-		}
-		else if(self.liked < 0) {
-			my_action = "v";
-		}
-		return my_action + "(" + this.likes + ") " + this.comment;
-	}
+        return this.client.post_comment(this.message_id, comment);
+    }
+    this.get_comment_pretty = function() {
+        var my_action = "";
+        if(this.liked > 0) {
+            my_action = "^";
+        }
+        else if(self.liked < 0) {
+            my_action = "v";
+        }
+        return my_action + "(" + this.likes + ") " + this.comment;
+    }
 }
 
 function Yak(raw, client) {
@@ -149,21 +149,21 @@ function Yakker(user_id, loc, force_register) {
         sorted_params.sort();
         
         if(sorted_params.length > 0) {
-			msg += "?";
-		}
-		for(var param in sorted_params) {
-			msg += param + "=" + params[param] + "&";
-		}
-		/* Chop off last ampersand */
-		if(sorted_params.length > 0) {
-			msg = msg.slice(0, -1);
-		}
-		
-		msg += salt;
-		
-		/* Calculate signature */
-		var h = CryptoJS.HmacSHA1(msg, key);
-		var hash = B64.encode(h);
+            msg += "?";
+        }
+        for(var param in sorted_params) {
+            msg += param + "=" + params[param] + "&";
+        }
+        /* Chop off last ampersand */
+        if(sorted_params.length > 0) {
+            msg = msg.slice(0, -1);
+        }
+        
+        msg += salt;
+        
+        /* Calculate signature */
+        var h = CryptoJS.HmacSHA1(msg, key);
+        var hash = B64.encode(h);
         
         /* Add signature to request */
         params["hash"] = hash;
@@ -184,28 +184,28 @@ function Yakker(user_id, loc, force_register) {
         }
 
         /* HTTP CLIENT REQUEST */
-		
-		var response = "";
-		return response;	
+        
+        var response = "";
+        return response;    
     }
     this.get_yak_list = function(page, params) {
         return this.parse_yaks(this.get(page, params));
     }
     this.parse_yaks = function(text) {
-		raw_yaks = text["messages"];
-		yaks = [];
-		for(var raw_yak in raw_yaks) {
-			yaks.push(Yak(raw_yak, self));
-		}
-		return yaks;
+        raw_yaks = text["messages"];
+        yaks = [];
+        for(var raw_yak in raw_yaks) {
+            yaks.push(Yak(raw_yak, self));
+        }
+        return yaks;
     }
     this.parse_comments = function(text, message_id) {
         raw_comments = text["comments"];
         comments = [];
         for(var raw_comment in raw_comments) {
-			comments.push(Comment(raw_comment, message_id, self));
-		}
-		return comments;
+            comments.push(Comment(raw_comment, message_id, self));
+        }
+        return comments;
     }
     this.contact = function(message) {
         params = {
@@ -313,8 +313,8 @@ function Yakker(user_id, loc, force_register) {
         return this.get_yak_list("getMyRecentReplies", params);
     }
     this.update_location = function(loc) {
-		this.loc = loc;
-	}
+        this.loc = loc;
+    }
     this.get_my_recent_yaks = function() {
         params = {
             "userID": this.id,
