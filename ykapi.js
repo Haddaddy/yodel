@@ -169,8 +169,8 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
         
         /* Calculate signature */
         var h = CryptoJS.HmacSHA1(msg, key);
-        var hash = B64.encode(h);
-        
+        var hash = h.toString(CryptoJS.enc.Base64);
+
         /* Add signature to request */
         params["hash"] = hash;
         params["salt"] = salt;
@@ -180,22 +180,25 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
 
         this.sign_request(page, params);
 
-        if(params.length > 0) {
-            url += "?" + encodeURIComponent(params);
-        }
-        
-        var headers = {
-            "User-Agent": this.user_agent,
-            "Accept-Encoding": "gzip"
+        var param_keys = Object.keys(params);
+        if (param_keys.length > 0) {
+            var query = "?";
+            for (var param in param_keys) {
+                query += param_keys[param] + "=" + encodeURIComponent(params[param_keys[param]]) + "&";
+            }
+            query = query.slice(0, -1);
         }
 
-        /* HTTP CLIENT REQUEST */
-        
-        var response = "";
-        return response;    
-    },
-    get_yak_list: function(page, params) {
-        return this.parse_yaks(this.get(page, params));
+        var httpClient = new Windows.Web.Http.HttpClient();
+        headers = httpClient.defaultRequestHeaders;
+        headers.userAgent.parseAdd(this.user_agent);
+        headers.acceptEncoding.parseAdd("gzip");
+
+        console.log(params);
+        console.log(url + query);
+        url = Windows.Foundation.Uri(url + query);
+
+        return httpClient.getAsync(url);
     },
     parse_yaks: function(text) {
         raw_yaks = text["messages"];
@@ -300,7 +303,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
             "lat": this.loc.latitude,
             "long": this.loc.longitude
         }
-        return this.get_yak_list("getGreatest", params);
+        return this.get("getGreatest", params);
     },
     get_my_tops: function() {
         params = {
@@ -308,7 +311,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
             "lat": this.loc.latitude,
             "long": this.loc.longitude
         }
-        return this.get_yak_list("getMyTops", params);
+        return this.get("getMyTops", params);
     },
     get_recent_replied: function() {
         params = {
@@ -316,7 +319,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
             "lat": this.loc.latitude,
             "long": this.loc.longitude
         }
-        return this.get_yak_list("getMyRecentReplies", params);
+        return this.get("getMyRecentReplies", params);
     },
     update_location: function(loc) {
         this.loc = loc;
@@ -327,7 +330,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
             "lat": this.loc.latitude,
             "long": this.loc.longitude
         }
-        return this.get_yak_list("getMyRecentYaks", params);
+        return this.get("getMyRecentYaks", params);
     },
     get_area_tops: function() {
         params = {
@@ -335,7 +338,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
             "lat": this.loc.latitude,
             "long": this.loc.longitude
         }
-        return this.get_yak_list("getAreaTops", params);
+        return this.get("getAreaTops", params);
     },
     get_yaks: function() {
         params = {
@@ -343,7 +346,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
             "lat": this.loc.latitude,
             "long": this.loc.longitude
         }
-        return this.get_yak_list("getMessages", params);
+        return this.get("getMessages", params);
     },
     post_yak: function(message, showloc, handle) {
         params = {
@@ -386,6 +389,6 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
             "long": loc.longitude,
             "delta": loc.delta
         }
-        return this.get_yak_list("getPeekMessages", params);
+        return this.get("getPeekMessages", params);
     }
 });
