@@ -9,7 +9,7 @@
 
 .win-pivot-item .win-pivot-item-content {
 	padding: 0px;
-    width: calc(100% - 3px);
+    width: 100%;
 }
 
 .win-pivot-item {
@@ -22,8 +22,7 @@
 }
 
 .sectioncontrol > .fragment > section[role=main] {
-    padding-top: 0px;
-    padding-bottom: 10px;
+    padding: 0 2.5vw 10px 2.5vw;
 }
 
 .hubpage section[role=main] {
@@ -64,7 +63,7 @@
 		}
 
 	.hubpage .hub .section1 {
-		width: 95vw;
+		width: 100vw;
 	}
 
     .hubpage .hub .section1 * {
@@ -125,6 +124,10 @@
             color: #ccc;
         }
 
+        .hubpage .hub .section1 .yak_voted {
+            color: #08d7b5;
+        }
+
         .hubpage .hub .section1 .yak_votecount {
             font-size: 1.3em;
             color: #08d7b5;
@@ -132,9 +135,13 @@
             text-align: center;
             padding-top: 4px;
         }
+
+        .hubpage .hub .section1 .yak_id {
+            display: none;
+        }
 			
 	.hubpage .hub .section {
-		margin-left: 10px;
+		margin-left: 0px;
 		margin-right: 0px;
 	}
 		

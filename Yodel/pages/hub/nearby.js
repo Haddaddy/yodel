@@ -38,7 +38,7 @@
                                     }
                                 }
                                 $(".section1page section").append(" \
-                                    <div class='yak_container mid" + yak.message_id + "'>\
+                                    <div class='yak_container'>\
                                         <p class='yak_text'>" + yak.message + "</p> \
                                         <span class='yak_time'>" + moment.unix(yak.time).twitter() + "</span> \
                                         " + comments + " \
@@ -54,7 +54,7 @@
                         });
                     });
                 });
-            }           
+            }
         },
     });
 
