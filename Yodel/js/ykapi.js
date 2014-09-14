@@ -12,105 +12,6 @@ var Location = WinJS.Class.define(function(latitude, longitude, delta) {
     this.delta = delta;
 });
 
-var Comment = WinJS.Class.define(function(raw, message_id, client) {
-    this.client = client;
-    this.message_id = message_id;
-    this.comment_id = raw["commentID"];
-    this.comment = raw["comment"];
-    this.time = parse_time(raw["time"]);
-    this.likes = parseInt(raw["numberOfLikes"]);
-    this.poster_id = raw["posterID"];
-    this.liked = parseInt(raw["liked"]);
-    }, {
-    upvote: function() {
-        if(this.liked == 0) {
-            this.likes += 1;
-            this.liked += 1;
-            return this.client.upvote_comment(this.comment_id);
-        }
-    },
-    downvote: function() {
-        if(this.liked == 0) {
-            this.likes -= 1;
-            this.liked += 1;
-            return this.client.downvote_comment(this.comment_id);
-        }
-    },
-    report: function() {
-        return this.client.report_comment(this.comment_id, this.message_id);
-    },
-    delete: function() {
-        if(this.poster_id == this.client.id) {
-            return this.client.delete_comment(this.comment_id, this.message_id);
-        }
-    },
-    reply: function(comment) {
-        return this.client.post_comment(this.message_id, comment);
-    },
-    get_comment_pretty: function() {
-        var my_action = "";
-        if(this.liked > 0) {
-            my_action = "^";
-        }
-        else if(self.liked < 0) {
-            my_action = "v";
-        }
-        return my_action + "(" + this.likes + ") " + this.comment;
-    }
-});
-
-var Yak = WinJS.Class.define(function(raw, client) {
-    this.client = client;
-    this.poster_id = raw["posterID"];
-    this.hide_pin = Boolean(parseInt(raw["hidePin"]));
-    this.handle = raw["handle"];
-    this.message_id = raw["messageID"];
-    this.delivery_id = raw["deliveryID"];
-    this.longitude = raw["longitude"];
-    this.comments = parseInt(raw["comments"]);
-    this.time = parse_time(raw["time"]);
-    this.latitude = raw["latitude"];
-    this.likes = parseInt(raw["numberOfLikes"]);
-    this.message = raw["message"];
-    this.type = raw["type"];
-    this.liked = parseInt(raw["liked"]);
-    this.reyaked = raw["reyaked"];
-    }, {
-    upvote: function() {
-        if(this.liked == 0) {
-            this.liked += 1;
-            this.likes += 1;
-            return this.client.upvote_yak(this.message_id);
-        }
-    },
-    downvote: function() {
-         if(this.liked == 0) {
-            this.liked -= 1;
-            this.likes += 1;
-            return this.client.downvote_yak(this.message_id);
-        }       
-    },
-    report: function() {
-        return this.client.report_yak(this.message_id);
-    },
-    delete: function() {
-        if(this.poster_id == this.client.id) {
-            return this.client.delete_yak(this.message_id);
-        }
-    },
-    add_comment: function() {
-        return this.client.post_comment(this.message_id, comment);
-    },
-    get_comments: function() {
-        return this.client.get_comments(this.message_id);
-    },
-    get_yak_pretty: function() {
-        if(this.handle != null) {
-            return this.message;
-        }
-    }
-});
-
 var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
     this.base_url = "http://yikyakapp.com/api/";
     this.user_agent = "android-async-http/1.4.4 (http://loopj.com/android-async-http)";
@@ -201,9 +102,9 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
     },
     parse_yaks: function(text) {
         raw_yaks = text["messages"];
-        var yaks = [];
-        for(var raw_yak in raw_yaks) {
-            yaks.push(new Yak(raw_yak, this));
+        var yaks = new Array();
+        for (var raw_yak in raw_yaks) {
+            yaks.push(new Yak(raw_yaks[raw_yak]));
         }
         return yaks;
     },
@@ -211,7 +112,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
         raw_comments = text["comments"];
         comments = [];
         for(var raw_comment in raw_comments) {
-            comments.push(new Comment(raw_comment, message_id, this));
+            comments.push(new Comment(raw_comment, message_id));
         }
         return comments;
     },
@@ -389,5 +290,87 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
             "delta": loc.delta
         }
         return this.get("getPeekMessages", params);
+    }
+});
+
+var Comment = WinJS.Class.define(function(raw, message_id) {
+    this.message_id = message_id;
+    this.comment_id = raw["commentID"];
+    this.comment = raw["comment"];
+    this.time = parse_time(raw["time"]);
+    this.likes = parseInt(raw["numberOfLikes"]);
+    this.poster_id = raw["posterID"];
+    this.liked = parseInt(raw["liked"]);
+    }, {
+    upvote: function() {
+        if(this.liked == 0) {
+            this.likes += 1;
+            this.liked += 1;
+            return this.upvote_comment(this.comment_id);
+        }
+    },
+    downvote: function() {
+        if(this.liked == 0) {
+            this.likes -= 1;
+            this.liked += 1;
+            return this.downvote_comment(this.comment_id);
+        }
+    },
+    report: function() {
+        return this.report_comment(this.comment_id, this.message_id);
+    },
+    delete: function() {
+        if(this.poster_id == this.id) {
+            return this.delete_comment(this.comment_id, this.message_id);
+        }
+    },
+    reply: function(comment) {
+        return this.post_comment(this.message_id, comment);
+    }
+});
+
+var Yak = WinJS.Class.define(function(raw) {
+    this.poster_id = raw["posterID"];
+    this.hide_pin = Boolean(parseInt(raw["hidePin"]));
+    this.handle = raw["handle"];
+    this.message_id = raw["messageID"];
+    this.delivery_id = raw["deliveryID"];
+    this.longitude = raw["longitude"];
+    this.comments = parseInt(raw["comments"]);
+    this.time = parse_time(raw["time"]);
+    this.latitude = raw["latitude"];
+    this.likes = parseInt(raw["numberOfLikes"]);
+    this.message = raw["message"];
+    this.type = raw["type"];
+    this.liked = parseInt(raw["liked"]);
+    this.reyaked = raw["reyaked"];
+    }, {
+    upvote: function() {
+        if(this.liked == 0) {
+            this.liked += 1;
+            this.likes += 1;
+            return this.upvote_yak(this.message_id);
+        }
+    },
+    downvote: function() {
+         if(this.liked == 0) {
+            this.liked -= 1;
+            this.likes += 1;
+            return this.downvote_yak(this.message_id);
+        }       
+    },
+    report: function() {
+        return this.report_yak(this.message_id);
+    },
+    delete: function() {
+        if(this.poster_id == this.id) {
+            return this.delete_yak(this.message_id);
+        }
+    },
+    add_comment: function() {
+        return this.post_comment(this.message_id, comment);
+    },
+    get_comments: function() {
+        return this.get_comments(this.message_id);
     }
 });

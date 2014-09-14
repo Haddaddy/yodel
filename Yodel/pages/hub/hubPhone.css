@@ -1,0 +1,113 @@
+﻿.win-pivot .win-pivot-surface {
+	height: 90vh;
+}
+
+.win-pivot .win-pivot-viewport {
+	padding-top: 0px;
+	/*margin-top: 98px;*/
+}
+
+.win-pivot-item .win-pivot-item-content {
+	padding: 0px;
+    width: calc(100% - 3px);
+}
+
+.win-pivot-item {
+    top: 5px;
+}
+
+.hubpage header[role=banner] {
+    position: relative;
+    z-index: 2;
+}
+
+.sectioncontrol > .fragment > section[role=main] {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.hubpage section[role=main] {
+    -ms-grid-row: 1;
+    -ms-grid-row-span: 2;
+    z-index: 1;
+}
+
+.hubpage div[role=tablist] div.win-pivot-headers {
+    display: none;
+}
+
+.hubpage .hub {
+	height: 100%;
+}
+
+	.hubpage .hub .win-hub-surface {
+		height: 100%;
+	}
+
+	.hubpage .hub .hero {
+		-ms-high-contrast-adjust: none;
+		background-image: url(/images/gray.png);
+		background-size: cover;
+		margin-left: -80px;
+		margin-right: 80px;
+		padding: 0;
+		width: 780px;
+	}
+
+		.hubpage .hub .hero:-ms-lang(ar, dv, fa, he, ku-Arab, pa-Arab, prs, ps, sd-Arab, syr, ug, ur, qps-plocm) {
+			margin-left: 80px;
+			margin-right: -80px;
+		}
+
+		.hubpage .hub .hero .win-hub-section-header {
+			display: none;
+		}
+
+	.hubpage .hub .section1 {
+		width: 95vw;
+	}
+
+    .hubpage .hub .section1 * {
+        padding: 0;
+        margin: 0;
+    }
+
+        .hubpage .hub .section1 .yak {
+            display: block;
+            clear: both;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            background: #fff;
+            word-wrap:break-word;
+        }
+
+        .hubpage .hub .section .yak_text {
+            margin-bottom: 5px;
+            font-size: 1.3em;
+        }
+
+        .hubpage .hub .section1 .yak_detail {
+            color: #aaa;
+            font-size: 1em;
+        }
+			
+	.hubpage .hub .section {
+		margin-left: 10px;
+		margin-right: 0px;
+	}
+		
+.label-extralarge {
+	font-size: 28pt;
+	opacity: 1.0;
+	line-height: 30pt;
+}
+
+.label-medium {
+	font-size: 15pt;
+	line-height: 17.5pt;
+}
+
+.label-mediummid {
+	font-size: 15pt;
+	line-height: 17.5pt;
+}
