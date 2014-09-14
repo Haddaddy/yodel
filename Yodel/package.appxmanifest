@@ -19,7 +19,7 @@
       <m3:VisualElements DisplayName="Yodel" Square150x150Logo="images\Square150x150Logo.png" Square44x44Logo="images\Square44x44Logo.png" Description="An unofficial Yik Yak app for Windows Phone 8.1" ForegroundText="light" BackgroundColor="transparent" ToastCapable="false">
         <m3:DefaultTile Wide310x150Logo="images\Wide310x150Logo.png" Square71x71Logo="images\Square71x71Logo.png">
         </m3:DefaultTile>
-        <m3:SplashScreen Image="images\SplashScreen.png" />
+        <m3:SplashScreen Image="images\SplashScreen.png" BackgroundColor="#08d7b5" />
         <m3:InitialRotationPreference>
           <m3:Rotation Preference="portrait" />
         </m3:InitialRotationPreference>

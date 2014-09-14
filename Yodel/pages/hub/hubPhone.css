@@ -73,7 +73,8 @@
     }
 
         .hubpage .hub .section1 .yak_container {
-            display: block;
+            display: flex;
+            align-items: center;
             clear: both;
             padding: 5px 0 5px 5px;
             border-bottom: 1px solid #ccc;
@@ -84,10 +85,11 @@
 
         .hubpage .hub .section .yak_text {
             font-size: 1.3em;
-            padding: 5px 5px 5px 0;
-            float: left;
-            width: 85%;
+            padding: 5px 20px 5px 0;
+            flex-grow: 2;
+            align-self: stretch;
             margin-bottom: 20px;
+            line-height: 1.4em;
         }
 
         .hubpage .hub .section1 .yak_container > span {
@@ -108,7 +110,6 @@
         }
 
         .hubpage .hub .section1 .yak_vote {
-            float: right;
             display: block;
             padding-bottom: 5px;
         }
