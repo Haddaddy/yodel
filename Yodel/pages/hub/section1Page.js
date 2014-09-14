@@ -7,21 +7,44 @@
         // the resulting elements have been parented to the DOM. 
         ready: function (element, options) {
             options = options || {};
-            var yakker = new Yakker("BD8947C1AD926F2C9754966F6CCFA88E", new Location("33.949857", "-83.383023"));
+            
+            var yakker = new Yakker("BD8947C1AD926F2C9754966F6CCFA88E");
             console.log("Registered user with id " + yakker.id);
 
-            var promise = yakker.get_yaks();
-            promise.then(function (response) {
-                response.content.readAsStringAsync().then(function (res) {
-                    var yaks = JSON.parse(res);
-                    console.log(yaks);
-                    var yaks_proc = yakker.parse_yaks(yaks);
-                    for (var yak in yaks_proc) {
-                        yak = yaks_proc[yak];
-                        $(".section1page section").append("<div class='yak'><p class='yak_text'>" + yak.message + "</p><span class='yak_detail'>" + yak.likes + " likes, " + moment.unix(yak.time).twitter() + "</span></div>");
-                    }
+            var loc = null;
+            if (loc == null) {
+                loc = new Windows.Devices.Geolocation.Geolocator();
+            }
+            if (loc != null) {
+                loc.getGeopositionAsync().then(function (pos) {
+                    yakker.update_location(new Location(pos.coordinate.point.position.latitude, pos.coordinate.point.position.longitude, pos.coordinate.accuracy));
+
+                    var promise = yakker.get_yaks();
+                    promise.then(function (response) {
+                        response.content.readAsStringAsync().then(function (res) {
+                            var yaks = JSON.parse(res);
+                            console.log(yaks);
+                            var yaks_proc = yakker.parse_yaks(yaks);
+                            for (var yak in yaks_proc) {
+                                yak = yaks_proc[yak];
+                                $(".section1page section").append(" \
+                                    <div class='yak_container'>\
+                                        <p class='yak_text'>" + yak.message + "</p> \
+                                        <span class='yak_time'>" + moment.unix(yak.time).twitter() + "</span> \
+                                        <span class='yak_comments'>" + yak.comments + " comments</span> \
+                                        <div class='yak_vote'> \
+                                            <span class='yak_up'>&#xE018;</span> \
+                                            <span class='yak_votecount'>" + yak.likes + "</span> \
+                                            <span class='yak_down'>&#xE019;</span> \
+                                        </div> \
+                                        <div class='clear'></div> \
+                                    </div>"
+                                );
+                            }
+                        });
+                    });
                 });
-            });
+            }           
         },
     });
 

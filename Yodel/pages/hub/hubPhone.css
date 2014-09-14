@@ -22,7 +22,7 @@
 }
 
 .sectioncontrol > .fragment > section[role=main] {
-    padding-top: 10px;
+    padding-top: 0px;
     padding-bottom: 10px;
 }
 
@@ -72,23 +72,60 @@
         margin: 0;
     }
 
-        .hubpage .hub .section1 .yak {
+        .hubpage .hub .section1 .yak_container {
             display: block;
             clear: both;
-            padding: 10px;
+            padding: 5px 0 5px 5px;
             border-bottom: 1px solid #ccc;
             background: #fff;
-            word-wrap:break-word;
+            word-wrap: break-word;
+            position: relative;
         }
 
         .hubpage .hub .section .yak_text {
-            margin-bottom: 5px;
             font-size: 1.3em;
+            padding: 5px 5px 5px 0;
+            float: left;
+            width: 85%;
+            margin-bottom: 20px;
         }
 
-        .hubpage .hub .section1 .yak_detail {
+        .hubpage .hub .section1 .yak_container > span {
             color: #aaa;
             font-size: 1em;
+        }
+
+        .hubpage .hub .section1 .yak_time {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+        }
+
+        .hubpage .hub .section1 .yak_comments {
+            position: absolute;
+            bottom: 5px;
+            left: 40%;
+        }
+
+        .hubpage .hub .section1 .yak_vote {
+            float: right;
+            display: block;
+            padding-bottom: 5px;
+        }
+
+        .hubpage .hub .section1 .yak_up, .hubpage .hub .section1 .yak_down {
+            font-size: 2em;
+            display: block;
+            line-height: 1.2em;
+            color: #ccc;
+        }
+
+        .hubpage .hub .section1 .yak_votecount {
+            font-size: 1.3em;
+            color: #08d7b5;
+            display: block;
+            text-align: center;
+            padding-top: 4px;
         }
 			
 	.hubpage .hub .section {
@@ -110,4 +147,8 @@
 .label-mediummid {
 	font-size: 15pt;
 	line-height: 17.5pt;
+}
+
+.clear {
+    clear: both;
 }

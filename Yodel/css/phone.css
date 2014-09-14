@@ -8,7 +8,7 @@
 	-ms-grid-rows: 1fr;
 	display: -ms-grid;
 	height: 10vh;
-    background: #57e2ca;
+    background: #08d7b5;
     color: #fff;
 }
 
@@ -32,3 +32,15 @@
 			width: calc(100% - 20px);
             font-weight: 400;
 		}
+
+.win-appbar {
+    background-color: #e5e5e5;
+}
+
+.win-appbar .win-commandimage {
+    color: #57e2ca;
+}
+
+.win-appbar .win-commandring {
+    border-color: #57e2ca;
+}
