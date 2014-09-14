@@ -1,7 +1,7 @@
 ﻿(function () {
     "use strict";
 
-    var ControlConstructor = WinJS.UI.Pages.define("/pages/hub/section1Page.html", {
+    var ControlConstructor = WinJS.UI.Pages.define("/pages/hub/nearby.html", {
         // This function is called after the page control contents 
         // have been loaded, controls have been activated, and 
         // the resulting elements have been parented to the DOM. 
@@ -27,11 +27,21 @@
                             var yaks_proc = yakker.parse_yaks(yaks);
                             for (var yak in yaks_proc) {
                                 yak = yaks_proc[yak];
+                                var comments = "";
+                                if (yak.comments > 0) {
+                                    comments = "<span class='yak_comments'>" + yak.comments;
+                                    if (yak.comments > 1) {
+                                        comments += " replies</span>";
+                                    }
+                                    else {
+                                        comments += " reply</span>";
+                                    }
+                                }
                                 $(".section1page section").append(" \
-                                    <div class='yak_container'>\
+                                    <div class='yak_container mid" + yak.message_id + "'>\
                                         <p class='yak_text'>" + yak.message + "</p> \
                                         <span class='yak_time'>" + moment.unix(yak.time).twitter() + "</span> \
-                                        <span class='yak_comments'>" + yak.comments + " comments</span> \
+                                        " + comments + " \
                                         <div class='yak_vote'> \
                                             <span class='yak_up'>&#xE018;</span> \
                                             <span class='yak_votecount'>" + yak.likes + "</span> \

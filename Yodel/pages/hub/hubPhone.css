@@ -106,12 +106,16 @@
         .hubpage .hub .section1 .yak_comments {
             position: absolute;
             bottom: 5px;
-            left: 40%;
+            left: 0;
+            text-align: center;
+            width: 100%;
+            z-index: 0;
         }
 
         .hubpage .hub .section1 .yak_vote {
             display: block;
             padding-bottom: 5px;
+            z-index: 2;
         }
 
         .hubpage .hub .section1 .yak_up, .hubpage .hub .section1 .yak_down {

@@ -5,10 +5,6 @@
     var session = WinJS.Application.sessionState;
     var util = WinJS.Utilities;
 
-    // Get the groups used by the data-bound sections of the Hub.
-    var section3Group = Data.resolveGroupReference("group4");
-    var section3Items = Data.getItemsFromGroup(section3Group);
-
     WinJS.UI.Pages.define("/pages/hub/hub.html", {
         processed: function (element) {
             return WinJS.Resources.processAll(element);
@@ -30,13 +26,6 @@
 
             // TODO: Initialize the page here.
         },
-
-        section3DataSource: section3Items.dataSource,
-
-        section3ItemNavigate: util.markSupportedForProcessing(function (args) {
-            var item = Data.getItemReference(section3Items.getAt(args.detail.itemIndex));
-            nav.navigate("/pages/item/item.html", { item: item });
-        }),
 
         unload: function () {
             // TODO: Respond to navigations away from this page.
