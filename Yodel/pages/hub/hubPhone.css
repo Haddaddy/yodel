@@ -22,7 +22,7 @@
 }
 
 .sectioncontrol > .fragment > section[role=main] {
-    padding: 0 2.5vw 10px 2.5vw;
+    padding: 0 3vw 10px 3vw;
 }
 
 .hubpage section[role=main] {
@@ -80,6 +80,7 @@
             background: #fff;
             word-wrap: break-word;
             position: relative;
+            max-width: 100%;
         }
 
         .hubpage .hub .section .yak_text {
@@ -118,7 +119,7 @@
         }
 
         .hubpage .hub .section1 .yak_up, .hubpage .hub .section1 .yak_down {
-            font-size: 2em;
+            font-size: 2.5em;
             display: block;
             line-height: 1.2em;
             color: #ccc;
