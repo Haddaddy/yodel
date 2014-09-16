@@ -80,7 +80,6 @@
             background: #fff;
             word-wrap: break-word;
             position: relative;
-            max-width: 100%;
         }
 
         .hubpage .hub .section .yak_text {
@@ -90,6 +89,7 @@
             align-self: stretch;
             margin-bottom: 20px;
             line-height: 1.4em;
+            overflow-x: hidden;
         }
 
         .hubpage .hub .section1 .yak_container > span {
