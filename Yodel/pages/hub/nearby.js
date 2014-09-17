@@ -37,19 +37,56 @@
                                         comments += " reply</span>";
                                     }
                                 }
+                                var upvote = "";
+                                var downvote = "";
+                                switch (yak.liked) {
+                                    case 1:
+                                        upvote = "yak_voted";
+                                        break;
+                                    case -1:
+                                        downvote = "yak_voted";
+                                        break;
+                                }
                                 $(".section1page section").append(" \
-                                    <div class='yak_container'>\
+                                    <div class='yak_container' data-mid='" +  yak.message_id + "'>\
                                         <p class='yak_text'>" + yak.message + "</p> \
                                         <span class='yak_time'>" + moment.unix(yak.time).twitter() + "</span> \
                                         " + comments + " \
                                         <div class='yak_vote'> \
-                                            <span class='yak_up'>&#xE018;</span> \
+                                            <span class='yak_up " + upvote + "'>&#xE018;</span> \
                                             <span class='yak_votecount'>" + yak.likes + "</span> \
-                                            <span class='yak_down'>&#xE019;</span> \
+                                            <span class='yak_down " + downvote + "'>&#xE019;</span> \
                                         </div> \
                                         <div class='clear'></div> \
                                     </div>"
                                 );
+                            }
+                            $(".section1page section").on("click", ".yak_up", yak_vote.bind({vote: "up"}));
+                            $(".section1page section").on("click", ".yak_down", yak_vote.bind({vote: "down"}));
+                            function yak_vote(event) {
+                                var target = $(event.target);
+                                target.addClass("yak_voted");
+                                var vote_count_ele = target.siblings(".yak_votecount");
+                                var orig_vote_count = parseInt(vote_count_ele.text());
+                                var message_id = target.parents(".yak_container").data("mid");
+                                if(this.vote == "up") {
+                                    var promise = yakker.upvote_yak(message_id);
+                                    vote_count_ele.text(orig_vote_count + 1);
+                                }
+                                else if(this.vote == "down") {
+                                    var promise = yakker.downvote_yak(message_id);
+                                    vote_count_ele.text(orig_vote_count - 1);
+                                }
+                                else {
+                                    return;
+                                }
+                                promise.then(function (response) {
+                                    console.log(response);
+                                    if (!response.isSuccessStatusCode) {
+                                        target.removeClass("yak_voted");
+                                        vote_count_ele.text(orig_vote_count);
+                                    }
+                                });
                             }
                         });
                     });
