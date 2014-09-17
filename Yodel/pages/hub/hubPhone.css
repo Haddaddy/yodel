@@ -82,6 +82,12 @@
             position: relative;
         }
 
+        .hubpage .hub .section .yak_handle {
+            display: block;
+            font-weight: 600;
+            color: #08d7b5;
+        }
+
         .hubpage .hub .section .yak_text {
             font-size: 1.3em;
             padding: 5px 20px 5px 0;

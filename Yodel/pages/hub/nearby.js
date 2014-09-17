@@ -37,6 +37,10 @@
                                         comments += " reply</span>";
                                     }
                                 }
+                                var handle = "";
+                                if (yak.handle) {
+                                    handle = "<span class='yak_handle'>" + yak.handle + "</span>";
+                                }
                                 var upvote = "";
                                 var downvote = "";
                                 switch (yak.liked) {
@@ -49,7 +53,7 @@
                                 }
                                 $(".section1page section").append(" \
                                     <div class='yak_container' data-mid='" +  yak.message_id + "'>\
-                                        <p class='yak_text'>" + yak.message + "</p> \
+                                        <p class='yak_text'>" + handle + yak.message + "</p> \
                                         <span class='yak_time'>" + moment.unix(yak.time).twitter() + "</span> \
                                         " + comments + " \
                                         <div class='yak_vote'> \
