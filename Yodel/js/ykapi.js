@@ -12,6 +12,16 @@ var Location = WinJS.Class.define(function(latitude, longitude, delta) {
     this.delta = delta;
 });
 
+var PeekLocation = WinJS.Class.define(function(raw) {
+    this.id = raw["peekID"];
+    this.can_submit = Boolean(raw["canSubmit"]);
+    this.name = raw["location"];
+    var lat = raw["latitude"];
+    var lon = raw["longitude"];
+    var d = raw["delta"];
+    this.location = new Location(lat, lon, d);
+});
+
 var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
     this.base_url = "http://yikyakapp.com/api/";
     this.user_agent = "android-async-http/1.4.4 (http://loopj.com/android-async-http)";
@@ -27,7 +37,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
         this.register_id_new(user_id);
     }
     else if(force_register) {
-        self.register_id_new(user_id);
+        this.register_id_new(user_id);
     }
 
     this.id = user_id;
@@ -35,20 +45,26 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
     
     }, {
     gen_id: function() {
-        CryptoJS.MD5(Math.floor(100000 + Math.random() * 900000)).toUppercase();
+        var hashIn = String(Math.floor(100000 + Math.random() * 900000));
+        // Open convoluted WinRT hashing API
+        var hashProvider = Windows.Security.Cryptography.Core.HashAlgorithmProvider.openAlgorithm(Windows.Security.Cryptography.Core.HashAlgorithmNames.md5);
+        // Convert input to binary
+        var buffer = hashProvider.hashData(Windows.Security.Cryptography.CryptographicBuffer.convertStringToBinary(hashIn, Windows.Security.Cryptography.BinaryStringEncoding.utf8));
+        // Produce MD5 hash in hex form
+        var hash = Windows.Security.Cryptography.CryptographicBuffer.encodeToHexString(buffer);
+        return hash.toUpperCase();
     },
     register_id_new: function(id) {
-        params = {
+        var params = {
             "userID": id,
             "lat": this.loc.latitude,
             "long": this.loc.longitude,
         }
-        result = this.get("registerUser", params);
-        return result;
+        return this.get("registerUser", params);
     },
     sign_request: function(page, params) {
         var key = "35FD04E8-B7B1-45C4-9886-94A75F4A2BB4";
-        /* Salt is current time (in sec) since epoch */
+        // Salt is current time (in sec) since epoch
         var salt = String(Math.round(new Date().getTime() / 1000));
         
         var msg = "/api/" + page;
@@ -61,25 +77,25 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
         for(var param in sorted_params) {
             msg += param + "=" + params[param] + "&";
         }
-        /* Chop off last ampersand */
+        // Chop off last ampersand
         if(sorted_params.length > 0) {
             msg = msg.slice(0, -1);
         }
         
         msg += salt;
         
-        /* Calculate signature */
+        // Calculate signature
         var h = CryptoJS.HmacSHA1(msg, key);
         var hash = h.toString(CryptoJS.enc.Base64);
 
-        /* Add signature to request */
-        params["hash"] = hash;
-        params["salt"] = salt;
+        return { "hash": hash, "salt": salt };
     },
     get: function(page, params) {
         url = this.base_url + page;
 
-        this.sign_request(page, params);
+        var signed = this.sign_request(page, params);
+        params["hash"] = signed.hash;
+        params["salt"] = signed.salt;
 
         var param_keys = Object.keys(params);
         if (param_keys.length > 0) {
@@ -100,19 +116,43 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
 
         return httpClient.getAsync(url);
     },
+    post: function (page, params) {
+        url = this.base_url + page;
+
+        var signed = this.sign_request(page, params);
+
+        var param_keys = Object.keys(params);
+        if (param_keys.length > 0) {
+            var query = "?";
+            for (var param in param_keys) {
+                query += param_keys[param] + "=" + encodeURIComponent(params[param_keys[param]]) + "&";
+            }
+            query = query.slice(0, -1);
+        }
+
+        var httpClient = new Windows.Web.Http.HttpClient();
+        headers = httpClient.defaultRequestHeaders;
+        headers.userAgent.parseAdd(this.user_agent);
+        headers.acceptEncoding.parseAdd("gzip");
+
+        console.log(params);
+        url = Windows.Foundation.Uri(url + query);
+
+        return httpClient.postAsync(url, signed);
+    },
     parse_yaks: function(text) {
-        raw_yaks = text["messages"];
+        var raw_yaks = text["messages"];
         var yaks = new Array();
         for (var raw_yak in raw_yaks) {
-            yaks.push(new Yak(raw_yaks[raw_yak]));
+            yaks.push(new Yak(this, raw_yaks[raw_yak]));
         }
         return yaks;
     },
     parse_comments: function(text, message_id) {
-        raw_comments = text["comments"];
+        var raw_comments = text["comments"];
         comments = [];
         for(var raw_comment in raw_comments) {
-            comments.push(new Comment(raw_comment, message_id));
+            comments.push(new Comment(this, raw_comment, message_id));
         }
         return comments;
     },
@@ -261,7 +301,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
         if(handle && this.handle != null) {
             params["hndl"] = this.handle;
         }
-        return this.get("sendMessage", params);
+        return this.post("sendMessage", params);
     },
     get_comments: function(message_id) {
         params = {
@@ -270,7 +310,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
             "lat": this.loc.latitude,
             "long": this.loc.longitude
         }
-        return this.parse_comments(this.get("getComments", params), message_id);
+        return this.get("getComments", params);
     },
     post_comment: function(message_id, comment) {
         params = {
@@ -280,20 +320,24 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
             "lat": this.loc.latitude,
             "long": this.loc.longitude
         }
-        return this.get("postComment", params);
+        return this.post("postComment", params);
     },
-    peek: function(loc) {
+    peek: function (peek_id) {
+        if (peek_id instanceof PeekLocation) {
+            peek_id = peek_id.id;
+        }
         params = {
             "userID": this.id,
-            "lat": loc.latitude,
-            "long": loc.longitude,
-            "delta": loc.delta
+            "lat": this.loc.latitude,
+            "long": this.loc.longitude,
+            "peekID": peek_id
         }
         return this.get("getPeekMessages", params);
     }
 });
 
-var Comment = WinJS.Class.define(function(raw, message_id) {
+var Comment = WinJS.Class.define(function (client, raw, message_id) {
+    this.client = client;
     this.message_id = message_id;
     this.comment_id = raw["commentID"];
     this.comment = raw["comment"];
@@ -306,30 +350,31 @@ var Comment = WinJS.Class.define(function(raw, message_id) {
         if(this.liked == 0) {
             this.likes += 1;
             this.liked += 1;
-            return this.upvote_comment(this.comment_id);
+            return this.client.upvote_comment(this.comment_id);
         }
     },
     downvote: function() {
         if(this.liked == 0) {
             this.likes -= 1;
             this.liked += 1;
-            return this.downvote_comment(this.comment_id);
+            return this.client.downvote_comment(this.comment_id);
         }
     },
     report: function() {
-        return this.report_comment(this.comment_id, this.message_id);
+        return this.client.report_comment(this.comment_id, this.message_id);
     },
     delete: function() {
         if(this.poster_id == this.id) {
-            return this.delete_comment(this.comment_id, this.message_id);
+            return this.client.delete_comment(this.comment_id, this.message_id);
         }
     },
     reply: function(comment) {
-        return this.post_comment(this.message_id, comment);
+        return this.client.post_comment(this.message_id, comment);
     }
 });
 
-var Yak = WinJS.Class.define(function(raw) {
+var Yak = WinJS.Class.define(function(client, raw) {
+    this.client = client;
     this.poster_id = raw["posterID"];
     this.hide_pin = Boolean(parseInt(raw["hidePin"]));
     this.handle = raw["handle"];
@@ -349,28 +394,28 @@ var Yak = WinJS.Class.define(function(raw) {
         if(this.liked == 0) {
             this.liked += 1;
             this.likes += 1;
-            return this.upvote_yak(this.message_id);
+            return this.client.upvote_yak(this.message_id);
         }
     },
     downvote: function() {
          if(this.liked == 0) {
             this.liked -= 1;
             this.likes += 1;
-            return this.downvote_yak(this.message_id);
+            return this.client.downvote_yak(this.message_id);
         }       
     },
     report: function() {
-        return this.report_yak(this.message_id);
+        return this.client.report_yak(this.message_id);
     },
     delete: function() {
         if(this.poster_id == this.id) {
-            return this.delete_yak(this.message_id);
+            return this.client.delete_yak(this.message_id);
         }
     },
     add_comment: function() {
-        return this.post_comment(this.message_id, comment);
+        return this.client.post_comment(this.message_id, comment);
     },
     get_comments: function() {
-        return this.get_comments(this.message_id);
+        return this.client.get_comments(this.message_id);
     }
 });
