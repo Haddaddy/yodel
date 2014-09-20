@@ -84,11 +84,15 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
         
         msg += salt;
         
-        // Calculate signature
-        var h = CryptoJS.HmacSHA1(msg, key);
-        var hash = h.toString(CryptoJS.enc.Base64);
+        // Calculate HMAC signature
+        var macAlgorithm = Windows.Security.Cryptography.Core.MacAlgorithmProvider.openAlgorithm("HMAC_SHA1");
+        var keyMaterial = Windows.Security.Cryptography.CryptographicBuffer.convertStringToBinary(key, Windows.Security.Cryptography.BinaryStringEncoding.Utf8);
+        var macKey = macAlgorithm.createKey(keyMaterial);
+        var tbs = Windows.Security.Cryptography.CryptographicBuffer.convertStringToBinary(msg, Windows.Security.Cryptography.BinaryStringEncoding.utf8);
+        var sigBuffer = Windows.Security.Cryptography.Core.CryptographicEngine.sign(macKey, tbs);
+        var sig = Windows.Security.Cryptography.CryptographicBuffer.encodeToBase64String(sigBuffer);
 
-        return { "hash": hash, "salt": salt };
+        return { "hash": sig, "salt": salt };
     },
     get: function(page, params) {
         url = this.base_url + page;

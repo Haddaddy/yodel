@@ -57,8 +57,6 @@
     <Content Include="images\StoreLogo.scale-240.png" />
     <Content Include="js\data.js" />
     <Content Include="js\default.js" />
-    <Content Include="js\ext_lib\enc-base64.js" />
-    <Content Include="js\ext_lib\hmac-sha1.js" />
     <Content Include="js\ext_lib\jquery-2.1.1.min.js" />
     <Content Include="js\ext_lib\moment-twitter.js" />
     <Content Include="js\ext_lib\moment.min.js" />
