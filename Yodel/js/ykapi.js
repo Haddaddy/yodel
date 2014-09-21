@@ -32,9 +32,10 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
     
     this.loc = loc;
 
-    if(user_id == null) {
+    if(user_id == null || typeof user_id == undefined) {
         user_id = this.gen_id();
         this.register_id_new(user_id);
+        Windows.Storage.ApplicationData.current.roamingSettings.values["yakker_id"] = user_id;
     }
     else if(force_register) {
         this.register_id_new(user_id);
@@ -54,7 +55,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
         var hash = Windows.Security.Cryptography.CryptographicBuffer.encodeToHexString(buffer);
         return hash.toUpperCase();
     },
-    register_id_new: function(id) {
+    register_id_new: function (id) {
         var params = {
             "userID": id,
             "lat": this.loc.latitude,
@@ -94,13 +95,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
 
         return { "hash": sig, "salt": salt };
     },
-    get: function(page, params) {
-        url = this.base_url + page;
-
-        var signed = this.sign_request(page, params);
-        params["hash"] = signed.hash;
-        params["salt"] = signed.salt;
-
+    encode_params: function(params) {
         var param_keys = Object.keys(params);
         if (param_keys.length > 0) {
             var query = "?";
@@ -109,6 +104,16 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
             }
             query = query.slice(0, -1);
         }
+        return query;
+    },
+    get: function(page, params) {
+        url = this.base_url + page;
+
+        var signed = this.sign_request(page, params);
+        params["hash"] = signed.hash;
+        params["salt"] = signed.salt;
+
+        var query = this.encode_params(params);
 
         var httpClient = new Windows.Web.Http.HttpClient();
         headers = httpClient.defaultRequestHeaders;
@@ -125,14 +130,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
 
         var signed = this.sign_request(page, params);
 
-        var param_keys = Object.keys(params);
-        if (param_keys.length > 0) {
-            var query = "?";
-            for (var param in param_keys) {
-                query += param_keys[param] + "=" + encodeURIComponent(params[param_keys[param]]) + "&";
-            }
-            query = query.slice(0, -1);
-        }
+        var query = this.encode_params(params);
 
         var httpClient = new Windows.Web.Http.HttpClient();
         headers = httpClient.defaultRequestHeaders;

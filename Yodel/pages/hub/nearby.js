@@ -8,7 +8,8 @@
         ready: function (element, options) {
             options = options || {};
             
-            var yakker = new Yakker("BD8947C1AD926F2C9754966F6CCFA88E");
+            var yakker_id = Windows.Storage.ApplicationData.current.roamingSettings.values["yakker_id"];
+            var yakker = new Yakker(yakker_id);
             console.log("Registered user with id " + yakker.id);
 
             var loc = null;
