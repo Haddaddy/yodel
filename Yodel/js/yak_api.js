@@ -22,7 +22,7 @@ var PeekLocation = WinJS.Class.define(function(raw) {
     this.location = new Location(lat, lon, d);
 });
 
-var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
+var Yakker = WinJS.Class.define(function(user_id, loc) {
     this.base_url = "http://yikyakapp.com/api/";
     this.user_agent = "android-async-http/1.4.4 (http://loopj.com/android-async-http)";
 
@@ -36,9 +36,6 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
         user_id = this.gen_id();
         this.register_id_new(user_id);
         Windows.Storage.ApplicationData.current.roamingSettings.values["yakker_id"] = user_id;
-    }
-    else if(force_register) {
-        this.register_id_new(user_id);
     }
 
     this.id = user_id;

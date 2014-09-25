@@ -61,11 +61,11 @@
     <Content Include="js\ext_lib\moment-twitter.js" />
     <Content Include="js\ext_lib\moment.min.js" />
     <Content Include="js\navigator.js" />
-    <Content Include="js\ykapi.js" />
+    <Content Include="js\yak_events.js" />
+    <Content Include="js\yak_api.js" />
     <Content Include="pages\hub\hubPhone.css" />
     <Content Include="pages\hub\hub.html" />
     <Content Include="pages\hub\hub.js" />
-    <Content Include="pages\hub\nearby.html" />
     <Content Include="pages\hub\nearby.js" />
     <Content Include="default.html" />
     <Content Include="css\ui-themed.css" />
