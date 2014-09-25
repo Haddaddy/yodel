@@ -1,14 +1,14 @@
 ﻿.win-pivot .win-pivot-surface {
-	height: 90vh;
+    height: 90vh;
 }
 
 .win-pivot .win-pivot-viewport {
-	padding-top: 0px;
-	/*margin-top: 98px;*/
+    padding-top: 0px;
+    /*margin-top: 98px;*/
 }
 
 .win-pivot-item .win-pivot-item-content {
-	padding: 0px;
+    padding: 0px;
     width: 100%;
 }
 
@@ -32,18 +32,18 @@
 }
 
 .hubpage .hub {
-	height: 100%;
+    height: 100%;
 }
 
-	.hubpage .hub .win-hub-surface {
-		height: 100%;
-	}
+    .hubpage .hub .win-hub-surface {
+        height: 100%;
+    }
 
-	.hubpage .hub .section {
-		width: 100vw;
-	}
+    .hubpage .hub .section {
+        width: 100vw;
+    }
 
-    .win-listview, .win-listview ._win-dynamic-containersize-0 .win-container {
+    .win-listview, .win-listview div[class*='_win-dynamic-containersize-'] .win-container {
         height: auto;
     }
 
@@ -136,26 +136,26 @@
             display: block;
             text-align: center;
         }
-			
-	.hubpage .hub .section {
-		margin-left: 0px;
-		margin-right: 0px;
-	}
-		
+            
+    .hubpage .hub .section {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+        
 .label-extralarge {
-	font-size: 28pt;
-	opacity: 1.0;
-	line-height: 30pt;
+    font-size: 28pt;
+    opacity: 1.0;
+    line-height: 30pt;
 }
 
 .label-medium {
-	font-size: 15pt;
-	line-height: 17.5pt;
+    font-size: 15pt;
+    line-height: 17.5pt;
 }
 
 .label-mediummid {
-	font-size: 15pt;
-	line-height: 17.5pt;
+    font-size: 15pt;
+    line-height: 17.5pt;
 }
 
 .clear {

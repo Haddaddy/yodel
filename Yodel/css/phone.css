@@ -1,33 +1,33 @@
 ﻿#contenthost {
-	background-color: gray;
+    background-color: gray;
 }
 
 .fragment header[role=banner] {
-	display: flex;
+    display: flex;
     align-items: center;
-	height: 10vh;
+    height: 10vh;
     background: #08d7b5;
     color: #fff;
 }
 
-	.fragment header[role=banner] .win-navigation-backbutton {
-		visibility: hidden;
-	}
+    .fragment header[role=banner] .win-navigation-backbutton {
+        visibility: hidden;
+    }
 
-	.fragment header[role=banner] .backbutton {
-		visibility: hidden;
-	}
+    .fragment header[role=banner] .backbutton {
+        visibility: hidden;
+    }
 
-	.fragment header[role=banner] .titlearea {
-		margin-left: calc(3vw + 5px);
-		font-size: 20pt;
-		overflow: visible;
-	}
+    .fragment header[role=banner] .titlearea {
+        margin-left: calc(3vw + 5px);
+        font-size: 20pt;
+        overflow: visible;
+    }
 
-		.fragment header[role=banner] .titlearea .pagetitle {
-			/*width: calc(100% - 20px);*/
+        .fragment header[role=banner] .titlearea .pagetitle {
+            /*width: calc(100% - 20px);*/
             font-weight: 400;
-		}
+        }
 
 .win-appbar {
     background-color: #e5e5e5;
