@@ -21,10 +21,6 @@
     z-index: 2;
 }
 
-.sectioncontrol > .fragment > section[role=main] {
-    padding: 0 3vw 10px 3vw;
-}
-
 .hubpage section[role=main] {
     -ms-grid-row: 1;
     -ms-grid-row-span: 2;
@@ -43,54 +39,46 @@
 		height: 100%;
 	}
 
-	.hubpage .hub .hero {
-		-ms-high-contrast-adjust: none;
-		background-image: url(/images/gray.png);
-		background-size: cover;
-		margin-left: -80px;
-		margin-right: 80px;
-		padding: 0;
-		width: 780px;
-	}
-
-		.hubpage .hub .hero:-ms-lang(ar, dv, fa, he, ku-Arab, pa-Arab, prs, ps, sd-Arab, syr, ug, ur, qps-plocm) {
-			margin-left: 80px;
-			margin-right: -80px;
-		}
-
-		.hubpage .hub .hero .win-hub-section-header {
-			display: none;
-		}
-
-	.hubpage .hub .section1 {
+	.hubpage .hub .section {
 		width: 100vw;
 	}
 
-    .hubpage .hub .section1 * {
-        padding: 0;
+    .win-listview, .win-listview ._win-dynamic-containersize-0 .win-container {
+        height: auto;
+    }
+
+    .win-itemscontainer {
+        padding: 0 3vw;
+    }
+
+    .win-listview > .win-vertical .win-container {
         margin: 0;
     }
 
-        .hubpage .hub .section1 .yak_container {
+        .yak_container * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .yak_container {
             display: flex;
             align-items: center;
             clear: both;
-            padding: 5px 0 5px 5px;
+            padding-left: 5px;
             border-bottom: 1px solid #ccc;
-            background: #fff;
             word-wrap: break-word;
             position: relative;
         }
 
-        .hubpage .hub .section .yak_handle {
+        .yak_container .yak_handle {
             display: block;
             font-weight: 600;
             color: #08d7b5;
         }
 
-        .hubpage .hub .section .yak_text {
+        .yak_container .yak_text_container {
             font-size: 1.3em;
-            padding: 5px 20px 5px 0;
+            padding: 10px 15px 10px 0;
             flex-grow: 2;
             align-self: stretch;
             margin-bottom: 20px;
@@ -98,18 +86,18 @@
             overflow-x: hidden;
         }
 
-        .hubpage .hub .section1 .yak_container > span {
+        .yak_container > span {
             color: #aaa;
             font-size: 1em;
         }
 
-        .hubpage .hub .section1 .yak_time {
+        .yak_container .yak_time {
             position: absolute;
             bottom: 5px;
             left: 5px;
         }
 
-        .hubpage .hub .section1 .yak_comments {
+        .yak_container .yak_comments {
             position: absolute;
             bottom: 5px;
             left: 0;
@@ -118,33 +106,35 @@
             z-index: 0;
         }
 
-        .hubpage .hub .section1 .yak_vote {
+        .yak_container .yak_vote {
             display: block;
-            padding-bottom: 5px;
+            padding-bottom: 10px;
             z-index: 2;
         }
 
-        .hubpage .hub .section1 .yak_up, .hubpage .hub .section1 .yak_down {
-            font-size: 2.5em;
+        .yak_container .yak_up, .yak_container .yak_down {
+            font-size: 3em;
             display: block;
-            line-height: 1.2em;
+            line-height: 1.1em;
             color: #ccc;
+            text-decoration: none;
+            padding: 0 5px;
+            text-align: center;
         }
 
-        .hubpage .hub .section1 .yak_voted {
+        .yak_container .yak_up {
+            padding-bottom: 8px;
+        }
+
+        .yak_container .yak_voted {
             color: #08d7b5;
         }
 
-        .hubpage .hub .section1 .yak_votecount {
+        .yak_container .yak_votecount {
             font-size: 1.3em;
             color: #08d7b5;
             display: block;
             text-align: center;
-            padding-top: 4px;
-        }
-
-        .hubpage .hub .section1 .yak_id {
-            display: none;
         }
 			
 	.hubpage .hub .section {

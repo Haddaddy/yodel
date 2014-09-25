@@ -48,11 +48,12 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
     gen_id: function() {
         var hashIn = String(Math.floor(100000 + Math.random() * 900000));
         // Open convoluted WinRT hashing API
-        var hashProvider = Windows.Security.Cryptography.Core.HashAlgorithmProvider.openAlgorithm(Windows.Security.Cryptography.Core.HashAlgorithmNames.md5);
+        var winCrypt = Windows.Security.Cryptography;
+        var hashProvider = winCrypt.Core.HashAlgorithmProvider.openAlgorithm(winCrypt.Core.HashAlgorithmNames.md5);
         // Convert input to binary
-        var buffer = hashProvider.hashData(Windows.Security.Cryptography.CryptographicBuffer.convertStringToBinary(hashIn, Windows.Security.Cryptography.BinaryStringEncoding.utf8));
+        var buffer = hashProvider.hashData(winCrypt.CryptographicBuffer.convertStringToBinary(hashIn, winCrypt.BinaryStringEncoding.utf8));
         // Produce MD5 hash in hex form
-        var hash = Windows.Security.Cryptography.CryptographicBuffer.encodeToHexString(buffer);
+        var hash = winCrypt.CryptographicBuffer.encodeToHexString(buffer);
         return hash.toUpperCase();
     },
     register_id_new: function (id) {
@@ -86,12 +87,13 @@ var Yakker = WinJS.Class.define(function(user_id, loc, force_register) {
         msg += salt;
         
         // Calculate HMAC signature
-        var macAlgorithm = Windows.Security.Cryptography.Core.MacAlgorithmProvider.openAlgorithm("HMAC_SHA1");
-        var keyMaterial = Windows.Security.Cryptography.CryptographicBuffer.convertStringToBinary(key, Windows.Security.Cryptography.BinaryStringEncoding.Utf8);
+        var winCrypt = Windows.Security.Cryptography;
+        var macAlgorithm = winCrypt.Core.MacAlgorithmProvider.openAlgorithm("HMAC_SHA1");
+        var keyMaterial = winCrypt.CryptographicBuffer.convertStringToBinary(key, winCrypt.BinaryStringEncoding.Utf8);
         var macKey = macAlgorithm.createKey(keyMaterial);
-        var tbs = Windows.Security.Cryptography.CryptographicBuffer.convertStringToBinary(msg, Windows.Security.Cryptography.BinaryStringEncoding.utf8);
-        var sigBuffer = Windows.Security.Cryptography.Core.CryptographicEngine.sign(macKey, tbs);
-        var sig = Windows.Security.Cryptography.CryptographicBuffer.encodeToBase64String(sigBuffer);
+        var tbs = winCrypt.CryptographicBuffer.convertStringToBinary(msg, winCrypt.BinaryStringEncoding.utf8);
+        var sigBuffer = winCrypt.Core.CryptographicEngine.sign(macKey, tbs);
+        var sig = winCrypt.CryptographicBuffer.encodeToBase64String(sigBuffer);
 
         return { "hash": sig, "salt": salt };
     },
@@ -358,7 +360,7 @@ var Comment = WinJS.Class.define(function (client, raw, message_id) {
     downvote: function() {
         if(this.liked == 0) {
             this.likes -= 1;
-            this.liked += 1;
+            this.liked -= 1;
             return this.client.downvote_comment(this.comment_id);
         }
     },

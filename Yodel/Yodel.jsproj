@@ -56,7 +56,6 @@
     <Content Include="images\SplashScreen.scale-240.png" />
     <Content Include="images\StoreLogo.scale-240.png" />
     <Content Include="js\app-keys.js" />
-    <Content Include="js\data.js" />
     <Content Include="js\default.js" />
     <Content Include="js\ext_lib\jquery-2.1.1.min.js" />
     <Content Include="js\ext_lib\moment-twitter.js" />

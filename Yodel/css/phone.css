@@ -3,10 +3,8 @@
 }
 
 .fragment header[role=banner] {
-	/* Define a grid with columns for the back button and page title. */
-	-ms-grid-columns: 1fr;
-	-ms-grid-rows: 1fr;
-	display: -ms-grid;
+	display: flex;
+    align-items: center;
 	height: 10vh;
     background: #08d7b5;
     color: #fff;
@@ -21,15 +19,13 @@
 	}
 
 	.fragment header[role=banner] .titlearea {
-		-ms-grid-column: 1;
-		margin-top: 10px;
-		margin-left: 20px;
+		margin-left: calc(3vw + 5px);
 		font-size: 20pt;
 		overflow: visible;
 	}
 
 		.fragment header[role=banner] .titlearea .pagetitle {
-			width: calc(100% - 20px);
+			/*width: calc(100% - 20px);*/
             font-weight: 400;
 		}
 
