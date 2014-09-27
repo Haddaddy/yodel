@@ -6,6 +6,7 @@
 
     <link href="/css/phone.css" rel="stylesheet" />
     <link href="/pages/hub/hubphone.css" rel="stylesheet" />
+    <link href="/css/yak.css" rel="stylesheet" />
     <script src="/pages/hub/hub.js"></script>
 </head>
 <body>
@@ -24,7 +25,7 @@
                 </div>
                 <span class="yak_time" data-win-bind="textContent: time_pretty;"></span>
                 <span class="yak_comments" data-win-bind="textContent: replies;"></span>
-                <div class="yak_vote">
+                <div class="yak_vote win-interactive">
                     <a data-win-bind="className: upvote;">&#xE0A0;</a>
                     <span class="yak_votecount" data-win-bind="textContent: likes;"></span>
                     <a data-win-bind="className: downvote;">&#xE0A1;</a>
@@ -35,7 +36,7 @@
         <section aria-label="Main content" role="main">
             <div class="hub" data-win-control="WinJS.UI.Pivot">
                 <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': 'nearby' }">
-                    <div id="nearby_yaks" data-win-control="WinJS.UI.ListView" data-win-options="{ id: 'nearby_yaks', layout: { type: WinJS.UI.ListLayout }, itemTemplate: nearby_yaks_template, selectionMode: 'none', swipeBehavior: 'none' }"></div>
+                    <div id="nearby_yaks" data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.ListLayout }, itemTemplate: nearby_yaks_template, selectionMode: 'none', swipeBehavior: 'none' }"></div>
                 </div>
 
                 <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': 'peek' }">

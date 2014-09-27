@@ -143,7 +143,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
     },
     parse_yaks: function(text) {
         var raw_yaks = text["messages"];
-        var yaks = new Array();
+        var yaks = [];
         for (var raw_yak in raw_yaks) {
             yaks.push(new Yak(this, raw_yaks[raw_yak]));
         }
@@ -151,9 +151,9 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
     },
     parse_comments: function(text, message_id) {
         var raw_comments = text["comments"];
-        comments = [];
+        var comments = [];
         for(var raw_comment in raw_comments) {
-            comments.push(new Comment(this, raw_comment, message_id));
+            comments.push(new Comment(this, raw_comments[raw_comment], message_id));
         }
         return comments;
     },

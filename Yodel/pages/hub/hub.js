@@ -14,7 +14,6 @@
         // populates the page elements with the app's data.
         ready: function (element, options) {
             var hub = element.querySelector(".hub").winControl;
-
             $(".pagetitle").text(hub.selectedItem.header);
 
             hub.onheaderinvoked = function (args) {
@@ -29,6 +28,15 @@
             hub.onselectionchanged = function (args) {
                 $(".pagetitle").text(args.detail.item.header);
             }
+
+            if (nav.history.forwardStack.length > 0) {
+                var last_yaks = sessionStorage.getItem("last_yaks");
+                if (last_yaks) {
+                    WinJS.UI.process(element.querySelector("#nearby_yaks")).done(function () {
+                        Yodel.load_nearby(last_yaks);
+                    });
+                }
+            }
         },
 
         unload: function () {
@@ -39,6 +47,6 @@
             /// <param name="element" domElement="true" />
 
             // TODO: Respond to changes in layout.
-        },
+        }
     });
 })();

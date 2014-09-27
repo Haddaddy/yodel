@@ -31,7 +31,19 @@
         }
     }
 
+    function to_comments(event) {
+        var target = $(event.target);
+        var message_id = target.find(".yak_container").data("mid");
+        WinJS.Navigation.navigate("/pages/comments/comments.html").then(function () {
+            var appbar = $("#appbar")[0].winControl;
+            appbar.disabled = true;
+        }).done(function () {
+            Yodel.load_comments(message_id);
+        });
+    }
+
     WinJS.Namespace.define("Yodel", {
-        vote: yak_vote
+        vote: yak_vote,
+        to_comments: to_comments
     });
 })();
