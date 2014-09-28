@@ -6,6 +6,9 @@
         var target = $(event.target);
         var sibling = target.siblings(".yak_voted");
 
+        var index = parseInt(target.parents(".win-item").attr("aria-posinset")) - 1;
+        var datasource = Yodel.nearby_last;
+
         if (!target.hasClass("yak_voted") && !sibling.length) {
             target.addClass("yak_voted");
             var vote_count_ele = target.siblings(".yak_votecount");
@@ -14,10 +17,14 @@
             if (this.vote == "up") {
                 var promise = yakker.upvote_yak(message_id);
                 vote_count_ele.text(orig_vote_count + 1);
+                datasource[index].liked = 1;
+                datasource[index].likes += 1;
             }
             else if (this.vote == "down") {
                 var promise = yakker.downvote_yak(message_id);
                 vote_count_ele.text(orig_vote_count - 1);
+                datasource[index].liked = -1;
+                datasource[index].likes -= 1;
             }
             if (typeof promise != undefined) {
                 promise.then(function (response) {

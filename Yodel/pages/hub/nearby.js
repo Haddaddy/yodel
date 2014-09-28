@@ -68,21 +68,18 @@
             promise.then(function (response) {
                 response.content.readAsStringAsync().then(function (res) {
                     var yaks = JSON.parse(res);
-                    sessionStorage.setItem("last_yaks", res)
-                    console.log(yaks);
 
-                    yak_list = yak_format(yakker.parse_yaks(yaks));     
-                    yak_bind(yak_list, yakker);
+                    yak_list = yakker.parse_yaks(yaks);
+                    WinJS.Namespace.define("Yodel", { nearby_last: yak_list });
+                    console.log(yak_list);
+                    yak_bind(yak_format(yak_list), yakker);
                 });
             });
         }
         else if (prev) {
-            var yaks = JSON.parse(prev);
             console.log("LOADING FROM CACHE AW YISS")
-            console.log(yaks);
-
-            yak_list = yak_format(yakker.parse_yaks(yaks));
-            yak_bind(yak_list, yakker);
+            console.log(prev);
+            yak_bind(yak_format(prev), yakker);
         }
     }
 

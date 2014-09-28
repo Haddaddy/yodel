@@ -30,7 +30,7 @@
             }
 
             if (nav.history.forwardStack.length > 0) {
-                var last_yaks = sessionStorage.getItem("last_yaks");
+                var last_yaks = Yodel.nearby_last;
                 if (last_yaks) {
                     WinJS.UI.process(element.querySelector("#nearby_yaks")).done(function () {
                         Yodel.load_nearby(last_yaks);
