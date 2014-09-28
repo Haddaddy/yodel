@@ -8,10 +8,6 @@
         for (var yak in yaks_proc) {
             yak = yaks_proc[yak];
 
-            if (yak.handle == null) {
-                yak.handle = "";
-            }
-
             yak.replies = "";
             if (yak.comments > 0) {
                 yak.replies = yak.comments;
@@ -34,8 +30,6 @@
                     break;
             }
 
-            yak.time_pretty = moment.unix(yak.time).twitter();
-
             yak_list.push(yak);
         }
 
@@ -49,8 +43,8 @@
         var ny_listview = document.getElementById("nearby_yaks");
         ny_listview.winControl.itemDataSource = nearby_yaks.dataSource;
 
-        $(ny_listview).on("click", ".yak_up", Yodel.vote.bind({ client: yakker, vote: "up" }));
-        $(ny_listview).on("click", ".yak_down", Yodel.vote.bind({ client: yakker, vote: "down" }));
+        $(ny_listview).on("click", ".yak_up", Yodel.vote.bind({ client: yakker, type: "yak", vote: "up" }));
+        $(ny_listview).on("click", ".yak_down", Yodel.vote.bind({ client: yakker, type: "yak", vote: "down" }));
         ny_listview.addEventListener("iteminvoked", Yodel.to_comments);
     }
 

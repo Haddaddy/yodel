@@ -3,11 +3,12 @@
 
     var appData = Windows.Storage.ApplicationData.current;
 
-    function load_comments(message_id) {
+    function load_comments(message_id, yak_index) {
         var yakker = new Yakker(appData.roamingSettings.values["yakker_id"]);
 
         yakker.update_location(new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"], appData.localSettings.values["gl_accuracy"]));
 
+        var datasource = Yodel.nearby_last;
         var promise = yakker.get_comments(message_id);
         promise.then(function (response) {
             response.content.readAsStringAsync().then(function (res) {
@@ -29,8 +30,6 @@
                             break;
                     }
 
-                    com.time_pretty = moment.unix(com.time).twitter();
-
                     comments_list.push(com);
                 }
 
@@ -38,10 +37,21 @@
                 var ny_listview = document.getElementById("yak_comments");
                 ny_listview.winControl.itemDataSource = yak_comments.dataSource;
 
-                //$(ny_listview).on("click", ".yak_up", Yodel.vote.bind({ client: yakker, vote: "up" }));
-                //$(ny_listview).on("click", ".yak_down", Yodel.vote.bind({ client: yakker, vote: "down" }));
+                $(ny_listview).on("click", ".yak_up", Yodel.vote.bind({ client: yakker, type: "comment", vote: "up" }));
+                $(ny_listview).on("click", ".yak_down", Yodel.vote.bind({ client: yakker, type: "comment", vote: "down" }));
             });
         });
+
+        //Microsoft.Maps.loadModule("Microsoft.Maps.Map", {
+        //    callback: function () {
+        //        var map = new Microsoft.Maps.Map(document.getElementById("map"), {
+        //            credentials: appData.localSettings.values["maps_appid"],
+        //            center: new Microsoft.Maps.Location(datasource[yak_index].latitude, datasource[yak_index].longitude),
+        //            mapTypeId: Microsoft.Maps.MapTypeId.road,
+        //            zoom: 9
+        //        });
+        //    }
+        //});
     }
 
     WinJS.Namespace.define("Yodel", {

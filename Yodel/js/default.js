@@ -12,18 +12,18 @@
 
     app.addEventListener("activated", function (args) {
         if (args.detail.kind === activation.ActivationKind.launch) {
-            if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
+            //if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
                 if (typeof appData.roamingSettings.values["yakker_id"] == undefined) {
                     yakker = new Yakker();
                     console.log("Registered new user with id " + yakker.id);
                 }
 
-                var loc = null;
-                if (loc == null) {
-                    loc = new Windows.Devices.Geolocation.Geolocator();
-                }
+                var loc = new Windows.Devices.Geolocation.Geolocator();
+
                 if (loc != null) {
+                    console.log("starting geoloc");
                     loc.getGeopositionAsync().then(function (pos) {
+                        console.log("geoloc returned");
                         appData.localSettings.values["gl_lat"] = pos.coordinate.point.position.latitude;
                         appData.localSettings.values["gl_long"] = pos.coordinate.point.position.longitude;
                         appData.localSettings.values["gl_accuracy"] = pos.coordinate.accuracy;
@@ -31,10 +31,10 @@
                         Yodel.load_nearby();
                     });
                 }
-            } else {
-                // TODO: This application has been reactivated from suspension.
-                // Restore application state here.
-            }
+            //} else {
+            //    // TODO: This application has been reactivated from suspension.
+            //    // Restore application state here.
+            //}
 
             hookUpBackButtonGlobalEventHandlers();
             nav.history = app.sessionState.history || {};

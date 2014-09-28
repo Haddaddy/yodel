@@ -1,0 +1,45 @@
+﻿.win-pivot .win-pivot-surface {
+    height: 100vh;
+}
+
+.win-pivot .win-pivot-viewport {
+    padding-top: 0px;
+    /*margin-top: 98px;*/
+}
+
+.win-pivot-item {
+    top: 5px;
+}
+
+.settings section[role=main] {
+    -ms-grid-row: 1;
+    -ms-grid-row-span: 2;
+    z-index: 1;
+}
+
+.settings div[role=tablist] div.win-pivot-title {
+    color: #07BFA1;
+    text-transform: uppercase;
+}
+
+.settings div[role=tablist] div.win-pivot-headers button {
+    font-size: 4em;
+    color: #08d7b5;
+}
+
+.settings .settings_pivot {
+    height: 100%;
+}
+
+.settings .settings_pivot .win-pivot-item-content {
+    margin-left: 0px;
+    margin-right: 0px;
+    padding: 100px 20px 0 20px;
+    font-size: 1.4em;
+    font-weight: 300;
+}
+
+.settings .settings_pivot .win-pivot-item-content * {
+    padding: 0;
+    margin: 0;
+}

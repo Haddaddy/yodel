@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 
  * moment.twitter.js
  * (c) 2014 Jonathan Kim, Nathan Bowser, and contributors.
