@@ -15,6 +15,7 @@
     -ms-grid-row: 1;
     -ms-grid-row-span: 2;
     z-index: 1;
+    margin-top: 15px;
 }
 
 .settings div[role=tablist] div.win-pivot-title {

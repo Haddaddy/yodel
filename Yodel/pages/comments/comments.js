@@ -4,6 +4,8 @@
     var appData = Windows.Storage.ApplicationData.current;
 
     function load_comments(message_id, yak_index) {
+        $("#comments_progress").css("display", "inline");
+
         var yakker = new Yakker(appData.roamingSettings.values["yakker_id"]);
 
         yakker.update_location(new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"], appData.localSettings.values["gl_accuracy"]));
@@ -39,6 +41,8 @@
 
                 $(ny_listview).on("click", ".yak_up", Yodel.vote.bind({ client: yakker, type: "comment", vote: "up" }));
                 $(ny_listview).on("click", ".yak_down", Yodel.vote.bind({ client: yakker, type: "comment", vote: "down" }));
+
+                $("#comments_progress").css("display", "none");
             });
         });
 

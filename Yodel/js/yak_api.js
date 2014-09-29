@@ -198,7 +198,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
             "lat": this.loc.latitude,
             "long": this.loc.longitude
         }
-        return this.get("downvoteMessage", params);
+        return this.get("downvoteComment", params);
     },
     report_yak: function(message_id) {
         params = {

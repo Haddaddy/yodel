@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="a586317a-5de3-49e8-9263-287cf5603e74" Version="1.0.0.0" Publisher="CN=Nicholas" />
-  <mp:PhoneIdentity PhoneProductId="a586317a-5de3-49e8-9263-287cf5603e74" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="51443soren121.YodelBETA" Version="0.9.0.0" Publisher="CN=F8B31DA9-271A-4F34-A9E6-78DE527FDD91" />
+  <mp:PhoneIdentity PhoneProductId="915cf732-4b10-4278-b821-c64dbff2432c" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>Yodel</DisplayName>
-    <PublisherDisplayName>soren121</PublisherDisplayName>
+    <DisplayName>Yodel BETA</DisplayName>
+    <PublisherDisplayName>Nicholas Narsing</PublisherDisplayName>
     <Logo>images\StoreLogo.png</Logo>
   </Properties>
   <Prerequisites>
@@ -16,8 +16,12 @@
   </Resources>
   <Applications>
     <Application Id="App" StartPage="default.html">
-      <m3:VisualElements DisplayName="Yodel" Square150x150Logo="images\Square150x150Logo.png" Square44x44Logo="images\Square44x44Logo.png" Description="An unofficial Yik Yak app for Windows Phone 8.1" ForegroundText="light" BackgroundColor="transparent" ToastCapable="false">
+      <m3:VisualElements DisplayName="Yodel BETA" Square150x150Logo="images\Square150x150Logo.png" Square44x44Logo="images\Square44x44Logo.png" Description="An unofficial Yik Yak app for Windows Phone 8.1" ForegroundText="light" BackgroundColor="transparent" ToastCapable="false">
         <m3:DefaultTile Wide310x150Logo="images\Wide310x150Logo.png" Square71x71Logo="images\Square71x71Logo.png">
+          <m3:ShowNameOnTiles>
+            <m3:ShowOn Tile="square150x150Logo" />
+            <m3:ShowOn Tile="wide310x150Logo" />
+          </m3:ShowNameOnTiles>
         </m3:DefaultTile>
         <m3:SplashScreen Image="images\SplashScreen.png" BackgroundColor="#08d7b5" />
         <m3:InitialRotationPreference>

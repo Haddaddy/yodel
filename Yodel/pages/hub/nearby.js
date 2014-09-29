@@ -46,9 +46,13 @@
         $(ny_listview).on("click", ".yak_up", Yodel.vote.bind({ client: yakker, type: "yak", vote: "up" }));
         $(ny_listview).on("click", ".yak_down", Yodel.vote.bind({ client: yakker, type: "yak", vote: "down" }));
         ny_listview.addEventListener("iteminvoked", Yodel.to_comments);
+
+        $("#hub_progress").css("display", "none");
     }
 
     function nearby_yaks_load(prev) {
+        $("#hub_progress").css("display", "inline");
+
         var yakker = new Yakker(appData.roamingSettings.values["yakker_id"]);
         console.log("Registered user with id " + yakker.id);
 
@@ -62,10 +66,10 @@
             promise.then(function (response) {
                 response.content.readAsStringAsync().then(function (res) {
                     var yaks = JSON.parse(res);
+                    console.log(yaks);
 
                     yak_list = yakker.parse_yaks(yaks);
                     WinJS.Namespace.define("Yodel", { nearby_last: yak_list });
-                    console.log(yak_list);
                     yak_bind(yak_format(yak_list), yakker);
                 });
             });

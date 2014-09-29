@@ -25,9 +25,18 @@
     -ms-grid-row: 1;
     -ms-grid-row-span: 2;
     z-index: 1;
+    position: relative;
 }
 
 .hubpage div[role=tablist] div.win-pivot-headers {
+    display: none;
+}
+
+.hubpage section[role=main] progress {
+    position: absolute;
+    top: 0;
+    margin: 0;
+    width: 100%;
     display: none;
 }
 
