@@ -66,7 +66,6 @@
         var target = $(event.target);
         var message_id = target.find(".yak_container").data("mid");
         var index = parseInt(target.children(".win-item").attr("aria-posinset")) - 1;
-        console.log(index);
 
         WinJS.Navigation.navigate("/pages/comments/comments.html").then(function () {
             var appbar = $("#appbar")[0].winControl;

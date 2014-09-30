@@ -5,9 +5,11 @@
 
     function navigateFromAppBar(event) {
         var element = event.target;
-        nav.navigate(element.value).then(function () {
-            element.parentNode.winControl.disabled = true;
-        });
+        if (element.value) {
+            nav.navigate(element.value).then(function () {
+                element.parentNode.winControl.disabled = true;
+            });
+        }
     }
 
     WinJS.UI.Pages.define("default.html", {

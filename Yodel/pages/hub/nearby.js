@@ -68,16 +68,26 @@
                     var yaks = JSON.parse(res);
                     console.log(yaks);
 
-                    yak_list = yakker.parse_yaks(yaks);
+                    var yak_list = yakker.parse_yaks(yaks);
                     WinJS.Namespace.define("Yodel", { nearby_last: yak_list });
-                    yak_bind(yak_format(yak_list), yakker);
+
+                    var yaks_formatted = yak_format(yak_list);
+                    msSetImmediate(function () {
+                        yak_bind(yaks_formatted, yakker);
+                    });
                 });
             });
         }
         else if (prev) {
             console.log("LOADING FROM CACHE AW YISS")
             console.log(prev);
-            yak_bind(yak_format(prev), yakker);
+
+            var yaks_formatted = yak_format(prev);
+            msSetImmediate(function () {
+                yak_bind(yaks_formatted, yakker);
+                //var ny_listview = document.getElementById("nearby_yaks");
+                //ny_listview.winControl.indexOfFirstVisible = Yodel.last_index;
+            });
         }
     }
 

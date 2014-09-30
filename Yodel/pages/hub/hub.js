@@ -7,6 +7,13 @@
 
     WinJS.UI.Pages.define("/pages/hub/hub.html", {
         processed: function (element) {
+            if (nav.history.forwardStack.length > 0) {
+                var last_yaks = Yodel.nearby_last;
+                if (last_yaks) {
+                    Yodel.load_nearby(last_yaks);
+                }
+            }
+
             return WinJS.Resources.processAll(element);
         },
 
@@ -28,19 +35,12 @@
             hub.onselectionchanged = function (args) {
                 $(".pagetitle").text(args.detail.item.header);
             }
-
-            if (nav.history.forwardStack.length > 0) {
-                var last_yaks = Yodel.nearby_last;
-                if (last_yaks) {
-                    WinJS.UI.process(element.querySelector("#nearby_yaks")).done(function () {
-                        Yodel.load_nearby(last_yaks);
-                    });
-                }
-            }
         },
 
         unload: function () {
             // TODO: Respond to navigations away from this page.
+            var listView = document.getElementById("nearby_yaks").winControl;
+            Yodel.last_index = listView.indexOfFirstVisible + 1;
         },
 
         updateLayout: function (element) {
