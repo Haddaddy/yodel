@@ -37,17 +37,18 @@
             <progress id="hub_progress"></progress>
             <div class="hub" data-win-control="WinJS.UI.Pivot">
                 <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': 'nearby' }">
+                    <p id="nearby_yaks_none">No yaks here to speak of.<br/>It's pretty boring here, eh?</p>
                     <div id="nearby_yaks" data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.ListLayout }, itemTemplate: nearby_yaks_template, selectionMode: 'none', swipeBehavior: 'none' }"></div>
                 </div>
 
                 <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': 'peek' }">
                     <!--<div data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.ListLayout }, itemTemplate: peekList, selectionMode: 'none' }"></div>-->
-                    TODO
+                    <p class="placeholder">TODO</p>
                 </div>
 
                 <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': 'me' }">
                     <!--<div data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.ListLayout }, itemTemplate: meDetail, selectionMode: 'none' }"></div>-->
-                    TODO
+                    <p class="placeholder">TODO</p>
                 </div>
             </div>
         </section>

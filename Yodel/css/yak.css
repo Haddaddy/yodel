@@ -1,88 +1,96 @@
-﻿ .win-listview, .win-listview div[class*='_win-dynamic-containersize-'] .win-container {
-        height: auto;
-    }
+﻿.win-listview {
+    height: auto;
+}
 
-    .win-itemscontainer {
-        padding: 0 3vw;
-    }
+.win-listview div[class*='_win-dynamic-containersize-'] .win-container {
+    height: auto;
+}
 
-    .win-listview > .win-vertical .win-container {
-        margin: 0;
-    }
+.win-itemscontainer {
+    padding: 0 3vw;
+}
 
-        .yak_container * {
-            margin: 0;
-            padding: 0;
-        }
+.win-listview > .win-vertical .win-container {
+    margin: 0;
+}
 
-        .yak_container {
-            display: flex;
-            align-items: center;
-            clear: both;
-            padding-left: 5px;
-            border-bottom: 1px solid #ccc;
-            word-wrap: break-word;
-            position: relative;
-        }
+.yak_container * {
+    margin: 0;
+    padding: 0;
+}
 
-        .yak_container .yak_handle {
-            display: block;
-            font-weight: 600;
-            color: #08d7b5;
-        }
+.yak_container {
+    display: flex;
+    align-items: center;
+    clear: both;
+    padding-left: 5px;
+    border-bottom: 1px solid #ccc;
+    word-wrap: break-word;
+    position: relative;
+}
 
-        .yak_container .yak_text_container {
-            font-size: 1.3em;
-            padding: 10px 15px 10px 0;
-            flex-grow: 2;
-            align-self: stretch;
-            margin-bottom: 20px;
-            line-height: 1.4em;
-            overflow-x: hidden;
-        }
+.yak_container .yak_handle {
+    display: block;
+    font-weight: 600;
+    color: #08d7b5;
+}
 
-        .yak_container > span {
-            color: #aaa;
-            font-size: 1em;
-        }
+.yak_container .yak_text_container {
+    font-size: 1.3em;
+    padding: 10px 15px 10px 0;
+    flex-grow: 2;
+    align-self: stretch;
+    margin-bottom: 20px;
+    line-height: 1.4em;
+    overflow-x: hidden;
+}
 
-        .yak_container .yak_time {
-            position: absolute;
-            bottom: 5px;
-            left: 5px;
-        }
+.yak_container > span {
+    color: #aaa;
+    font-size: 1em;
+}
 
-        .yak_container .yak_comments {
-            position: absolute;
-            bottom: 5px;
-            left: 0;
-            text-align: center;
-            width: 100%;
-            z-index: 0;
-        }
+.yak_container .yak_time {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+}
 
-        .yak_container .yak_vote {
-            z-index: 2;
-            padding: 5px 0;
-        }
+.yak_container .yak_comments {
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    text-align: center;
+    width: 100%;
+    z-index: 0;
+}
 
-        .yak_container .yak_up, .yak_container .yak_down {
-            font-size: 3.25em;
-            display: block;
-            line-height: 0.9em;
-            color: #ccc;
-            text-decoration: none;
-            padding: 0 5px 10px 5px;
-            text-align: center;
-        }
+.yak_container .yak_vote {
+    z-index: 2;
+    padding: 5px 0;
+}
 
-        .yak_container .yak_voted {
-            color: #08d7b5;
-        }
+.yak_container .yak_up, .yak_container .yak_down {
+    font-size: 3.25em;
+    display: block;
+    line-height: 0.9em;
+    color: #ccc;
+    text-decoration: none;
+    padding: 0 5px 10px 5px;
+    text-align: center;
+}
 
-        .yak_container .yak_votecount {
-            font-size: 1.3em;
-            color: #08d7b5;
-            display: block;
-            text-align: center;
-        }
+.yak_container .yak_voted.yak_up {
+    color: #08d7b5;
+}
+
+.yak_container .yak_voted.yak_down {
+    color: #555;
+}
+
+.yak_container .yak_votecount {
+    font-size: 1.3em;
+    color: #08d7b5;
+    display: block;
+    text-align: center;
+}

@@ -53,6 +53,23 @@
         margin-right: 0px;
         width: 100vw;
     }
+
+#nearby_yaks_none {
+    display: none;
+    position: absolute;
+    top: 30%;
+    width: 100%;
+    color: #666;
+    text-align: center;
+    font-size: 1.4em;
+    margin: 0;
+}
+
+p.placeholder {
+    padding: 20px;
+    margin: 0;
+    font-size: 1.6em;
+}
         
 .label-extralarge {
     font-size: 28pt;

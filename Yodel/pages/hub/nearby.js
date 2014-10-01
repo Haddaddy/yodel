@@ -71,12 +71,17 @@
                     console.log(yaks);
 
                     var yak_list = yakker.parse_yaks(yaks);
-                    WinJS.Namespace.define("Yodel", { nearby_last: yak_list });
+                    if (yak_list.length > 0) {
+                        WinJS.Namespace.define("Yodel", { nearby_last: yak_list });
 
-                    var yaks_formatted = yak_format(yak_list);
-                    msSetImmediate(function () {
-                        yak_bind(yaks_formatted, yakker);
-                    });
+                        var yaks_formatted = yak_format(yak_list);
+                        msSetImmediate(function () {
+                            yak_bind(yaks_formatted, yakker);
+                        });
+                    }
+                    else {
+                        $("#nearby_yaks_none").css("display", "block");
+                    }
                 });
             });
         }
