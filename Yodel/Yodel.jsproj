@@ -62,12 +62,12 @@
     <Content Include="js\appbar.js" />
     <Content Include="js\default.js" />
     <Content Include="js\ext_lib\jquery-2.1.1.min.js" />
+    <Content Include="js\ext_lib\moment-timezone-with-data-2010-2020.js" />
     <Content Include="js\ext_lib\moment-twitter.js" />
     <Content Include="js\ext_lib\moment.min.js" />
     <Content Include="js\navigator.js" />
     <Content Include="js\yak_events.js" />
     <Content Include="js\yak_api.js" />
-    <Content Include="packages.config" />
     <Content Include="pages\settings\settings.css" />
     <Content Include="pages\settings\settings.html" />
     <Content Include="pages\settings\settings.js" />

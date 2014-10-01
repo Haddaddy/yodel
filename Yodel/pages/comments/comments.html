@@ -14,7 +14,7 @@
             <div class="yak_text_container">
                 <p class="yak_text" data-win-bind="textContent: comment;"></p>
             </div>
-            <span class="yak_time" data-win-bind="textContent: time_pretty;"></span>
+            <span class="yak_time" data-win-bind="textContent: time;"></span>
             <div class="yak_vote win-interactive">
                 <a data-win-bind="className: upvote;">&#xE0A0;</a>
                 <span class="yak_votecount" data-win-bind="textContent: likes;"></span>
@@ -26,6 +26,7 @@
     <section aria-label="Main content" role="main">
         <progress id="comments_progress"></progress>
         <!--<div id="map"></div>-->
+        <p id="yak_comments_none"></p>
         <div id="yak_comments" data-win-control="WinJS.UI.ListView" data-win-options="{ id: 'yak_comments', layout: { type: WinJS.UI.ListLayout }, itemTemplate: comments_template, selectionMode: 'none', swipeBehavior: 'none' }"></div>
     </section>
 </body>

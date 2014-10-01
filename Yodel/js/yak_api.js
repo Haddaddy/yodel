@@ -1,6 +1,6 @@
 ﻿function parse_time(timestr) {
-    format = "YYYY-MM-DD HH:mm:ss";
-    return moment(timestr, format).format("X");
+    var format = "YYYY-MM-DD HH:mm:ss";
+    return moment.tz(timestr, format, "America/New_York").twitter();
 }
 
 var Location = WinJS.Class.define(function(latitude, longitude, delta) {
@@ -343,7 +343,6 @@ var Comment = WinJS.Class.define(function (client, raw, message_id) {
     this.comment_id = raw["commentID"];
     this.comment = raw["comment"];
     this.time = parse_time(raw["time"]);
-    this.time_pretty = moment.unix(this.time).twitter();
     this.likes = parseInt(raw["numberOfLikes"]);
     this.poster_id = raw["posterID"];
     this.liked = parseInt(raw["liked"]);
@@ -385,7 +384,6 @@ var Yak = WinJS.Class.define(function(client, raw) {
     this.longitude = raw["longitude"];
     this.comments = parseInt(raw["comments"]);
     this.time = parse_time(raw["time"]);
-    this.time_pretty = moment.unix(this.time).twitter();
     this.latitude = raw["latitude"];
     this.likes = parseInt(raw["numberOfLikes"]);
     this.message = raw["message"];

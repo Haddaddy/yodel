@@ -17,30 +17,35 @@
                 var comments = JSON.parse(res);
                 console.log(comments);
                 var comments_proc = yakker.parse_comments(comments, message_id);
-                var comments_list = [];
-                for (var com in comments_proc) {
-                    com = comments_proc[com];
+                if (comments_proc.length > 0) {
+                    var comments_list = [];
+                    for (var com in comments_proc) {
+                        com = comments_proc[com];
 
-                    com.upvote = "yak_up";
-                    com.downvote = "yak_down";
-                    switch (com.liked) {
-                        case 1:
-                            com.upvote = "yak_up yak_voted";
-                            break;
-                        case -1:
-                            com.downvote = "yak_down yak_voted";
-                            break;
+                        com.upvote = "yak_up";
+                        com.downvote = "yak_down";
+                        switch (com.liked) {
+                            case 1:
+                                com.upvote = "yak_up yak_voted";
+                                break;
+                            case -1:
+                                com.downvote = "yak_down yak_voted";
+                                break;
+                        }
+
+                        comments_list.push(com);
                     }
 
-                    comments_list.push(com);
+                    var yak_comments = new WinJS.Binding.List(comments_list);
+                    var ny_listview = document.getElementById("yak_comments");
+                    ny_listview.winControl.itemDataSource = yak_comments.dataSource;
+
+                    $(ny_listview).on("click", ".yak_up", Yodel.vote.bind({ client: yakker, type: "comment", vote: "up" }));
+                    $(ny_listview).on("click", ".yak_down", Yodel.vote.bind({ client: yakker, type: "comment", vote: "down" }));
                 }
-
-                var yak_comments = new WinJS.Binding.List(comments_list);
-                var ny_listview = document.getElementById("yak_comments");
-                ny_listview.winControl.itemDataSource = yak_comments.dataSource;
-
-                $(ny_listview).on("click", ".yak_up", Yodel.vote.bind({ client: yakker, type: "comment", vote: "up" }));
-                $(ny_listview).on("click", ".yak_down", Yodel.vote.bind({ client: yakker, type: "comment", vote: "down" }));
+                else {
+                    $("#yak_comments_none").css("display", "block").text("No comments yet.");
+                }
 
                 $("#comments_progress").css("display", "none");
             });
