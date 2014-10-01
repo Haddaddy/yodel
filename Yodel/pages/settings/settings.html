@@ -13,7 +13,15 @@
         <section aria-label="Main content" role="main">
             <div class="settings_pivot" data-win-control="WinJS.UI.Pivot" data-win-options="{ 'title': 'Settings' }">
                 <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': 'general' }">
-                    <div id="locToggle" data-win-control="WinJS.UI.ToggleSwitch" data-win-options="{title: 'Allow location services', checked: true}"></div>
+                    <div id="settings_general">
+                        <div id="locToggle" data-win-control="WinJS.UI.ToggleSwitch" data-win-options="{title: 'Allow location services', checked: true}"></div>
+
+                        <h4>User ID</h4>
+                        <p>Yik Yak uses a randomly-generated ID, in lieu of a username and password, to keep track of your activity.
+                        You can reset your user ID if you feel like starting over.</p>
+                        <input id="yak_id" readonly="readonly">
+                        <button id="reset_id">reset user ID</button>
+                    </div>
                 </div>
 
                 <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': 'about' }">

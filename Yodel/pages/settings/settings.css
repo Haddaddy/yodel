@@ -32,7 +32,7 @@
     height: 100%;
 }
 
-.settings .settings_pivot .win-pivot-item-content {
+.settings_pivot .win-pivot-item-content {
     margin-left: 0px;
     margin-right: 0px;
     padding: 100px 20px 0 20px;
@@ -40,16 +40,43 @@
     font-weight: 300;
 }
 
-.settings .settings_pivot .win-pivot-item-content * {
+.settings_pivot .win-pivot-item-content * {
     padding: 0;
     margin: 0;
+}
+
+.settings_pivot .win-pivot-item-content > div {
+    padding-right: 5px;
+}
+
+.settings_pivot .win-pivot-item-content h4 {
+    margin-top: 20px;
+    font-size: 1.4em;
+    font-weight: 300;
+}
+
+.settings_pivot #settings_general p {
+    font-size: 0.9em;
+    color: #888;
+    padding: 5px 5px 5px 0;
+    margin-bottom: 10px;
 }
 
 .settings_pivot #settings_about p {
     margin-bottom: 20px;
 }
 
-.settings_pivot #settings_about button {
+.settings_pivot .win-pivot-item-content button {
     padding: 4px 8px;
     margin: 10px 10px 0 0;
+}
+
+.settings_pivot #yak_id {
+    font-weight: 600;
+    font-size: .9em;
+    color: #000;
+    width: 85vw;
+    height: .9em;
+    padding: 8px 4px;
+    border: 2px solid #aaa;
 }

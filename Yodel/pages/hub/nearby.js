@@ -41,13 +41,15 @@
 
         var nearby_yaks = new WinJS.Binding.List(yak_list);
         var ny_listview = document.getElementById("nearby_yaks");
-        ny_listview.winControl.itemDataSource = nearby_yaks.dataSource;
+        if (ny_listview != null) {          
+            ny_listview.winControl.itemDataSource = nearby_yaks.dataSource;
 
-        $(ny_listview).on("click", ".yak_up", Yodel.vote.bind({ client: yakker, type: "yak", vote: "up" }));
-        $(ny_listview).on("click", ".yak_down", Yodel.vote.bind({ client: yakker, type: "yak", vote: "down" }));
-        ny_listview.addEventListener("iteminvoked", Yodel.to_comments);
+            $(ny_listview).on("click", ".yak_up", Yodel.vote.bind({ client: yakker, type: "yak", vote: "up" }));
+            $(ny_listview).on("click", ".yak_down", Yodel.vote.bind({ client: yakker, type: "yak", vote: "down" }));
+            ny_listview.addEventListener("iteminvoked", Yodel.to_comments);
 
-        $("#hub_progress").css("display", "none");
+            $("#hub_progress").css("display", "none");
+        }
     }
 
     function nearby_yaks_load(prev) {
