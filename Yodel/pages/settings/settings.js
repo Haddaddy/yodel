@@ -7,7 +7,7 @@
         var yakker = new Yakker();
         console.log("Registered user with id " + yakker.id);
         $("#settings_general #yak_id").val(yakker.id);
-        Yodel.nearby_last = [];
+        Yodel.nearby_last = null;
     }
 
     WinJS.UI.Pages.define("/pages/settings/settings.html", {

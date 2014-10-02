@@ -12,6 +12,9 @@
                 if (last_yaks) {
                     Yodel.load_nearby(last_yaks);
                 }
+                else {
+                    Yodel.load_nearby();
+                }
             }
 
             return WinJS.Resources.processAll(element);
