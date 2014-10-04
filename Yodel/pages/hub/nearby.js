@@ -84,6 +84,12 @@
                             $("#nearby_yaks_none").css("display", "block");
                         }
                     }
+                    else {
+                        $("#hub_progress").css("display", "none");
+                        var http_error_msg = new Windows.UI.Popups.MessageDialog("HTTP Error " + response.statusCode + " " + response.reasonPhrase);
+                        http_error_msg.title = "Unable to load yaks";
+                        http_error_msg.showAsync();
+                    }
                 });
             });
         }

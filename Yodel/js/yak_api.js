@@ -32,7 +32,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
     
     this.loc = loc;
 
-    if (!user_id || user_id == "") {
+    if (!user_id) {
         user_id = this.gen_id();
         this.register_id_new(user_id).then(function (response) {
             if (response.isSuccessStatusCode) {
@@ -71,8 +71,6 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         
         var msg = "/api/" + page;
         var sorted_params = Object.keys(params);
-        console.log(sorted_params);
-        console.log(params);
         sorted_params.sort();
         
         if(sorted_params.length > 0) {
