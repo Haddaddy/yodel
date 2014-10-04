@@ -55,10 +55,8 @@
     function nearby_yaks_load(prev) {
         $("#hub_progress").css("display", "inline");
 
-        var yakker = new Yakker(appData.roamingSettings.values["yakker_id"]);
+        var yakker = new Yakker(appData.roamingSettings.values["yakker_id"], new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"], appData.localSettings.values["gl_accuracy"]));
         console.log("Registered user with id " + yakker.id);
-
-        yakker.update_location(new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"], appData.localSettings.values["gl_accuracy"]));
         
         var yak_list = [];
 
@@ -66,21 +64,25 @@
             console.log("LOADING FROM THE WEB THING");
             var promise = yakker.get_yaks();
             promise.then(function (response) {
+                console.log(response);
                 response.content.readAsStringAsync().then(function (res) {
-                    var yaks = JSON.parse(res);
-                    console.log(yaks);
+                    console.log(res);
+                    if (response.isSuccessStatusCode) {
+                        var yaks = JSON.parse(res);
+                        console.log(yaks);
 
-                    var yak_list = yakker.parse_yaks(yaks);
-                    if (yak_list.length > 0) {
-                        WinJS.Namespace.define("Yodel", { nearby_last: yak_list });
+                        var yak_list = yakker.parse_yaks(yaks);
+                        if (yak_list.length > 0) {
+                            WinJS.Namespace.define("Yodel", { nearby_last: yak_list });
 
-                        var yaks_formatted = yak_format(yak_list);
-                        msSetImmediate(function () {
-                            yak_bind(yaks_formatted, yakker);
-                        });
-                    }
-                    else {
-                        $("#nearby_yaks_none").css("display", "block");
+                            var yaks_formatted = yak_format(yak_list);
+                            msSetImmediate(function () {
+                                yak_bind(yaks_formatted, yakker);
+                            });
+                        }
+                        else {
+                            $("#nearby_yaks_none").css("display", "block");
+                        }
                     }
                 });
             });

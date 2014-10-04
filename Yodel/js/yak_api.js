@@ -23,7 +23,7 @@ var PeekLocation = WinJS.Class.define(function(raw) {
 });
 
 var Yakker = WinJS.Class.define(function(user_id, loc) {
-    this.base_url = "http://yikyakapp.com/api/";
+    this.base_url = "https://yikyakapp.com/api/";
     this.user_agent = "android-async-http/1.4.4 (http://loopj.com/android-async-http)";
 
     if(loc == null) {
@@ -32,7 +32,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
     
     this.loc = loc;
 
-    if (!user_id) {
+    if (!user_id || user_id == "") {
         user_id = this.gen_id();
         this.register_id_new(user_id).then(function (response) {
             if (response.isSuccessStatusCode) {
@@ -67,17 +67,19 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
     sign_request: function(page, params) {
         var key = "35FD04E8-B7B1-45C4-9886-94A75F4A2BB4";
         // Salt is current time (in sec) since epoch
-        var salt = String(Math.round(new Date().getTime() / 1000));
+        var salt = String(Math.floor(new Date().getTime() / 1000));
         
         var msg = "/api/" + page;
         var sorted_params = Object.keys(params);
+        console.log(sorted_params);
+        console.log(params);
         sorted_params.sort();
         
         if(sorted_params.length > 0) {
             msg += "?";
         }
         for(var param in sorted_params) {
-            msg += param + "=" + params[param] + "&";
+            msg += sorted_params[param] + "=" + params[sorted_params[param]] + "&";
         }
         // Chop off last ampersand
         if(sorted_params.length > 0) {
@@ -85,6 +87,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         }
         
         msg += salt;
+        console.log(msg);
         
         // Calculate HMAC signature
         var winCrypt = Windows.Security.Cryptography;
@@ -93,7 +96,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         var macKey = macAlgorithm.createKey(keyMaterial);
         var tbs = winCrypt.CryptographicBuffer.convertStringToBinary(msg, winCrypt.BinaryStringEncoding.utf8);
         var sigBuffer = winCrypt.Core.CryptographicEngine.sign(macKey, tbs);
-        var sig = winCrypt.CryptographicBuffer.encodeToBase64String(sigBuffer);
+        var sig = winCrypt.CryptographicBuffer.encodeToBase64String(sigBuffer).trim();
 
         return { "hash": sig, "salt": salt };
     },
@@ -120,6 +123,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         var httpClient = new Windows.Web.Http.HttpClient();
         headers = httpClient.defaultRequestHeaders;
         headers.userAgent.parseAdd(this.user_agent);
+        headers.accept.parseAdd("*/*");
         headers.acceptEncoding.parseAdd("gzip");
 
         console.log(params);
