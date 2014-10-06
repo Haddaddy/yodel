@@ -66,7 +66,6 @@
             promise.then(function (response) {
                 console.log(response);
                 response.content.readAsStringAsync().then(function (res) {
-                    console.log(res);
                     if (response.isSuccessStatusCode) {
                         var yaks = JSON.parse(res);
                         console.log(yaks);

@@ -24,8 +24,8 @@
                     console.log("starting geoloc");
                     loc.getGeopositionAsync().then(function (pos) {
                         console.log("geoloc returned");
-                        appData.localSettings.values["gl_lat"] = pos.coordinate.point.position.latitude;
-                        appData.localSettings.values["gl_long"] = pos.coordinate.point.position.longitude;
+                        appData.localSettings.values["gl_lat"] = pos.coordinate.point.position.latitude.toFixed(6);
+                        appData.localSettings.values["gl_long"] = pos.coordinate.point.position.longitude.toFixed(6);
                         appData.localSettings.values["gl_accuracy"] = pos.coordinate.accuracy;
 
                         Yodel.load_nearby();
