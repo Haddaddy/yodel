@@ -110,22 +110,24 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         return { "hash": sig, "salt": salt };
     },
     encode_params: function(params, signed) {
-        var param_keys = Object.keys(params).sort();
         var signed_params = "salt=" + signed.salt + "&hash=" + encodeURIComponent(signed.hash);
-        if (param_keys.length > 0) {
-            var query = "?";
-            for (var param in param_keys) {
-                query += param_keys[param] + "=" + params[param_keys[param]] + "&";
+        var query = "?";
+        if (params) {
+            var param_keys = Object.keys(params).sort();
+            if (param_keys.length > 0) {
+                for (var param in param_keys) {
+                    query += param_keys[param] + "=" + encodeURIComponent(params[param_keys[param]]) + "&";
+                }
+                query += signed_params;
             }
-            query += signed_params;
         }
         else {
-            var query = "?" + signed_params;
+            query += signed_params;
         }
         return query;
     },
     get: function(page, params) {
-        url = this.base_url + page;
+        var url = this.base_url + page;
 
         var signed = this.sign_request(page, params);
 
@@ -137,27 +139,36 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         headers.accept.parseAdd("*/*");
         headers.acceptEncoding.parseAdd("gzip");
 
-        console.log(params);
         url = Windows.Foundation.Uri(url + query);
+        console.log(params);
 
         return httpClient.getAsync(url);
     },
     post: function (page, params) {
-        url = this.base_url + page;
+        var url = this.base_url + page;
 
         var signed = this.sign_request(page, {});
-        params["salt"] = signed.salt;
-        params["hash"] = signed.hash;
+        
+        var query = this.encode_params(null, signed);
+
+        var post_params = (new Windows.Web.Http.HttpClient()).defaultRequestHeaders;
+        var param_keys = Object.keys(params).sort();
+        for (var param in param_keys) {
+            post_params[param_keys[param]] = params[param_keys[param]];
+        }
 
         var httpClient = new Windows.Web.Http.HttpClient();
         headers = httpClient.defaultRequestHeaders;
         headers.userAgent.parseAdd(this.user_agent);
         headers.acceptEncoding.parseAdd("gzip");
 
-        console.log(params);
-        url = Windows.Foundation.Uri(url);
+        var post_data = new Windows.Web.Http.HttpFormUrlEncodedContent(post_params);
+        url = Windows.Foundation.Uri(url + query);
 
-        return httpClient.postAsync(url, params);
+        console.log(params);
+        console.log(post_data);
+
+        return httpClient.postAsync(url, post_data);
     },
     parse_yaks: function(text) {
         var raw_yaks = text["messages"];
