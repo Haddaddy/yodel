@@ -24,7 +24,7 @@ var PeekLocation = WinJS.Class.define(function(raw) {
 
 var Yakker = WinJS.Class.define(function(user_id, loc) {
     this.base_url = "https://yikyakapp.com/api/";
-    this.user_agent = "android-async-http/1.4.4 (http://loopj.com/android-async-http)";
+    this.user_agent = "Mozilla/5.1 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19";
 
     if(loc == null) {
         loc = [0,0];
@@ -115,7 +115,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         if (param_keys.length > 0) {
             var query = "?";
             for (var param in param_keys) {
-                query += param_keys[param] + "=" + encodeURIComponent(params[param_keys[param]]) + "&";
+                query += param_keys[param] + "=" + params[param_keys[param]] + "&";
             }
             query += signed_params;
         }
@@ -145,9 +145,9 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
     post: function (page, params) {
         url = this.base_url + page;
 
-        var signed = this.sign_request(page, params);
-
-        var query = this.encode_params(params);
+        var signed = this.sign_request(page, {});
+        params["salt"] = signed.salt;
+        params["hash"] = signed.hash;
 
         var httpClient = new Windows.Web.Http.HttpClient();
         headers = httpClient.defaultRequestHeaders;
@@ -155,9 +155,9 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         headers.acceptEncoding.parseAdd("gzip");
 
         console.log(params);
-        url = Windows.Foundation.Uri(url + query);
+        url = Windows.Foundation.Uri(url);
 
-        return httpClient.postAsync(url, signed);
+        return httpClient.postAsync(url, params);
     },
     parse_yaks: function(text) {
         var raw_yaks = text["messages"];
