@@ -81,6 +81,7 @@
                         }
                         else {
                             $("#nearby_yaks_none").css("display", "block");
+                            $("#hub_progress").css("display", "none");
                         }
                     }
                     else {
