@@ -8,7 +8,7 @@
 
         var yakker = new Yakker(appData.roamingSettings.values["yakker_id"]);
 
-        yakker.update_location(new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"], appData.localSettings.values["gl_accuracy"]));
+        yakker.update_location(new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
 
         var datasource = Yodel.nearby_last;
         var promise = yakker.get_comments(message_id);

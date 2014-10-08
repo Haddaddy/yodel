@@ -4,7 +4,7 @@
     var appData = Windows.Storage.ApplicationData.current;
 
     function _reset_user_id(cmd) {
-        var yakker = new Yakker(null, new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"], appData.localSettings.values["gl_accuracy"]));
+        var yakker = new Yakker(null, new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
         console.log("Registered user with id " + yakker.id);
         $("#settings_general #yak_id").val(yakker.id);
         Yodel.nearby_last = null;

@@ -55,13 +55,13 @@
     function nearby_yaks_load(prev) {
         $("#hub_progress").css("display", "inline");
 
-        var yakker = new Yakker(appData.roamingSettings.values["yakker_id"], new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"], appData.localSettings.values["gl_accuracy"]));
+        var yakker = new Yakker(appData.roamingSettings.values["yakker_id"], new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
         console.log("Registered user with id " + yakker.id);
         
         var yak_list = [];
 
         if (!prev) {
-            console.log("LOADING FROM THE WEB THING");
+            console.log("LOADING NEW FEED FROM THE WEB");
             var promise = yakker.get_yaks();
             promise.then(function (response) {
                 console.log(response);
@@ -93,7 +93,7 @@
             });
         }
         else if (prev) {
-            console.log("LOADING FROM CACHE AW YISS")
+            console.log("LOADING FEED FROM CACHE")
             console.log(prev);
 
             var yaks_formatted = yak_format(prev);

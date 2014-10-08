@@ -14,7 +14,7 @@ var Location = WinJS.Class.define(function(latitude, longitude, delta) {
 
 var PeekLocation = WinJS.Class.define(function(raw) {
     this.id = raw["peekID"];
-    this.can_submit = Boolean(raw["canSubmit"]);
+    this.can_submit = raw["canSubmit"] != 0 ? true : false;
     this.name = raw["location"];
     var lat = raw["latitude"];
     var lon = raw["longitude"];
@@ -351,6 +351,25 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
             "long": this.loc.longitude
         }
         return this.post("postComment", params);
+    },
+    get_peek_locations: function(data) {
+        var peeks = [];
+        var locations = data["otherLocations"];
+        for(peek_json in locations) {
+            peeks.push(new PeekLocation(locations[peek_json]));
+        }
+        return peeks;
+    },
+    get_featured_locations: function(data) {
+        var peeks = [];
+        var locations = data["featuredLocations"];
+        for (peek_json in locations) {
+            peeks.push(new PeekLocation(locations[peek_json]));
+        }
+        return peeks;
+    },
+    get_yakarma: function(data) {
+        return parseInt(data["yakarma"]);
     },
     peek: function (peek_id) {
         if (peek_id instanceof PeekLocation) {
