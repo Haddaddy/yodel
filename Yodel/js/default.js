@@ -24,7 +24,7 @@
                         appData.localSettings.values["gl_long"] = pos.coordinate.point.position.longitude.toFixed(6);
                         appData.localSettings.values["gl_accuracy"] = pos.coordinate.accuracy;
 
-                        if (appData.roamingSettings.values["yakker_id"].length != 32) {
+                        if (typeof appData.roamingSettings.values["yakker_id"] == "undefined" || appData.roamingSettings.values["yakker_id"].length != 32) {
                             var yakker = new Yakker(null, new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
                             var user_id = yakker.gen_id();
                             console.log("Registering new user with id " + user_id);
