@@ -1,17 +1,7 @@
-﻿.win-listview {
-    height: auto;
-}
-
-.win-listview div[class*='_win-dynamic-containersize-'] .win-container {
-    height: auto;
-}
-
-.win-itemscontainer {
+﻿.feed_container {
     padding: 0 3vw;
-}
-
-.win-listview > .win-vertical .win-container {
-    margin: 0;
+    height: 100%;
+    overflow-y: scroll;
 }
 
 .yak_container * {

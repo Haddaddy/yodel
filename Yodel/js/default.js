@@ -28,7 +28,8 @@
                         appData.localSettings.values["gl_long"] = pos.coordinate.point.position.longitude.toFixed(6);
                         appData.localSettings.values["gl_accuracy"] = pos.coordinate.accuracy;
 
-                        Yodel.load_nearby();
+                        var feed = new Yodel.feed;
+                        feed.load("nearby");
                     });
                 }
             //} else {

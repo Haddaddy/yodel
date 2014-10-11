@@ -7,9 +7,10 @@
     <link href="/css/phone.css" rel="stylesheet" />
     <link href="/css/yak.css" rel="stylesheet" />
     <link href="/pages/comments/comments.css" rel="stylesheet" />
+    <script src="/pages/comments/comments.js"></script>
 </head>
 <body>
-    <div id="comments_template" data-win-control="WinJS.Binding.Template">
+    <div id="comments_template" class="yak_template" data-win-control="WinJS.Binding.Template">
         <div class="yak_container" data-win-bind="dataset.cid: comment_id;">
             <div class="yak_text_container">
                 <p class="yak_text" data-win-bind="textContent: comment;"></p>
@@ -27,7 +28,7 @@
         <progress id="comments_progress"></progress>
         <!--<div id="map"></div>-->
         <p id="yak_comments_none"></p>
-        <div id="yak_comments" data-win-control="WinJS.UI.ListView" data-win-options="{ id: 'yak_comments', layout: { type: WinJS.UI.ListLayout }, itemTemplate: comments_template, selectionMode: 'none', swipeBehavior: 'none' }"></div>
+        <div id="yak_comments" class="feed_container" data-win-control="Yodel.UI.ItemsControl"></div>
     </section>
 </body>
 </html>

@@ -17,14 +17,14 @@
             </h1>
         </header>
 
-        <div id="nearby_yaks_template" data-win-control="WinJS.Binding.Template">
+        <div class="yak_template" data-win-control="WinJS.Binding.Template">
             <div class="yak_container" data-win-bind="dataset.mid: message_id;">
                 <div class="yak_text_container">
                     <span class="yak_handle" data-win-bind="textContent: handle;"></span>
                     <p class="yak_text" data-win-bind="textContent: message;"></p>
                 </div>
                 <span class="yak_time" data-win-bind="textContent: time;"></span>
-                <span class="yak_comments" data-win-bind="textContent: replies;"></span>
+                <span class="yak_comments" data-win-bind="textContent: comments_pretty;"></span>
                 <div class="yak_vote win-interactive">
                     <a data-win-bind="className: upvote;">&#xE0A0;</a>
                     <span class="yak_votecount" data-win-bind="textContent: likes;"></span>
@@ -37,8 +37,8 @@
             <progress id="hub_progress"></progress>
             <div class="hub" data-win-control="WinJS.UI.Pivot">
                 <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': 'nearby' }">
-                    <p id="nearby_yaks_none">No yaks here to speak of.<br/>It's pretty boring here, eh?</p>
-                    <div id="nearby_yaks" data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.ListLayout }, itemTemplate: nearby_yaks_template, selectionMode: 'none', swipeBehavior: 'none' }"></div>
+                    <p id="nearby_yaks_none" class="no_messages">No yaks here to speak of.<br/>It's pretty boring here, eh?</p>
+                    <div id="nearby_yaks" class="feed_container" data-win-control="Yodel.UI.ItemsControl"></div>
                 </div>
 
                 <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': 'peek' }">

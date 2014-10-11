@@ -1,4 +1,5 @@
 ﻿(function () {
+    "use strict";
 
     function yak_vote(event) {
         var yakker = this.client;
@@ -10,11 +11,12 @@
             target.addClass("yak_voted");
             var vote_count_ele = target.siblings(".yak_votecount");
             var orig_vote_count = parseInt(vote_count_ele.text());
+            var promise = null;
 
             switch (this.type) {
                 case "yak":
                     var message_id = target.parents(".yak_container").data("mid");
-                    var index = parseInt(target.parents(".win-item").attr("aria-posinset")) - 1;
+                    var index = parseInt(target.parents(".win-template").attr("aria-posinset"));
                     var datasource = Yodel.nearby_last;
                     break;
                 case "comment":
@@ -27,7 +29,7 @@
                     switch (this.type) {
                         case "yak":
                             var promise = yakker.upvote_yak(message_id);
-                            datasource[index].liked = 1;
+                            datasource[index].upvote += " yak_voted";
                             datasource[index].likes += 1;
                             break;
                         case "comment":
@@ -40,7 +42,7 @@
                     switch (this.type) {
                         case "yak":
                             var promise = yakker.downvote_yak(message_id);
-                            datasource[index].liked = -1;
+                            datasource[index].downvote += " yak_voted";
                             datasource[index].likes -= 1;
                             break;
                         case "comment":
@@ -50,28 +52,37 @@
                     break;
             }
 
-            if (typeof promise != undefined) {
+            if (promise) {
                 promise.then(function (response) {
                     console.log(response);
                     if (!response.isSuccessStatusCode) {
                         target.removeClass("yak_voted");
                         vote_count_ele.text(orig_vote_count);
+                        if (this.type == "yak") {
+                            datasource[index].likes = orig_vote_count;
+                            datasource[index].upvote = "yak_up";
+                            datasource[index].downvote = "yak_down";
+                        }
                     }
                 });
+            }
+            else {
+                // throw error
             }
         }
     }
 
     function to_comments(event) {
         var target = $(event.target);
-        var message_id = target.find(".yak_container").data("mid");
-        var index = parseInt(target.children(".win-item").attr("aria-posinset")) - 1;
+        var message_id = target.closest(".yak_container").data("mid");
+        var index = parseInt(target.parents(".win-template").attr("aria-posinset"));
 
         WinJS.Navigation.navigate("/pages/comments/comments.html").then(function () {
             var appbar = $("#appbar")[0].winControl;
             appbar.disabled = true;
         }).done(function () {
-            Yodel.load_comments(message_id, index);
+            var feed = new Yodel.feed;
+            feed.load("comments", { "message_id": message_id });
         });
     }
 
