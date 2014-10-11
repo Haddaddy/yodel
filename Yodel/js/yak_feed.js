@@ -15,7 +15,7 @@
                 }
                 this.type = type;
                 var that = this;
-                switch(type) {
+                switch (type) {
                     case "nearby":
                         if ("prev" in opt) {
                             setImmediate(function () {
@@ -59,12 +59,12 @@
                     }
                     else {
                         var kind = "yak";
+                        $(list).on("click", ".yak_container", Yodel.to_comments);
                     }
 
                     $(list).on("click", ".yak_up", Yodel.vote.bind({ client: this.yakker, type: kind, vote: "up" }));
                     $(list).on("click", ".yak_down", Yodel.vote.bind({ client: this.yakker, type: kind, vote: "down" }));
                     $(list).on("click pointerdown", ".win-interactive", function (e) { e.stopPropagation(); });
-                    $(list).on("click", ".yak_container", Yodel.to_comments);
                     $(list).on("click pointerdown", ".yak_container", function (e) { WinJS.UI.Animation.pointerDown($(e.target).closest(".yak_container")[0]); });
                     $(list).on("pointercancel", ".yak_container", function (e) { WinJS.UI.Animation.pointerUp($(e.target).closest(".yak_container")[0]); });
 
