@@ -66,7 +66,7 @@
                     $(list).on("click", ".yak_down", Yodel.vote.bind({ client: this.yakker, type: kind, vote: "down" }));
                     $(list).on("click pointerdown", ".win-interactive", function (e) { e.stopPropagation(); });
                     $(list).on("click pointerdown", ".yak_container", function (e) { WinJS.UI.Animation.pointerDown($(e.target).closest(".yak_container")[0]); });
-                    $(list).on("pointercancel", ".yak_container", function (e) { WinJS.UI.Animation.pointerUp($(e.target).closest(".yak_container")[0]); });
+                    $(list).on("pointerout pointercancel", ".yak_container", function (e) { WinJS.UI.Animation.pointerUp($(e.target).closest(".yak_container")[0]); });
 
                     $("progress").css("display", "none");
                 }
