@@ -5,8 +5,15 @@
 
     function _reset_user_id(cmd) {
         var yakker = new Yakker(null, new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
-        console.log("Registered user with id " + yakker.id);
-        $("#settings_general #yak_id").val(yakker.id);
+        var user_id = yakker.gen_id();
+        console.log("Registering new user with id " + user_id);
+        yakker.register_id_new(user_id).then(function (response) {
+            console.log(response);
+            if (response.isSuccessStatusCode) {
+                Windows.Storage.ApplicationData.current.roamingSettings.values["yakker_id"] = user_id;
+            }
+        });
+        $("#settings_general #yak_id").val(user_id);
         Yodel.nearby_last = null;
     }
 

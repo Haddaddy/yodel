@@ -32,16 +32,6 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
     
     this.loc = loc;
 
-    if (!user_id) {
-        user_id = this.gen_id();
-        this.register_id_new(user_id).then(function (response) {
-            console.log(response);
-            if (response.isSuccessStatusCode) {
-                Windows.Storage.ApplicationData.current.roamingSettings.values["yakker_id"] = user_id;
-            }
-        });
-    }
-
     this.id = user_id;
     this.handle = null;
     

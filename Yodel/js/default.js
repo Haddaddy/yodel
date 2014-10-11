@@ -13,10 +13,6 @@
     app.addEventListener("activated", function (args) {
         if (args.detail.kind === activation.ActivationKind.launch) {
             //if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
-                if (typeof appData.roamingSettings.values["yakker_id"] == undefined) {
-                    yakker = new Yakker();
-                    console.log("Registered new user with id " + yakker.id);
-                }
 
                 var loc = new Windows.Devices.Geolocation.Geolocator();
 
@@ -28,8 +24,25 @@
                         appData.localSettings.values["gl_long"] = pos.coordinate.point.position.longitude.toFixed(6);
                         appData.localSettings.values["gl_accuracy"] = pos.coordinate.accuracy;
 
-                        var feed = new Yodel.feed;
-                        feed.load("nearby");
+                        if (appData.roamingSettings.values["yakker_id"].length != 32) {
+                            var yakker = new Yakker(null, new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
+                            var user_id = yakker.gen_id();
+                            console.log("Registering new user with id " + user_id);
+                            yakker.register_id_new(user_id).then(function (response) {
+                                console.log(response);
+                                if (response.isSuccessStatusCode) {
+                                    Windows.Storage.ApplicationData.current.roamingSettings.values["yakker_id"] = user_id;
+                                    setTimeout(function () {
+                                        var feed = new Yodel.feed;
+                                        feed.load("nearby");
+                                    }, 2000);
+                                }
+                            });
+                        }
+                        else {
+                            var feed = new Yodel.feed;
+                            feed.load("nearby");
+                        }
                     });
                 }
             //} else {
