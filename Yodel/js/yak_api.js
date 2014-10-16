@@ -24,7 +24,7 @@ var PeekLocation = WinJS.Class.define(function(raw) {
 
 var Yakker = WinJS.Class.define(function(user_id, loc) {
     this.base_url = "https://yikyakapp.com/api/";
-    this.user_agent = "Mozilla/5.1 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19";
+    this.user_agent = "Dalvik/1.6.0 (Linux; U; Android 4.4.4; Google Nexus 4 - 4.4.4 - API 19 - 768x1280 Build/KTU84P)";
 
     if(loc == null) {
         loc = [0,0];
