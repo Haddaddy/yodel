@@ -72,6 +72,18 @@
         }
     }
 
+    function to_peek_feed(event) {
+        var target = $(event.target);
+        var peek_id = target.find(".list_item").data("pid");
+        var peek_name = target.find(".list_item span").text();
+        var scroll_loc = $("#peek_pivot")[0].winControl.scrollPosition;
+
+        WinJS.Navigation.navigate("/pages/peek/peek.html", {name: peek_name, scroll: scroll_loc}).done(function () {
+            var feed = new Yodel.feed;
+            feed.load("peek", { "peek_id": peek_id });
+        });
+    }
+
     function to_comments(event) {
         var target = $(event.target);
         var message_id = target.closest(".yak_container").data("mid");
@@ -88,6 +100,7 @@
 
     WinJS.Namespace.define("Yodel", {
         vote: yak_vote,
+        to_peek_feed: to_peek_feed,
         to_comments: to_comments
     });
 })();

@@ -4,6 +4,17 @@
     overflow-y: scroll;
 }
 
+.no_messages {
+    display: none;
+    position: absolute;
+    top: 30%;
+    width: 100%;
+    color: #666;
+    text-align: center;
+    font-size: 1.4em;
+    margin: 0;
+}
+
 .yak_container * {
     margin: 0;
     padding: 0;

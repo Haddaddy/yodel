@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Peek Feed</title>
+
+    <link href="/css/phone.css" rel="stylesheet" />
+    <link href="/css/yak.css" rel="stylesheet" />
+    <link href="/pages/peek/peek.css" rel="stylesheet" />
+    <script src="/pages/peek/peek.js"></script>
+</head>
+<body>
+    <div id="peek_feed_template" class="yak_template" data-win-control="WinJS.Binding.Template">
+        <div class="yak_container" data-win-bind="dataset.mid: message_id;">
+            <div class="yak_text_container">
+                <span class="yak_handle" data-win-bind="textContent: handle;"></span>
+                <p class="yak_text" data-win-bind="textContent: message;"></p>
+            </div>
+            <span class="yak_time" data-win-bind="textContent: time;"></span>
+            <span class="yak_comments" data-win-bind="textContent: comments_pretty;"></span>
+            <div class="yak_vote win-interactive">
+                <a data-win-bind="className: upvote;">&#xE0A0;</a>
+                <span class="yak_votecount" data-win-bind="textContent: likes;"></span>
+                <a data-win-bind="className: downvote;">&#xE0A1;</a>
+            </div>
+        </div>
+    </div>
+
+    <header aria-label="Header content" role="banner">
+        <h1 class="titlearea win-type-ellipsis">
+            <span class="pagetitle win-type-ellipsis"></span>
+        </h1>
+    </header>
+
+    <section aria-label="Main content" role="main">
+        <progress id="peek_progress"></progress>
+        <p id="peek_feed_none" class="no_messages">No yaks here. Does anyone even go here?</p>
+        <div id="peek_feed" class="feed_container" data-win-control="Yodel.UI.ItemsControl" data-template="peek_feed_template"></div>
+    </section>
+</body>
+</html>

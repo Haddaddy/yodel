@@ -24,24 +24,28 @@
                             });
                         }
                         else {
-                            this._retrieve(this.yakker.get_yaks()).then(function (yak_list) {
+                            this._retrieve(this.yakker.get_yaks()).then(function (json) {
+                                var yak_list = that.yakker.parse_yaks(json);
                                 setImmediate(function () {
                                     that._bind(yak_list, "nearby_yaks");
                                 });
-                                WinJS.Namespace.define("Yodel", { nearby_last: yak_list });
+                                WinJS.Namespace.define("Yodel", { nearby_last: yak_list, nearby_last_all: json });
                             });
                         }
                         break;
                     case "peek":
-                        this._retrieve(this.yakker.peek(opt.peek_id)).then(function (peek_yak_list) {
+                        this._retrieve(this.yakker.peek(opt.peek_id)).then(function (json) {
+                            var peek_yak_list = that.yakker.parse_yaks(json);
                             setImmediate(function () {
-                                that._bind(peek_yak_list, "peek_yaks");
+                                that._bind(peek_yak_list, "peek_feed");
                             });
                         });
+                        break;
                     case "comments":
                         //var yak_single = prev;
                         //this._bind(yak_single, "yak_detail");
-                        this._retrieve(this.yakker.get_comments(opt.message_id)).then(function (comments_list) {
+                        this._retrieve(this.yakker.get_comments(opt.message_id)).then(function (json) {
+                            var comments_list = that.yakker.parse_comments(json);
                             setImmediate(function () {
                                 that._bind(comments_list, "yak_comments");
                             });
@@ -54,19 +58,20 @@
                 if (list) {
                     list.winControl.dataSource = yak_data;
 
-                    if (this.type == "comments") {
-                        var kind = "comment";
-                    }
-                    else {
-                        var kind = "yak";
-                        $(list).on("click", ".yak_container", Yodel.to_comments);
+                    var kind = "comment";
+                    if (this.type != "comments") {
+                        kind = "yak";
+                        $(list).on("click", ".win-template", Yodel.to_comments);
                     }
 
-                    $(list).on("click", ".yak_up", Yodel.vote.bind({ client: this.yakker, type: kind, vote: "up" }));
-                    $(list).on("click", ".yak_down", Yodel.vote.bind({ client: this.yakker, type: kind, vote: "down" }));
+                    if(this.type != "peek") {
+                        $(list).on("click", ".yak_up", Yodel.vote.bind({ client: this.yakker, type: kind, vote: "up" }));
+                        $(list).on("click", ".yak_down", Yodel.vote.bind({ client: this.yakker, type: kind, vote: "down" }));
+                    }
+                   
                     $(list).on("click pointerdown", ".win-interactive", function (e) { e.stopPropagation(); });
-                    $(list).on("click pointerdown", ".yak_container", function (e) { WinJS.UI.Animation.pointerDown($(e.target).closest(".yak_container")[0]); });
-                    $(list).on("pointerout pointercancel", ".yak_container", function (e) { WinJS.UI.Animation.pointerUp($(e.target).closest(".yak_container")[0]); });
+                    $(list).on("click pointerdown", ".win-template", function (e) { WinJS.UI.Animation.pointerDown($(e.target).closest(".yak_container")[0]); });
+                    $(list).on("pointerout pointercancel", ".win-template", function (e) { WinJS.UI.Animation.pointerUp($(e.target).closest(".yak_container")[0]); });
 
                     $("progress").css("display", "none");
                 }
@@ -82,28 +87,23 @@
                     else {
                         $("progress").css("display", "none");
                         var http_error_msg = new Windows.UI.Popups.MessageDialog("HTTP Error " + response.statusCode + " " + response.reasonPhrase);
-                        http_error_msg.title = "Unable to load yaks";
+                        http_error_msg.title = "Unable to load feed";
                         http_error_msg.showAsync();
-                        return "{}";
+                        return null;
                     }
                 }).then(function (res) {
-                    var res_json = JSON.parse(res);
-                    console.log(res_json);
+                    if(res) {
+                        var res_json = JSON.parse(res);
+                        console.log(res_json);
 
-                    if ("messages" in res_json) {
-                        var yak_list = that.yakker.parse_yaks(res_json);
-                    }
-                    else if("comments" in res_json) {
-                        var yak_list = that.yakker.parse_comments(res_json);
-                    }
-                    
-                    if (yak_list.length > 0) {
-                        return yak_list;
-                    }
-                    else {
-                        $(".no_messages").css("display", "block");
-                        $("progress").css("display", "none");
-                        return [];
+                        if (("messages" in res_json && res_json["messages"].length > 0) || ("comments" in res_json && res_json["comments"].length > 0)) {
+                            return res_json;
+                        }
+                        else {
+                            $(".no_messages").css("display", "block");
+                            $("progress").css("display", "none");
+                            return [];
+                        }
                     }
                 });
             }
@@ -128,14 +128,17 @@
             },
             _renderItems: function (source) {
                 WinJS.Utilities.empty(this.domElement);
-                var template = document.querySelector(".yak_template").winControl;
-                source.forEach(function (item, index) {
-                    var newElement = document.createElement("div");
-                    newElement.setAttribute("aria-posinset", index);
-                    this.domElement.appendChild(newElement);
+                var template_tag = (this.domElement).dataset.template;
+                var template = document.getElementById(template_tag).winControl;
+                if (Array.isArray(source)) {
+                    source.forEach(function (item, index) {
+                        var newElement = document.createElement("div");
+                        newElement.setAttribute("aria-posinset", index);
+                        this.domElement.appendChild(newElement);
 
-                    template.render(item, newElement);
-                }.bind(this));
+                        template.render(item, newElement);
+                    }.bind(this));
+                }
             }
         })
     });

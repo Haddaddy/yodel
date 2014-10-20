@@ -17,7 +17,7 @@
             </h1>
         </header>
 
-        <div class="yak_template" data-win-control="WinJS.Binding.Template">
+        <div class="yak_template" id="nearby_yak_template" data-win-control="WinJS.Binding.Template">
             <div class="yak_container" data-win-bind="dataset.mid: message_id;">
                 <div class="yak_text_container">
                     <span class="yak_handle" data-win-bind="textContent: handle;"></span>
@@ -33,22 +33,34 @@
             </div>
         </div>
 
+        <div class="list_template" id="peek_pivot_template" data-win-control="WinJS.Binding.Template">
+            <div class="list_item win-type-ellipsis" data-win-bind="dataset.pid: id">
+                <span data-win-bind="textContent: name;"></span>
+            </div>
+        </div>
+
+        <div class="list_template" id="me_pivot_template" data-win-control="WinJS.Binding.Template">
+            <div class="list_item win-type-ellipsis" data-win-bind="dataset.link: link;">
+                <span data-win-bind="textContent: title;"></span>
+                <span style="float:right;color:#07BFA1;" data-win-bind="textContent: value;"></span>
+                <div class="clear"></div>
+            </div>
+        </div>
+
         <section aria-label="Main content" role="main">
             <progress id="hub_progress"></progress>
             <div class="hub" data-win-control="WinJS.UI.Pivot">
                 <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': 'nearby' }">
                     <p id="nearby_yaks_none" class="no_messages">No yaks around to speak of.<br/>Pretty boring here, eh?</p>
-                    <div id="nearby_yaks" class="feed_container" data-win-control="Yodel.UI.ItemsControl"></div>
+                    <div id="nearby_yaks" class="feed_container" data-win-control="Yodel.UI.ItemsControl" data-template="nearby_yak_template"></div>
                 </div>
 
                 <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': 'peek' }">
-                    <!--<div data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.ListLayout }, itemTemplate: peekList, selectionMode: 'none' }"></div>-->
-                    <p class="placeholder">TODO</p>
+                    <div id="peek_pivot" data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.ListLayout }, itemTemplate: peek_pivot_template, selectionMode: 'none' }"></div>
                 </div>
 
                 <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': 'me' }">
-                    <!--<div data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.ListLayout }, itemTemplate: meDetail, selectionMode: 'none' }"></div>-->
-                    <p class="placeholder">TODO</p>
+                    <div id="me_pivot" data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.ListLayout }, itemTemplate: me_pivot_template, selectionMode: 'none' }"></div>
                 </div>
             </div>
         </section>

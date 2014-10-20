@@ -21,14 +21,3 @@
     width: 100%;
     height: 200px;
 }
-
-#yak_comments_none {
-    display: none;
-    position: absolute;
-    top: 30%;
-    width: 100%;
-    color: #666;
-    text-align: center;
-    font-size: 1.4em;
-    margin: 0;
-}

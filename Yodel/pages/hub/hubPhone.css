@@ -7,13 +7,21 @@
     /*margin-top: 98px;*/
 }
 
+.win-listview {
+    height: 100%;
+}
+
+.win-listview > .win-vertical .win-container {
+    margin: 0 3vw;
+}
+
 .hub .win-pivot-item .win-pivot-item-content {
     padding: 0px;
     width: 100%;
 }
 
 .win-pivot-item {
-    top: 5px;
+    top: 0;
 }
 
 .hubpage header[role=banner] {
@@ -34,7 +42,7 @@
 
 .hubpage section[role=main] progress {
     position: absolute;
-    top: 0;
+    top: -5px;
     margin: 0;
     width: 100%;
     display: none;
@@ -55,21 +63,11 @@
         width: 100vw;
     }
 
-#nearby_yaks_none {
-    display: none;
-    position: absolute;
-    top: 30%;
-    width: 100%;
-    color: #666;
-    text-align: center;
-    font-size: 1.4em;
-    margin: 0;
-}
-
-p.placeholder {
-    padding: 20px;
-    margin: 0;
-    font-size: 1.6em;
+.list_item {
+    color: #333;
+    font-size: 1.7em;
+    padding: 12px 0 12px 5px;
+    font-weight: 300;
 }
         
 .label-extralarge {

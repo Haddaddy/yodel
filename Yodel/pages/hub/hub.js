@@ -27,16 +27,56 @@
             }
             hub.onselectionchanged = function (args) {
                 $(".pagetitle").text(args.detail.item.header);
+                switch (args.detail.index) {
+                    case 1:
+                        var peek_pivot = document.getElementById("peek_pivot");
+                        if (!peek_pivot.winControl) {
+                            console.log("REFRESHHHHHHHHH");
+                            var yakker = new Yakker(appData.roamingSettings.values["yakker_id"], new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
+                            var peek_list = new WinJS.Binding.List(yakker.get_peek_locations(Yodel.nearby_last_all));
+                            setImmediate(function () {
+                                peek_pivot.winControl.itemDataSource = peek_list.dataSource;
+                                peek_pivot.addEventListener("iteminvoked", Yodel.to_peek_feed);
+                            });
+                        }
+                        break;
+                    case 2:
+                        var me_pivot = document.getElementById("me_pivot");
+                        if (!me_pivot.winControl) {
+                            console.log("REFRESHHHHHHHHH");
+                            var me_list = new WinJS.Binding.List([
+                                { "title": "Yakarma", "value": Yodel.nearby_last_all["yakarma"] },
+                                { "title": "My Recent Yaks", "link": "recent_yaks", "value": "" },
+                                { "title": "My Recent Replies", "link": "recent_replies", "value": "" },
+                                { "title": "My Top Yaks", "link": "my_top_yaks", "value": "" }
+                            ]);
+                            setImmediate(function () {
+                                me_pivot.winControl.itemDataSource = me_list.dataSource;
+                                //me_pivot.addEventListener("iteminvoked", Yodel.to_feed);
+                            });
+                        }
+                        break;
+                }
             }
 
             if (nav.history.forwardStack.length > 0) {
-                var last_yaks = Yodel.nearby_last;
-                var feed = new Yodel.feed;
-                if (last_yaks) {
-                    feed.load("nearby", { "prev": last_yaks });
-                }
-                else {
-                    feed.load("nearby");
+                switch(nav.history.forwardStack[0].location) {
+                    case "/pages/comments/comments.html":
+                        var last_yaks = Yodel.nearby_last;
+                        var feed = new Yodel.feed;
+                        if (last_yaks) {
+                            feed.load("nearby", { "prev": last_yaks });
+                        }
+                        else {
+                            feed.load("nearby");
+                        }
+                        break;
+                    case "/pages/peek/peek.html":
+                        hub.selectedIndex = 1;
+                        setImmediate(function () {
+                            document.getElementById("peek_pivot").winControl.scrollPosition = nav.history.forwardStack[0].state.scroll;
+                        });
+                        break;
                 }
             }
         },

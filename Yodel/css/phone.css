@@ -1,30 +1,31 @@
 ﻿#contenthost {
-    background-color: gray;
+    background-color: #fff;
 }
 
-.fragment header[role=banner] {
+header[role=banner] {
     display: flex;
     align-items: center;
     height: 10vh;
     background: #08d7b5;
     color: #fff;
+    margin-bottom: 5px;
 }
 
-    .fragment header[role=banner] .win-navigation-backbutton {
+    header[role=banner] .win-navigation-backbutton {
         visibility: hidden;
     }
 
-    .fragment header[role=banner] .backbutton {
+    header[role=banner] .backbutton {
         visibility: hidden;
     }
 
-    .fragment header[role=banner] .titlearea {
+    header[role=banner] .titlearea {
         margin-left: calc(3vw + 5px);
         font-size: 20pt;
         overflow: visible;
     }
 
-        .fragment header[role=banner] .titlearea .pagetitle {
+        header[role=banner] .titlearea .pagetitle {
             /*width: calc(100% - 20px);*/
             font-weight: 400;
         }
@@ -39,4 +40,8 @@
 
 .win-appbar .win-commandring {
     border-color: #57e2ca;
+}
+
+.clear {
+    clear: both;
 }

@@ -69,6 +69,9 @@
     <Content Include="js\yak_events.js" />
     <Content Include="js\yak_api.js" />
     <Content Include="js\yak_feed.js" />
+    <Content Include="pages\peek\peek.css" />
+    <Content Include="pages\peek\peek.html" />
+    <Content Include="pages\peek\peek.js" />
     <Content Include="pages\settings\settings.css" />
     <Content Include="pages\settings\settings.html" />
     <Content Include="pages\settings\settings.js" />
