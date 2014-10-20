@@ -28,6 +28,19 @@
             hub.onselectionchanged = function (args) {
                 $(".pagetitle").text(args.detail.item.header);
                 switch (args.detail.index) {
+                    case 0:
+                        var nearby_pivot = document.getElementById("nearby_yaks");
+                        if (!nearby_pivot.winControl && nav.history.forwardStack.length > 0 && nav.history.forwardStack.slice(-1)[0].location != "/pages/comments/comments.html") {
+                            var last_yaks = Yodel.nearby_last;
+                            var feed = new Yodel.feed;
+                            if (last_yaks) {
+                                feed.load("nearby", { "prev": last_yaks });
+                            }
+                            else {
+                                feed.load("nearby");
+                            }
+                        }
+                        break;
                     case 1:
                         var peek_pivot = document.getElementById("peek_pivot");
                         if (!peek_pivot.winControl) {
@@ -36,31 +49,32 @@
                             var peek_list = new WinJS.Binding.List(yakker.get_peek_locations(Yodel.nearby_last_all));
                             setImmediate(function () {
                                 peek_pivot.winControl.itemDataSource = peek_list.dataSource;
+                                if (typeof Yodel.peek_pivot_last_index != undefined) {
+                                    peek_pivot.winControl.scrollPosition = Yodel.peek_pivot_last_index;
+                                }
                                 peek_pivot.addEventListener("iteminvoked", Yodel.to_peek_feed);
                             });
                         }
                         break;
                     case 2:
                         var me_pivot = document.getElementById("me_pivot");
-                        if (!me_pivot.winControl) {
-                            console.log("REFRESHHHHHHHHH");
-                            var me_list = new WinJS.Binding.List([
-                                { "title": "Yakarma", "value": Yodel.nearby_last_all["yakarma"] },
-                                { "title": "My Recent Yaks", "link": "recent_yaks", "value": "" },
-                                { "title": "My Recent Replies", "link": "recent_replies", "value": "" },
-                                { "title": "My Top Yaks", "link": "my_top_yaks", "value": "" }
-                            ]);
-                            setImmediate(function () {
-                                me_pivot.winControl.itemDataSource = me_list.dataSource;
-                                //me_pivot.addEventListener("iteminvoked", Yodel.to_feed);
-                            });
-                        }
+                        console.log("REFRESHHHHHHHHH");
+                        var me_list = new WinJS.Binding.List([
+                            { "title": "Yakarma", "value": Yodel.nearby_last_all["yakarma"] },
+                            { "title": "My Recent Yaks", "link": "recent_yaks", "value": "" },
+                            { "title": "My Recent Replies", "link": "recent_replies", "value": "" },
+                            { "title": "My Top Yaks", "link": "my_top_yaks", "value": "" }
+                        ]);
+                        setImmediate(function () {
+                            me_pivot.winControl.itemDataSource = me_list.dataSource;
+                            //me_pivot.addEventListener("iteminvoked", Yodel.to_feed);
+                        });
                         break;
                 }
             }
 
             if (nav.history.forwardStack.length > 0) {
-                switch(nav.history.forwardStack[0].location) {
+                switch(nav.history.forwardStack.slice(-1)[0].location) {
                     case "/pages/comments/comments.html":
                         var last_yaks = Yodel.nearby_last;
                         var feed = new Yodel.feed;
@@ -74,7 +88,7 @@
                     case "/pages/peek/peek.html":
                         hub.selectedIndex = 1;
                         setImmediate(function () {
-                            document.getElementById("peek_pivot").winControl.scrollPosition = nav.history.forwardStack[0].state.scroll;
+                            document.getElementById("peek_pivot").winControl.scrollPosition = nav.history.forwardStack.slice(-1)[0].state.scroll;
                         });
                         break;
                 }
@@ -83,7 +97,7 @@
 
         unload: function () {
             // TODO: Respond to navigations away from this page.
-            Yodel.last_index = $("#nearby_yaks").scrollTop();
+            Yodel.nearby_last_index = $("#nearby_yaks").scrollTop();
         },
 
         updateLayout: function (element) {

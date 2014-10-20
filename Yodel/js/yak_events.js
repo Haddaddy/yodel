@@ -52,6 +52,8 @@
                     break;
             }
 
+            Yodel.nearby_last_all["yakarma"] = parseInt(Yodel.nearby_last_all["yakarma"]) + 1;
+
             if (promise) {
                 promise.then(function (response) {
                     console.log(response);
@@ -62,6 +64,7 @@
                             datasource[index].likes = orig_vote_count;
                             datasource[index].upvote = "yak_up";
                             datasource[index].downvote = "yak_down";
+                            Yodel.nearby_last_all["yakarma"] = parseInt(Yodel.nearby_last_all["yakarma"]) - 1;
                         }
                     }
                 });
@@ -76,9 +79,9 @@
         var target = $(event.target);
         var peek_id = target.find(".list_item").data("pid");
         var peek_name = target.find(".list_item span").text();
-        var scroll_loc = $("#peek_pivot")[0].winControl.scrollPosition;
+        WinJS.Namespace.define("Yodel", { peek_pivot_last_index: $("#peek_pivot")[0].winControl.scrollPosition });
 
-        WinJS.Navigation.navigate("/pages/peek/peek.html", {name: peek_name, scroll: scroll_loc}).done(function () {
+        WinJS.Navigation.navigate("/pages/peek/peek.html", {name: peek_name, id: peek_id}).done(function () {
             var feed = new Yodel.feed;
             feed.load("peek", { "peek_id": peek_id });
         });
