@@ -10,6 +10,22 @@
     <script src="/pages/comments/comments.js"></script>
 </head>
 <body>
+    <div class="yak_template" id="yak_detail_template" data-win-control="WinJS.Binding.Template">
+        <div class="yak_container" data-win-bind="dataset.mid: message_id;">
+            <div class="yak_text_container">
+                <span class="yak_handle" data-win-bind="textContent: handle;"></span>
+                <p class="yak_text" data-win-bind="textContent: message;"></p>
+            </div>
+            <span class="yak_time" data-win-bind="textContent: time;"></span>
+            <span class="yak_comments" data-win-bind="textContent: comments_pretty;"></span>
+            <div class="yak_vote win-interactive">
+                <a data-win-bind="className: upvote;">&#xE0A0;</a>
+                <span class="yak_votecount" data-win-bind="textContent: likes;"></span>
+                <a data-win-bind="className: downvote;">&#xE0A1;</a>
+            </div>
+        </div>
+    </div>
+
     <div id="comments_template" class="yak_template" data-win-control="WinJS.Binding.Template">
         <div class="yak_container" data-win-bind="dataset.cid: comment_id;">
             <div class="yak_text_container">
@@ -24,10 +40,11 @@
         </div>
     </div>
 
-    <section aria-label="Main content" role="main">
-        <progress id="comments_progress"></progress>
+    <section aria-label="Main content" role="main" id="comments_container">
         <!--<div id="map"></div>-->
         <p id="yak_comments_none" class="no_messages">No comments yet.</p>
+        <div id="yak_detail" class="feed_container" data-win-control="Yodel.UI.ItemsControl" data-win-options="{ template: 'yak_detail_template' }"></div>
+        <progress id="comments_progress"></progress>
         <div id="yak_comments" class="feed_container" data-win-control="Yodel.UI.ItemsControl" data-win-options="{ template: 'comments_template' }"></div>
     </section>
 </body>

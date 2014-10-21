@@ -19,7 +19,7 @@
                 switch (type) {
                     case "nearby":
                         if ("prev" in opt) {
-                            that._bind(opt.prev, "nearby_yaks");
+                            this._bind(opt.prev, "nearby_yaks");
                             setImmediate(function () {
                                 $("#nearby_yaks").scrollTop(Yodel.nearby_last_index);
                             });
@@ -34,7 +34,7 @@
                         break;
                     case "peek":
                         if ("prev" in opt) {
-                            that._bind(opt.prev, "peek_feed");
+                            this._bind(opt.prev, "peek_feed");
                             setImmediate(function () {
                                 $("#peek_feed").scrollTop(Yodel.peek_last_index);
                             });
@@ -47,8 +47,7 @@
                         }
                         break;
                     case "comments":
-                        //var yak_single = prev;
-                        //this._bind(yak_single, "yak_detail");
+                        this._bind([opt.prev], "yak_detail");
                         this._retrieve(this.yakker.get_comments(opt.message_id)).then(function (json) {
                             var comments_list = that.yakker.parse_comments(json);
                             that._bind(comments_list, "yak_comments");
@@ -69,7 +68,10 @@
                     }
 
                     var kind = "comment";
-                    if (this.type != "comments") {
+                    if (list_tag == "yak_detail") {
+                        kind = "yak";
+                    }
+                    if (this.type != "comments" && list_tag != "yak_detail") {
                         kind = "yak";
                         $(list).on("click", ".win-template", Yodel.to_comments);
                     }

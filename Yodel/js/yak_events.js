@@ -1,6 +1,8 @@
 ﻿(function () {
     "use strict";
 
+    var nav = WinJS.Navigation;
+
     WinJS.Namespace.define("Yodel", {
         vote: function(event) {
             var yakker = this.client;
@@ -18,7 +20,7 @@
                     case "yak":
                         var message_id = target.parents(".yak_container").data("mid");
                         var index = parseInt(target.parents(".win-template").attr("aria-posinset"));
-                        var datasource = Yodel.data.nearby_yaks;
+                        var datasource = Yodel.data[target.parents(".feed_container").attr("id")];
                         break;
                     case "comment":
                         var comment_id = target.parents(".yak_container").data("cid");
@@ -80,9 +82,9 @@
             var target = $(event.target);
             var peek_id = target.find(".list_item").data("pid");
             var peek_name = target.find(".list_item span").text();
-            WinJS.Namespace.define("Yodel", { peek_pivot_last_index: $("#peek_pivot")[0].winControl.scrollPosition });
+            WinJS.Namespace.define("Yodel", { peek_pivot_last_index: event.detail.itemIndex });
 
-            WinJS.Navigation.navigate("/pages/peek/peek.html", {name: peek_name, id: peek_id}).done(function () {
+            nav.navigate("/pages/peek/peek.html", {name: peek_name, id: peek_id, can_submit: false}).done(function () {
                 var feed = new Yodel.feed;
                 feed.load("peek", { "peek_id": peek_id });
             });
@@ -92,13 +94,15 @@
             var target = $(event.target);
             var message_id = target.closest(".yak_container").data("mid");
             var index = parseInt(target.parents(".win-template").attr("aria-posinset"));
+            var feed_container_id = target.parents(".feed_container").attr("id");
+            var yak = Yodel.data[feed_container_id][index];
 
-            WinJS.Navigation.navigate("/pages/comments/comments.html").then(function () {
+            nav.navigate("/pages/comments/comments.html").then(function () {
                 var appbar = $("#appbar")[0].winControl;
                 appbar.disabled = true;
             }).done(function () {
                 var feed = new Yodel.feed;
-                feed.load("comments", { "message_id": message_id });
+                feed.load("comments", { "message_id": message_id, "prev": yak });
             });
         }
     });

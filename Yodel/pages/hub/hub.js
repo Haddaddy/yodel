@@ -33,7 +33,9 @@
                     case "/pages/peek/peek.html":
                         hub.selectedIndex = 1;
                         setImmediate(function () {
-                            document.getElementById("peek_pivot").winControl.scrollPosition = Yodel.peek_pivot_last_index;
+                            var peek_pivot = document.getElementById("peek_pivot").winControl;
+                            peek_pivot.ensureVisible = Yodel.peek_pivot_last_index;
+                            peek_pivot.indexOfFirstVisible = Yodel.peek_pivot_last_index;
                         });
                         break;
                 }
@@ -42,6 +44,7 @@
 
         unload: function () {
             Yodel.nearby_last_index = $("#nearby_yaks").scrollTop();
+            //Yodel.pivot_last_index = element.querySelector(".hub").winControl.selectedIndex;
         },
 
         updateLayout: function (element) {

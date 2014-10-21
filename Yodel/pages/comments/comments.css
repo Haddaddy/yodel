@@ -1,15 +1,24 @@
-﻿#yak_comments_none, #yak_comments, #yak_comments .win-itembox, #yak_comments .win-itemcontainer .win-itembox {
-    background: #f4f4f4;
+﻿#yak_detail {
+    height: auto;
+    padding: 5px 3vw 0 3vw;
+    overflow: hidden;
+    background: #fff;
+    flex-shrink: 0;
 }
 
 #yak_comments {
+    flex-grow: 2;
+    height: auto;
+}
+
+#comments_container {
     height: 100vh;
-    padding-top: 5px;
+    display: flex;
+    flex-direction: column;
+    background: #f4f4f4;
 }
 
 #comments_progress {
-    position: absolute;
-    top: 0;
     margin: 0;
     width: 100%;
     display: none;
