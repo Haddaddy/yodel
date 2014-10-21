@@ -14,6 +14,13 @@
         if (args.detail.kind === activation.ActivationKind.launch) {
             //if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
 
+                function init() {
+                    var feed = new Yodel.feed;
+                    feed.load("nearby").done(function (json) {
+                        Yodel.pivot_init(json, false, true, true);
+                    });
+                }
+
                 var loc = new Windows.Devices.Geolocation.Geolocator();
 
                 if (loc != null) {
@@ -33,15 +40,13 @@
                                 if (response.isSuccessStatusCode) {
                                     Windows.Storage.ApplicationData.current.roamingSettings.values["yakker_id"] = user_id;
                                     setTimeout(function () {
-                                        var feed = new Yodel.feed;
-                                        feed.load("nearby");
+                                        init();
                                     }, 2000);
                                 }
                             });
                         }
                         else {
-                            var feed = new Yodel.feed;
-                            feed.load("nearby");
+                            init();
                         }
                     });
                 }

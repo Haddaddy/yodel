@@ -11,7 +11,7 @@
         },
         ready: function(element, options) {
             if (nav.history.forwardStack.length > 0) {
-                var last_yaks = Yodel.peek_last;
+                var last_yaks = Yodel.data.peek_feed;
                 var feed = new Yodel.feed;
                 if (last_yaks) {
                     feed.load("peek", { "prev": last_yaks, "peek_id": nav.state.id });

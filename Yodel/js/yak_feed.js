@@ -4,8 +4,9 @@
     WinJS.Namespace.define("Yodel", {
         feed: WinJS.Class.define(function () {
             var appData = Windows.Storage.ApplicationData.current;
+            WinJS.Namespace.define("Yodel.data");
             this.yakker = new Yakker(appData.roamingSettings.values["yakker_id"], new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
-            console.log("Registered user with id " + this.yakker.id);
+            //console.log("Registered user with id " + this.yakker.id);
 
             $("progress").css("display", "inline");
         }, {
@@ -18,35 +19,30 @@
                 switch (type) {
                     case "nearby":
                         if ("prev" in opt) {
+                            that._bind(opt.prev, "nearby_yaks");
                             setImmediate(function () {
-                                that._bind(opt.prev, "nearby_yaks");
                                 $("#nearby_yaks").scrollTop(Yodel.nearby_last_index);
                             });
                         }
                         else {
-                            this._retrieve(this.yakker.get_yaks()).then(function (json) {
+                            return this._retrieve(this.yakker.get_yaks()).then(function (json) {
                                 var yak_list = that.yakker.parse_yaks(json);
-                                setImmediate(function () {
-                                    that._bind(yak_list, "nearby_yaks");
-                                });
-                                WinJS.Namespace.define("Yodel", { nearby_last: yak_list, nearby_last_all: json });
+                                that._bind(yak_list, "nearby_yaks");
+                                return json;
                             });
                         }
                         break;
                     case "peek":
                         if ("prev" in opt) {
+                            that._bind(opt.prev, "peek_feed");
                             setImmediate(function () {
-                                that._bind(opt.prev, "peek_feed");
                                 $("#peek_feed").scrollTop(Yodel.peek_last_index);
                             });
                         }
                         else {
                             this._retrieve(this.yakker.peek(opt.peek_id)).then(function (json) {
                                 var peek_yak_list = that.yakker.parse_yaks(json);
-                                setImmediate(function () {
-                                    that._bind(peek_yak_list, "peek_feed");
-                                    WinJS.Namespace.define("Yodel", { peek_last: peek_yak_list });
-                                });
+                                that._bind(peek_yak_list, "peek_feed");
                             });
                         }
                         break;
@@ -55,17 +51,22 @@
                         //this._bind(yak_single, "yak_detail");
                         this._retrieve(this.yakker.get_comments(opt.message_id)).then(function (json) {
                             var comments_list = that.yakker.parse_comments(json);
-                            setImmediate(function () {
-                                that._bind(comments_list, "yak_comments");
-                            });
+                            that._bind(comments_list, "yak_comments");
                         });
-                        break;
                 }
             },
-            _bind: function (yak_data, list) {
-                list = document.getElementById(list);
+            _bind: function (yak_data, list_tag) {
+                var list = document.getElementById(list_tag);
                 if (list) {
-                    list.winControl.dataSource = yak_data;
+                    Yodel.data[list_tag] = yak_data;
+                    if (!list.winControl) {
+                        $(list).attr("data-win-options", function (i, val) {
+                            return val.slice(0, -1) + ", dataSource:Yodel.data." + list_tag + "}";
+                        });
+                    }
+                    else {
+                        list.winControl.dataSource = yak_data;
+                    }
 
                     var kind = "comment";
                     if (this.type != "comments") {
@@ -74,8 +75,8 @@
                     }
 
                     if(this.type != "peek") {
-                        $(list).on("click", ".yak_up", Yodel.vote.bind({ client: this.yakker, type: kind, vote: "up" }));
-                        $(list).on("click", ".yak_down", Yodel.vote.bind({ client: this.yakker, type: kind, vote: "down" }));
+                        $(list).on("click", ".yak_up", Yodel.vote.bind({ client: this.yakker, type: kind, direction: "up" }));
+                        $(list).on("click", ".yak_down", Yodel.vote.bind({ client: this.yakker, type: kind, direction: "down" }));
                     }
                    
                     $(list).on("click pointerdown", ".win-interactive", function (e) { e.stopPropagation(); });
@@ -137,8 +138,7 @@
             },
             _renderItems: function (source) {
                 WinJS.Utilities.empty(this.domElement);
-                var template_tag = (this.domElement).dataset.template;
-                var template = document.getElementById(template_tag).winControl;
+                var template = document.getElementById(this.template).winControl;
                 if (Array.isArray(source)) {
                     source.forEach(function (item, index) {
                         var newElement = document.createElement("div");

@@ -50,16 +50,16 @@
         <section aria-label="Main content" role="main">
             <progress id="hub_progress"></progress>
             <div class="hub" data-win-control="WinJS.UI.Pivot">
-                <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': 'nearby' }">
+                <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ header: 'nearby' }">
                     <p id="nearby_yaks_none" class="no_messages">No yaks around to speak of.<br/>Pretty boring here, eh?</p>
-                    <div id="nearby_yaks" class="feed_container" data-win-control="Yodel.UI.ItemsControl" data-template="nearby_yak_template"></div>
+                    <div id="nearby_yaks" class="feed_container" data-win-control="Yodel.UI.ItemsControl" data-win-options="{ template: 'nearby_yak_template' }"></div>
                 </div>
 
-                <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': 'peek' }">
+                <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ header: 'peek' }">
                     <div id="peek_pivot" data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.ListLayout }, itemTemplate: peek_pivot_template, selectionMode: 'none' }"></div>
                 </div>
 
-                <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': 'me' }">
+                <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ header: 'me' }">
                     <div id="me_pivot" data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.ListLayout }, itemTemplate: me_pivot_template, selectionMode: 'none' }"></div>
                 </div>
             </div>

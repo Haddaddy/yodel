@@ -14,3 +14,8 @@ section[role=main] {
     display: none;
     color: #07BFA1;
 }
+
+#peek_feed .yak_up, #peek_feed .yak_down {
+    color: white !important;
+    text-shadow: -1px -1px 0px #ccc, 1px -1px 0px #ccc, -1px 1px 0px #ccc, 1px 1px 0px #ccc;
+}
