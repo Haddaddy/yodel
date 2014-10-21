@@ -39,6 +39,10 @@
             </div>
         </div>
 
+        <div id="peek_pivot_block_template" data-win-control="WinJS.Binding.Template">
+            <div class="semanticzoom_block" data-win-bind="textContent: name"></div>
+        </div>
+
         <div class="list_template" id="me_pivot_template" data-win-control="WinJS.Binding.Template">
             <div class="list_item win-type-ellipsis" data-win-bind="dataset.link: link;">
                 <span data-win-bind="textContent: title;"></span>
@@ -55,8 +59,11 @@
                     <div id="nearby_yaks" class="feed_container" data-win-control="Yodel.UI.ItemsControl" data-win-options="{ template: 'nearby_yak_template' }"></div>
                 </div>
 
-                <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ header: 'peek' }">
-                    <div id="peek_pivot" data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.ListLayout }, itemTemplate: peek_pivot_template, selectionMode: 'none' }"></div>
+                <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ header: 'peek: all' }">
+                    <div id="peek_pivot" data-win-control="WinJS.UI.SemanticZoom">
+                        <div id="peek_pivot_in" data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.ListLayout }, itemTemplate: peek_pivot_template, groupHeaderTemplate: peek_pivot_block_template }"></div>
+                        <div id="peek_pivot_out" data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.GridLayout }, itemTemplate: peek_pivot_block_template }"></div>
+                    </div>
                 </div>
 
                 <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ header: 'me' }">

@@ -25,26 +25,31 @@
             }
             hub.onselectionchanged = function (args) {
                 $(".pagetitle").text(args.detail.item.header);
+                var appbar = document.getElementById("appbar").winControl;
+                var peek_pivot = document.getElementById("peek_pivot");
+
+                if (peek_pivot.winControl && peek_pivot.winControl.zoomedOut) {
+                    peek_pivot.winControl.zoomedOut = false;
+                }
+
+                switch (args.detail.index) {
+                    case 0:
+                        appbar.closedDisplayMode = "compact";
+                        break;
+                    default:
+                        appbar.closedDisplayMode = "minimal";
+                }
             }
 
             if (nav.history.forwardStack.length > 0) {
+                hub.selectedIndex = Yodel.pivot_last_index;
                 Yodel.pivot_init(Yodel.data.pivot, true, true, true);
-                switch(nav.history.forwardStack.slice(-1)[0].location) {
-                    case "/pages/peek/peek.html":
-                        hub.selectedIndex = 1;
-                        setImmediate(function () {
-                            var peek_pivot = document.getElementById("peek_pivot").winControl;
-                            peek_pivot.ensureVisible = Yodel.peek_pivot_last_index;
-                            peek_pivot.indexOfFirstVisible = Yodel.peek_pivot_last_index;
-                        });
-                        break;
-                }
             }
         },
 
         unload: function () {
             Yodel.nearby_last_index = $("#nearby_yaks").scrollTop();
-            //Yodel.pivot_last_index = element.querySelector(".hub").winControl.selectedIndex;
+            Yodel.pivot_last_index = $(".hub")[0].winControl.selectedIndex;
         },
 
         updateLayout: function (element) {

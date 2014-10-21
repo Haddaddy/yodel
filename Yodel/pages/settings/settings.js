@@ -11,10 +11,13 @@
             console.log(response);
             if (response.isSuccessStatusCode) {
                 Windows.Storage.ApplicationData.current.roamingSettings.values["yakker_id"] = user_id;
+                $("#settings_general #yak_id").val(user_id);
+
+                Yodel.data.nearby_yaks = null;
+                Yodel.data.me_pivot = null;
+                Yodel.data.pivot.yakarma = "100";
             }
         });
-        $("#settings_general #yak_id").val(user_id);
-        Yodel.nearby_last = null;
     }
 
     WinJS.UI.Pages.define("/pages/settings/settings.html", {

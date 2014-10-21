@@ -1,14 +1,10 @@
-﻿.win-pivot .win-pivot-surface {
+﻿.win-pivot .win-pivot-surface, .win-listview, .win-semanticzoom {
     height: 90vh;
 }
 
 .win-pivot .win-pivot-viewport {
     padding-top: 0px;
     /*margin-top: 98px;*/
-}
-
-.win-listview {
-    height: 100%;
 }
 
 .win-listview > .win-vertical .win-container {
@@ -65,9 +61,47 @@
 
 .list_item {
     color: #333;
-    font-size: 1.7em;
-    padding: 12px 5px;
+    font-size: 1.9em;
+    padding: 9px 5px;
     font-weight: 300;
+}
+
+.win-listview.win-groups > .win-vertical .win-surface.win-listlayout, .win-listview.win-groups > .win-vertical .win-surface.win-gridlayout {
+    margin-top: -15px;
+}
+
+.win-listview.win-groups .win-vertical .win-listlayout .win-groupleader, .win-listview.win-groups .win-vertical .win-gridlayout .win-groupleader {
+    margin-top: 15px;
+}
+
+.win-semanticzoom-zoomedoutview .win-gridlayout .win-itemscontainer {
+    width: 98vw !important;
+    padding: 0 1vw !important;
+}
+
+.win-semanticzoom-zoomedoutview .win-gridlayout .win-itemsblock {
+    flex-flow: row wrap !important;
+    width: 100%;
+}
+
+.win-semanticzoom-zoomedoutview .semanticzoom_block {
+    padding: 25px 20px 5px 5px;
+    background: #07BFA1;
+    color: #fff;
+    display: inline-block;
+    text-transform: lowercase;
+    font-size: 2.5em;
+    width: 15vw;
+}
+
+.win-semanticzoom-zoomedinview .semanticzoom_block {
+    margin-left: calc(3vw + 4px);
+    padding: 15px 0 5px 5px;
+    background: #07BFA1;
+    color: #fff;
+    display: inline-block;
+    text-transform: lowercase;
+    width: 1.7em;
 }
         
 .label-extralarge {
