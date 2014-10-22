@@ -14,7 +14,9 @@
 
     WinJS.UI.Pages.define("default.html", {
         ready: function (element, options) {
-            $('#appbar').click(navigateFromAppBar);
+            var appbar = document.getElementById("appbar");
+            appbar.addEventListener("click", navigateFromAppBar);
+            appbar.winControl.closedDisplayMode = "minimal";
         }
     });
 

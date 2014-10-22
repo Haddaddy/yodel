@@ -42,11 +42,16 @@
                 }
 
                 switch (args.detail.index) {
-                    case 0:
-                        appbar.closedDisplayMode = "compact";
-                        break;
-                    default:
-                        appbar.closedDisplayMode = "minimal";
+                    case 1:
+                        var peek_pivot_in = document.getElementById("peek_pivot_in");
+                        if (!peek_pivot_in.winControl) {
+                            $(peek_pivot_in).attr("data-win-options", function (i, val) {
+                                return val.slice(0, -1) + ",indexOfFirstVisible: Yodel.peek_pivot_last_index }";
+                            });
+                        }
+                        else {
+                            peek_pivot_in.winControl.indexOfFirstVisible = Yodel.peek_pivot_last_index;
+                        }
                 }
             }
 

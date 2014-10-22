@@ -21,12 +21,12 @@
 }
 
 .hubpage header[role=banner] .icons {
-    margin-right: 5vw;
+    margin-right: 2vw;
     font-size: 16pt;
 }
 
 .hubpage header[role=banner] .icons a {
-    padding-left: 30px;
+    padding: 10px 15px;
     color: #fff;
     text-decoration: none;
     opacity: 0.8;

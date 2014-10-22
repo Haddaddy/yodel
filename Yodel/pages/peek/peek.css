@@ -1,8 +1,4 @@
-﻿#peek_feed {
-    height: 90vh;
-}
-
-section[role=main] {
+﻿section[role=main] {
     position: relative;
 }
 
