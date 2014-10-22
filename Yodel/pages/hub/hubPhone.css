@@ -20,9 +20,20 @@
     top: 0;
 }
 
-.hubpage header[role=banner] {
-    position: relative;
-    z-index: 2;
+.hubpage header[role=banner] .icons {
+    margin-right: 5vw;
+    font-size: 16pt;
+}
+
+.hubpage header[role=banner] .icons a {
+    padding-left: 30px;
+    color: #fff;
+    text-decoration: none;
+    opacity: 0.8;
+}
+
+.hubpage header[role=banner] .icons a.selected {
+    opacity: 1;
 }
 
 .hubpage section[role=main] {
@@ -62,17 +73,27 @@
 .list_item {
     color: #333;
     font-size: 1.9em;
-    padding: 9px 5px;
+    padding: 10px 5px;
     font-weight: 300;
 }
 
 .win-listview.win-groups > .win-vertical .win-surface.win-listlayout, .win-listview.win-groups > .win-vertical .win-surface.win-gridlayout {
-    margin-top: -15px;
+    margin-top: 0;
 }
 
 .win-listview.win-groups .win-vertical .win-listlayout .win-groupleader, .win-listview.win-groups .win-vertical .win-gridlayout .win-groupleader {
-    margin-top: 15px;
+    margin-top: 5px;
 }
+
+.win-semanticzoom-zoomedoutview {
+    position: fixed !important;
+    top: 0px !important;
+    left: 0px !important;
+    height: 100vh !important;
+    z-index: 2 !important;
+    padding-top: 5px;
+}
+
 
 .win-semanticzoom-zoomedoutview .win-gridlayout .win-itemscontainer {
     width: 98vw !important;
@@ -92,6 +113,10 @@
     text-transform: lowercase;
     font-size: 2.5em;
     width: 15vw;
+}
+
+.win-semanticzoom-zoomedoutview .semanticzoom_block.disabled {
+    background: #626262;
 }
 
 .win-semanticzoom-zoomedinview .semanticzoom_block {

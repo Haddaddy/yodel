@@ -28,40 +28,91 @@
                 var peek_pivot_out = document.getElementById("peek_pivot_out");
 
                 var yakker = new Yakker(appData.roamingSettings.values["yakker_id"], new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
-                var peek_list = new WinJS.Binding.List(yakker.get_peek_locations(json));
+                var peek_list_json = yakker.get_peek_locations(json);
+
+                // Original grouped list
+                var peek_list = new WinJS.Binding.List(peek_list_json);
+                var peek_list_grouped = peek_list.createGrouped(getGroupKey, getGroupData, compareGroups);
+                Yodel.data.peek_pivot = peek_list_grouped;
 
                 // Sorts the groups.
                 function compareGroups(leftKey, rightKey) {
-                    return leftKey.charCodeAt(0) - rightKey.charCodeAt(0);
+                    return leftKey.toString().charAt(0).charCodeAt(0) - rightKey.toString().charAt(0).charCodeAt(0);
                 }
 
                 // Returns the group key that an item belongs to.
                 function getGroupKey(dataItem) {
-                    return dataItem.name.toUpperCase().charAt(0);
+                    return dataItem.name.toString().charAt(0);
                 }
 
                 // Returns the title for a group.
                 function getGroupData(dataItem) {
                     return {
-                        name: dataItem.name.toUpperCase().charAt(0)
-                    };
+                        name: dataItem.name.toString().charAt(0),
+                        disabled: dataItem.disabled
+                    }
                 }
 
-                var peek_list_grouped = peek_list.createGrouped(getGroupKey, getGroupData, compareGroups);
-                Yodel.data.peek_pivot = peek_list_grouped;
+                // Full zoomed-out alphabet:
+                // https://gist.github.com/pimpreneil/4714483
+
+                /* We create the headers group */
+                var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                var headers = [];
+                var curLetter = 0;
+
+                // We fill in the headers array with the letters repeated as many time as there are occurences of them in the array (to keep the ponderation)
+                peek_list_json.forEach(function (item) {
+                    var letter = item.name.toString().charAt(0);
+                    headers.push({ 'name': letter, 'disabled': 'semanticzoom_block' });
+                    alphabet = alphabet.replace(letter, '');
+                });
+
+                // For all the letters that are not included in the array, we add them with a disabled attribute
+                for (var k = 0; k < alphabet.length; k++) {
+                    headers.push({ 'name': alphabet.charAt(k), 'disabled': 'semanticzoom_block disabled' })
+                }
+
+                // Special grouped list for the headers
+                var headers = new WinJS.Binding.List(headers);
+                var headers_grouped = headers.createGrouped(getGroupKey, getGroupData, compareGroups);
+                Yodel.data.peek_pivot_headers = headers_grouped;
+
+                // We tweak the groups header's parameters not to take into account the empty items
+                // To do so, we set the empty groups with a group size of 0 (instead of 1) and we set their firtItemIndex to the previous letter's one
+                for (var k = 'A'.charCodeAt(0) ; k <= 'Z'.charCodeAt(0) ; k++) {
+                    var letter = String.fromCharCode(k);
+                    var originalListItem = peek_list_grouped.groups._groupItems[letter];
+                    if (originalListItem) {
+                        headers_grouped.groups._groupItems[letter].firstItemIndexHint = originalListItem.firstItemIndexHint;
+                    } else {
+                        headers_grouped.groups._groupItems[letter].groupSize = 0;
+                        if (k != 'A'.charCodeAt(0)) {
+                            var previousLetter = String.fromCharCode(k - 1);
+                            var originalPreviousLetter = peek_list_grouped.groups._groupItems[previousLetter];
+                            if (originalPreviousLetter) {
+                                headers_grouped.groups._groupItems[letter].firstItemIndexHint = originalPreviousLetter.firstItemIndexHint;
+                                headers_grouped.groups._groupItems[letter].firstItemKey = originalPreviousLetter.firstItemKey;
+                            } else {
+                                headers_grouped.groups._groupItems[letter].firstItemIndexHint = headers_grouped.groups._groupItems[previousLetter].firstItemIndexHint;
+                                headers_grouped.groups._groupItems[letter].firstItemKey = headers_grouped.groups._groupItems[previousLetter].firstItemKey;
+                            }
+                        }
+                    }
+                }
 
                 if (!peek_pivot.winControl) {
                     $(peek_pivot_in).attr("data-win-options", function (i, val) {
                         return val.slice(0, -1) + ",itemDataSource:Yodel.data.peek_pivot.dataSource, groupDataSource:Yodel.data.peek_pivot.groups.dataSource }";
                     });
                     $(peek_pivot_out).attr("data-win-options", function (i, val) {
-                        return val.slice(0, -1) + ",itemDataSource:Yodel.data.peek_pivot.groups.dataSource }";
+                        return val.slice(0, -1) + ",itemDataSource:Yodel.data.peek_pivot_headers.groups.dataSource }";
                     });
                 }
                 else {
                     peek_pivot_in.winControl.itemDataSource = peek_list_grouped.dataSource;
                     peek_pivot_in.winControl.groupDataSource = peek_list_grouped.groups.dataSource;
-                    peek_pivot_out.winControl.itemDataSource = peek_list_grouped.groups.dataSource;
+                    peek_pivot_out.winControl.itemDataSource = headers_grouped.groups.dataSource;
                 }
 
                 peek_pivot_in.addEventListener("iteminvoked", Yodel.to_peek_feed);

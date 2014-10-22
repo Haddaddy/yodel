@@ -13,6 +13,13 @@
         ready: function (element, options) {
             var hub = element.querySelector(".hub").winControl;
             $(".pagetitle").text(hub.selectedItem.header);
+            $(".icons").on("click", "a", function (event) {
+                var target = $(event.target);
+                var index = target.data("index");
+                if (hub.selectedIndex != parseInt(index)) {
+                    hub.selectedIndex = index;
+                }
+            });
 
             hub.onheaderinvoked = function (args) {
                 args.detail.section.onheaderinvoked(args);
@@ -25,6 +32,8 @@
             }
             hub.onselectionchanged = function (args) {
                 $(".pagetitle").text(args.detail.item.header);
+                $(".icons a[data-index=" + args.detail.index + "]").addClass("selected").siblings().removeClass("selected");
+
                 var appbar = document.getElementById("appbar").winControl;
                 var peek_pivot = document.getElementById("peek_pivot");
 

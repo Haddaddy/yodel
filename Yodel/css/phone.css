@@ -5,6 +5,7 @@
 header[role=banner] {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     height: 10vh;
     background: #08d7b5;
     color: #fff;

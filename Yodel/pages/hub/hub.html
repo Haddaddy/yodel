@@ -15,6 +15,11 @@
             <h1 class="titlearea win-type-ellipsis">
                 <span class="pagetitle"></span>
             </h1>
+            <div class="icons">
+                <a data-index="0">&#xE1C3;</a>
+                <a data-index="1" style="padding-top:2px;">&#xE1C4;</a>
+                <a data-index="2" style="padding-top:2px;">&#xE13D;</a>
+            </div>
         </header>
 
         <div class="yak_template" id="nearby_yak_template" data-win-control="WinJS.Binding.Template">
@@ -40,7 +45,11 @@
         </div>
 
         <div id="peek_pivot_block_template" data-win-control="WinJS.Binding.Template">
-            <div class="semanticzoom_block" data-win-bind="textContent: name"></div>
+            <div class="semanticzoom_block" data-win-bind="textContent: name;"></div>
+        </div>
+
+        <div id="peek_pivot_jumplist_template" data-win-control="WinJS.Binding.Template">
+            <div class="semanticzoom_block" data-win-bind="textContent: name; className: disabled;"></div>
         </div>
 
         <div class="list_template" id="me_pivot_template" data-win-control="WinJS.Binding.Template">
@@ -62,7 +71,7 @@
                 <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ header: 'peek: all' }">
                     <div id="peek_pivot" data-win-control="WinJS.UI.SemanticZoom">
                         <div id="peek_pivot_in" data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.ListLayout }, itemTemplate: peek_pivot_template, groupHeaderTemplate: peek_pivot_block_template }"></div>
-                        <div id="peek_pivot_out" data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.GridLayout }, itemTemplate: peek_pivot_block_template }"></div>
+                        <div id="peek_pivot_out" data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.GridLayout }, itemTemplate: peek_pivot_jumplist_template }"></div>
                     </div>
                 </div>
 
