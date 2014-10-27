@@ -23,8 +23,9 @@ var PeekLocation = WinJS.Class.define(function(raw) {
 });
 
 var Yakker = WinJS.Class.define(function(user_id, loc) {
-    this.base_url = "https://yikyakapp.com/api/";
-    this.user_agent = "Dalvik/1.6.0 (Linux; U; Android 4.4.4; Google Nexus 4 - 4.4.4 - API 19 - 768x1280 Build/KTU84P)";
+    this.base_url = "https://us-east-api.yikyakapi.net/api/";
+    this.user_agent = "Yik Yak/2.1.0.23 (iPhone; iOS 8.1; Scale/2.00)";
+    this.version = "2.1.002";
 
     if(loc == null) {
         loc = [0,0];
@@ -65,7 +66,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         return this.get("registerUser", params);
     },
     sign_request: function(page, params) {
-        var key = "35FD04E8-B7B1-45C4-9886-94A75F4A2BB4";
+        var key = "F7CAFA2F-FE67-4E03-A090-AC7FFF010729";
         // Salt is current Unix time in seconds
         var salt = String(Math.floor(new Date().getTime() / 1000));
         
@@ -118,6 +119,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
     },
     get: function(page, params) {
         var url = this.base_url + page;
+        params.version = this.version;
 
         var signed = this.sign_request(page, params);
 
@@ -136,6 +138,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
     },
     post: function (page, params) {
         var url = this.base_url + page;
+        params.version = this.version;
 
         var signed = this.sign_request(page, {});
         
@@ -372,6 +375,16 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
             "peekID": peek_id
         }
         return this.get("getPeekMessages", params);
+    },
+    peek_anywhere: function (lat, long) {
+        params = {
+            "lat": lat,
+            "long": long,
+            "userID": this.id,
+            "userLat": this.loc.latitude,
+            "userLong": this.loc.longitude
+        }
+        return this.get("yaks", params);
     }
 });
 

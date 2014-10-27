@@ -58,12 +58,13 @@
                 Yodel.data.pivot["yakarma"] = parseInt(Yodel.data.pivot["yakarma"]) + 1;
 
                 if (promise) {
+                    var that = this;
                     promise.then(function (response) {
                         console.log(response);
                         if (!response.isSuccessStatusCode) {
                             target.removeClass("yak_voted");
                             vote_count_ele.text(orig_vote_count);
-                            if (this.type == "yak") {
+                            if (that.type == "yak") {
                                 datasource[index].likes = orig_vote_count;
                                 datasource[index].upvote = "yak_up";
                                 datasource[index].downvote = "yak_down";
