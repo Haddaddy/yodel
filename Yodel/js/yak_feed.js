@@ -23,11 +23,13 @@
                             setImmediate(function () {
                                 $("#nearby_yaks").scrollTop(Yodel.nearby_last_index);
                             });
+                            $("progress").css("display", "none");
                         }
                         else {
                             return this._retrieve(this.yakker.get_yaks()).then(function (json) {
                                 var yak_list = that.yakker.parse_yaks(json);
                                 that._bind(yak_list, "nearby_yaks");
+                                $("progress").css("display", "none");
                                 return json;
                             });
                         }
@@ -38,11 +40,13 @@
                             setImmediate(function () {
                                 $("#peek_feed").scrollTop(Yodel.peek_last_index);
                             });
+                            $("progress").css("display", "none");
                         }
                         else {
                             this._retrieve(this.yakker.peek(opt.peek_id)).then(function (json) {
                                 var peek_yak_list = that.yakker.parse_yaks(json);
                                 that._bind(peek_yak_list, "peek_feed");
+                                $("progress").css("display", "none");
                             });
                         }
                         break;
@@ -51,6 +55,7 @@
                         this._retrieve(this.yakker.get_comments(opt.message_id)).then(function (json) {
                             var comments_list = that.yakker.parse_comments(json);
                             that._bind(comments_list, "yak_comments");
+                            $("progress").css("display", "none");
                         });
                 }
             },
@@ -84,12 +89,9 @@
                     $(list).on("click pointerdown", ".win-interactive", function (e) { e.stopPropagation(); });
                     $(list).on("click pointerdown", ".win-template", function (e) { WinJS.UI.Animation.pointerDown($(e.target).closest(".yak_container")[0]); });
                     $(list).on("pointerout pointercancel", ".win-template", function (e) { WinJS.UI.Animation.pointerUp($(e.target).closest(".yak_container")[0]); });
-
-                    $("progress").css("display", "none");
                 }
             },
             _retrieve: function (promise) {
-                console.log("LOADING NEW FEED FROM THE WEB");
                 var that = this;
                 return promise.then(function (response) {
                     console.log(response);
