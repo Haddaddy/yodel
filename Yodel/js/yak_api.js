@@ -24,8 +24,8 @@ var PeekLocation = WinJS.Class.define(function(raw) {
 
 var Yakker = WinJS.Class.define(function(user_id, loc) {
     this.base_url = "https://us-east-api.yikyakapi.net/api/";
-    this.user_agent = "Yik Yak/2.1.0.23 (iPhone; iOS 8.1; Scale/2.00)";
-    this.version = "2.1.002";
+    this.user_agent = "Yik Yak/2.1.0.23 CFNetwork/711.1.12 Darwin/14.0.0";
+    this.version = "2.1.003";
 
     if(loc == null) {
         loc = [0,0];
@@ -48,24 +48,26 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
             return ret;
         };
         var hashIn = S4(buf[0]) + S4(buf[1]) + "-" + S4(buf[2]) + "-" + S4(buf[3]) + "-" + S4(buf[4]) + "-" + S4(buf[5]) + S4(buf[6]) + S4(buf[7]);
-        // Open convoluted WinRT hashing API
-        var winCrypt = Windows.Security.Cryptography;
-        var hashProvider = winCrypt.Core.HashAlgorithmProvider.openAlgorithm(winCrypt.Core.HashAlgorithmNames.md5);
-        // Convert input to binary
-        var buffer = hashProvider.hashData(winCrypt.CryptographicBuffer.convertStringToBinary(hashIn, winCrypt.BinaryStringEncoding.utf8));
-        // Produce MD5 hash in hex form
-        var hash = winCrypt.CryptographicBuffer.encodeToHexString(buffer);
-        return hash.toUpperCase();
+        //// Open convoluted WinRT hashing API
+        //var winCrypt = Windows.Security.Cryptography;
+        //var hashProvider = winCrypt.Core.HashAlgorithmProvider.openAlgorithm(winCrypt.Core.HashAlgorithmNames.md5);
+        //// Convert input to binary
+        //var buffer = hashProvider.hashData(winCrypt.CryptographicBuffer.convertStringToBinary(hashIn, winCrypt.BinaryStringEncoding.utf8));
+        //// Produce MD5 hash in hex form
+        //var hash = winCrypt.CryptographicBuffer.encodeToHexString(buffer);
+        //return hash.toUpperCase();
+        return hashIn.toUpperCase();
     },
     register_id_new: function (id) {
         var params = {
             "userID": id,
-            "lat": this.loc.latitude,
-            "long": this.loc.longitude,
+            "userLat": this.loc.latitude,
+            "userLong": this.loc.longitude,
+            "version": this.version
         }
         return this.get("registerUser", params);
     },
-    sign_request: function(page, params) {
+    sign_request: function (page, params) {
         var key = "F7CAFA2F-FE67-4E03-A090-AC7FFF010729";
         // Salt is current Unix time in seconds
         var salt = String(Math.floor(new Date().getTime() / 1000));
@@ -119,7 +121,6 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
     },
     get: function(page, params) {
         var url = this.base_url + page;
-        params.version = this.version;
 
         var signed = this.sign_request(page, params);
 
@@ -128,7 +129,6 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         var httpClient = new Windows.Web.Http.HttpClient();
         headers = httpClient.defaultRequestHeaders;
         headers.userAgent.parseAdd(this.user_agent);
-        headers.accept.parseAdd("*/*");
         headers.acceptEncoding.parseAdd("gzip");
 
         url = Windows.Foundation.Uri(url + query);
@@ -138,7 +138,6 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
     },
     post: function (page, params) {
         var url = this.base_url + page;
-        params.version = this.version;
 
         var signed = this.sign_request(page, {});
         
@@ -182,7 +181,8 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
     contact: function(message) {
         params = {
             "userID": this.id,
-            "message": message
+            "message": message,
+            "version": this.version
         }
         return this.get("contactUs", params);
     },
@@ -191,7 +191,8 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
             "userID": this.id,
             "messageID": message_id,
             "lat": this.loc.latitude,
-            "long": this.loc.longitude
+            "long": this.loc.longitude,
+            "version": this.version
         }
         return this.get("likeMessage", params);
     },
@@ -200,7 +201,8 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
             "userID": this.id,
             "messageID": message_id,
             "lat": this.loc.latitude,
-            "long": this.loc.longitude
+            "long": this.loc.longitude,
+            "version": this.version
         }
         return this.get("downvoteMessage", params);
     },
@@ -209,7 +211,8 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
             "userID": this.id,
             "commentID": comment_id,
             "lat": this.loc.latitude,
-            "long": this.loc.longitude
+            "long": this.loc.longitude,
+            "version": this.version
         }
         return this.get("likeComment", params);
     },
@@ -218,7 +221,8 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
             "userID": this.id,
             "commentID": comment_id,
             "lat": this.loc.latitude,
-            "long": this.loc.longitude
+            "long": this.loc.longitude,
+            "version": this.version
         }
         return this.get("downvoteComment", params);
     },
@@ -227,7 +231,8 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
             "userID": this.id,
             "messageID": message_id,
             "lat": this.loc.latitude,
-            "long": this.loc.longitude
+            "long": this.loc.longitude,
+            "version": this.version
         }
         return this.get("reportMessage", params);
     },
@@ -236,7 +241,8 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
             "userID": this.id,
             "messageID": message_id,
             "lat": this.loc.latitude,
-            "long": this.loc.longitude
+            "long": this.loc.longitude,
+            "version": this.version
         }
         return this.get("deleteMessage2", params);
     },
@@ -246,7 +252,8 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
             "commentID": comment_id,
             "messageID": message_id,
             "lat": this.loc.latitude,
-            "long": this.loc.longitude
+            "long": this.loc.longitude,
+            "version": this.version
         }
         return this.get("reportMessage", params);
     },
@@ -256,7 +263,8 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
             "commentID": comment_id,
             "messageID": message_id,
             "lat": this.loc.latitude,
-            "long": this.loc.longitude
+            "long": this.loc.longitude,
+            "version": this.version
         }
         return this.get("deleteComment", params);
     },
@@ -264,7 +272,8 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         params = {
             "userID": this.id,
             "lat": this.loc.latitude,
-            "long": this.loc.longitude
+            "long": this.loc.longitude,
+            "version": this.version
         }
         return this.get("getGreatest", params);
     },
@@ -272,7 +281,8 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         params = {
             "userID": this.id,
             "lat": this.loc.latitude,
-            "long": this.loc.longitude
+            "long": this.loc.longitude,
+            "version": this.version
         }
         return this.get("getMyTops", params);
     },
@@ -280,7 +290,8 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         params = {
             "userID": this.id,
             "lat": this.loc.latitude,
-            "long": this.loc.longitude
+            "long": this.loc.longitude,
+            "version": this.version
         }
         return this.get("getMyRecentReplies", params);
     },
@@ -291,7 +302,8 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         params = {
             "userID": this.id,
             "lat": this.loc.latitude,
-            "long": this.loc.longitude
+            "long": this.loc.longitude,
+            "version": this.version
         }
         return this.get("getMyRecentYaks", params);
     },
@@ -299,7 +311,8 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         params = {
             "userID": this.id,
             "lat": this.loc.latitude,
-            "long": this.loc.longitude
+            "long": this.loc.longitude,
+            "version": this.version
         }
         return this.get("getAreaTops", params);
     },
@@ -307,7 +320,8 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         params = {
             "userID": this.id,
             "lat": this.loc.latitude,
-            "long": this.loc.longitude
+            "long": this.loc.longitude,
+            "version": this.version
         }
         return this.get("getMessages", params);
     },
@@ -331,7 +345,8 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
             "userID": this.id,
             "messageID": message_id,
             "lat": this.loc.latitude,
-            "long": this.loc.longitude
+            "long": this.loc.longitude,
+            "version": this.version
         }
         return this.get("getComments", params);
     },
@@ -372,7 +387,8 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
             "userID": this.id,
             "lat": this.loc.latitude,
             "long": this.loc.longitude,
-            "peekID": peek_id
+            "peekID": peek_id,
+            "version": this.version
         }
         return this.get("getPeekMessages", params);
     },
@@ -382,7 +398,8 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
             "long": long,
             "userID": this.id,
             "userLat": this.loc.latitude,
-            "userLong": this.loc.longitude
+            "userLong": this.loc.longitude,
+            "version": this.version
         }
         return this.get("yaks", params);
     }
