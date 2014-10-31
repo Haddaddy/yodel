@@ -27,8 +27,7 @@
                 var peek_pivot_in = document.getElementById("peek_pivot_in");
                 var peek_pivot_out = document.getElementById("peek_pivot_out");
 
-                var yakker = new Yakker(appData.roamingSettings.values["yakker_id"], new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
-                var peek_list_json = yakker.get_peek_locations(json);
+                var peek_list_json = Yodel.handle.get_peek_locations(json);
 
                 // Original grouped list
                 var peek_list = new WinJS.Binding.List(peek_list_json);

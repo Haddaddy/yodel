@@ -5,8 +5,7 @@
         feed: WinJS.Class.define(function () {
             var appData = Windows.Storage.ApplicationData.current;
             WinJS.Namespace.define("Yodel.data");
-            this.yakker = new Yakker(appData.roamingSettings.values["yakker_id"], new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
-            //console.log("Registered user with id " + this.yakker.id);
+            //console.log("Registered user with id " + Yodel.handle.id);
 
             $("progress").css("display", "inline");
         }, {
@@ -26,8 +25,8 @@
                             $("progress").css("display", "none");
                         }
                         else {
-                            return this._retrieve(this.yakker.get_yaks()).then(function (json) {
-                                var yak_list = that.yakker.parse_yaks(json);
+                            return this._retrieve(Yodel.handle.get_yaks()).then(function (json) {
+                                var yak_list = Yodel.handle.parse_yaks(json);
                                 that._bind(yak_list, "nearby_yaks");
                                 $("progress").css("display", "none");
                                 return json;
@@ -43,8 +42,8 @@
                             $("progress").css("display", "none");
                         }
                         else {
-                            this._retrieve(this.yakker.peek(opt.peek_id)).then(function (json) {
-                                var peek_yak_list = that.yakker.parse_yaks(json);
+                            this._retrieve(Yodel.handle.peek(opt.peek_id)).then(function (json) {
+                                var peek_yak_list = Yodel.handle.parse_yaks(json);
                                 that._bind(peek_yak_list, "peek_feed");
                                 $("progress").css("display", "none");
                             });
@@ -52,8 +51,8 @@
                         break;
                     case "comments":
                         this._bind([opt.prev], "yak_detail");
-                        this._retrieve(this.yakker.get_comments(opt.message_id)).then(function (json) {
-                            var comments_list = that.yakker.parse_comments(json);
+                        this._retrieve(Yodel.handle.get_comments(opt.message_id)).then(function (json) {
+                            var comments_list = Yodel.handle.parse_comments(json);
                             that._bind(comments_list, "yak_comments");
                             $("progress").css("display", "none");
                         });
@@ -82,8 +81,8 @@
                     }
 
                     if(this.type != "peek") {
-                        $(list).on("click", ".yak_up", Yodel.vote.bind({ client: this.yakker, type: kind, direction: "up" }));
-                        $(list).on("click", ".yak_down", Yodel.vote.bind({ client: this.yakker, type: kind, direction: "down" }));
+                        $(list).on("click", ".yak_up", Yodel.vote.bind({ type: kind, direction: "up" }));
+                        $(list).on("click", ".yak_down", Yodel.vote.bind({ type: kind, direction: "down" }));
                     }
                    
                     $(list).on("click pointerdown", ".win-interactive", function (e) { e.stopPropagation(); });

@@ -5,7 +5,7 @@
 
     WinJS.Namespace.define("Yodel", {
         vote: function(event) {
-            var yakker = this.client;
+            var yakker = Yodel.handle;
 
             var target = $(event.target);
             var sibling = target.siblings(".yak_voted");

@@ -24,8 +24,9 @@ var PeekLocation = WinJS.Class.define(function(raw) {
 
 var Yakker = WinJS.Class.define(function(user_id, loc) {
     this.base_url = "https://us-east-api.yikyakapi.net/api/";
-    this.user_agent = "Yik Yak/2.1.0.23 CFNetwork/711.1.12 Darwin/14.0.0";
+    this.user_agent = "Dalvik/1.6.0 (Linux; U; Android 4.4.4; Google Nexus 4 - 4.4.4 - API 19 - 768x1280 Build/KTU84P)";
     this.version = "2.1.003";
+    this.key = Windows.Storage.ApplicationData.current.localSettings.values["api_key"];
 
     if(loc == null) {
         loc = [0,0];
@@ -48,27 +49,25 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
             return ret;
         };
         var hashIn = S4(buf[0]) + S4(buf[1]) + "-" + S4(buf[2]) + "-" + S4(buf[3]) + "-" + S4(buf[4]) + "-" + S4(buf[5]) + S4(buf[6]) + S4(buf[7]);
-        //// Open convoluted WinRT hashing API
-        //var winCrypt = Windows.Security.Cryptography;
-        //var hashProvider = winCrypt.Core.HashAlgorithmProvider.openAlgorithm(winCrypt.Core.HashAlgorithmNames.md5);
-        //// Convert input to binary
-        //var buffer = hashProvider.hashData(winCrypt.CryptographicBuffer.convertStringToBinary(hashIn, winCrypt.BinaryStringEncoding.utf8));
-        //// Produce MD5 hash in hex form
-        //var hash = winCrypt.CryptographicBuffer.encodeToHexString(buffer);
-        //return hash.toUpperCase();
-        return hashIn.toUpperCase();
+        // Open convoluted WinRT hashing API
+        var winCrypt = Windows.Security.Cryptography;
+        var hashProvider = winCrypt.Core.HashAlgorithmProvider.openAlgorithm(winCrypt.Core.HashAlgorithmNames.md5);
+        // Convert input to binary
+        var buffer = hashProvider.hashData(winCrypt.CryptographicBuffer.convertStringToBinary(hashIn, winCrypt.BinaryStringEncoding.utf8));
+        // Produce MD5 hash in hex form
+        var hash = winCrypt.CryptographicBuffer.encodeToHexString(buffer);
+        return hash.toUpperCase();
     },
     register_id_new: function (id) {
         var params = {
             "userID": id,
-            "userLat": this.loc.latitude,
-            "userLong": this.loc.longitude,
+            "lat": this.loc.latitude,
+            "long": this.loc.longitude,
             "version": this.version
         }
         return this.get("registerUser", params);
     },
     sign_request: function (page, params) {
-        var key = "F7CAFA2F-FE67-4E03-A090-AC7FFF010729";
         // Salt is current Unix time in seconds
         var salt = String(Math.floor(new Date().getTime() / 1000));
         
@@ -94,7 +93,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         // Calculate HMAC signature
         var winCrypt = Windows.Security.Cryptography;
         var macAlgorithm = winCrypt.Core.MacAlgorithmProvider.openAlgorithm("HMAC_SHA1");
-        var keyMaterial = winCrypt.CryptographicBuffer.convertStringToBinary(key, winCrypt.BinaryStringEncoding.Utf8);
+        var keyMaterial = winCrypt.CryptographicBuffer.convertStringToBinary(this.key, winCrypt.BinaryStringEncoding.Utf8);
         var macKey = macAlgorithm.createKey(keyMaterial);
         var tbs = winCrypt.CryptographicBuffer.convertStringToBinary(msg, winCrypt.BinaryStringEncoding.utf8);
         var sigBuffer = winCrypt.Core.CryptographicEngine.sign(macKey, tbs);

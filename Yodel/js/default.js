@@ -32,13 +32,14 @@
                         appData.localSettings.values["gl_accuracy"] = pos.coordinate.accuracy;
 
                         if (typeof appData.roamingSettings.values["yakker_id"] == "undefined" || appData.roamingSettings.values["yakker_id"].length < 32) {
-                            var yakker = new Yakker(null, new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
-                            var user_id = yakker.gen_id();
+                            Yodel.handle = new Yakker(null, new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
+                            var user_id = Yodel.handle.gen_id();
                             console.log("Registering new user with id " + user_id);
-                            yakker.register_id_new(user_id).then(function (response) {
+                            Yodel.handle.register_id_new(user_id).then(function (response) {
                                 console.log(response);
                                 if (response.isSuccessStatusCode) {
                                     Windows.Storage.ApplicationData.current.roamingSettings.values["yakker_id"] = user_id;
+                                    Yodel.handle.id = user_id;
                                     setTimeout(function () {
                                         init();
                                     }, 2000);
@@ -46,6 +47,7 @@
                             });
                         }
                         else {
+                            Yodel.handle = new Yakker(appData.roamingSettings.values["yakker_id"], new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
                             init();
                         }
                     });

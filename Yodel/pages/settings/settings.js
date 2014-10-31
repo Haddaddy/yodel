@@ -4,13 +4,13 @@
     var appData = Windows.Storage.ApplicationData.current;
 
     function _reset_user_id(cmd) {
-        var yakker = new Yakker(null, new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
-        var user_id = yakker.gen_id();
+        var user_id = Yodel.handle.gen_id();
         console.log("Registering new user with id " + user_id);
-        yakker.register_id_new(user_id).then(function (response) {
+        Yodel.handle.register_id_new(user_id).then(function (response) {
             console.log(response);
             if (response.isSuccessStatusCode) {
                 Windows.Storage.ApplicationData.current.roamingSettings.values["yakker_id"] = user_id;
+                Yodel.handle.id = user_id;
                 $("#settings_general #yak_id").val(user_id);
 
                 Yodel.data.nearby_yaks = null;
