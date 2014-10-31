@@ -98,10 +98,7 @@
             var feed_container_id = target.parents(".feed_container").attr("id");
             var yak = Yodel.data[feed_container_id][index];
 
-            nav.navigate("/pages/comments/comments.html").then(function () {
-                var appbar = $("#appbar")[0].winControl;
-                appbar.disabled = true;
-            }).done(function () {
+            nav.navigate("/pages/comments/comments.html").done(function () {
                 var feed = new Yodel.feed;
                 feed.load("comments", { "message_id": message_id, "prev": yak });
             });

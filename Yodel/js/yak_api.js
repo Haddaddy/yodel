@@ -23,10 +23,10 @@ var PeekLocation = WinJS.Class.define(function(raw) {
 });
 
 var Yakker = WinJS.Class.define(function(user_id, loc) {
-    this.base_url = "https://us-east-api.yikyakapi.net/api/";
+    this.default_url = "https://us-east-api.yikyakapi.net/api";
     this.user_agent = "Dalvik/1.6.0 (Linux; U; Android 4.4.4; Google Nexus 4 - 4.4.4 - API 19 - 768x1280 Build/KTU84P)";
-    this.version = "2.1.003";
     this.key = Windows.Storage.ApplicationData.current.localSettings.values["api_key"];
+    this.version = "2.1.003";
 
     if(loc == null) {
         loc = [0,0];
@@ -37,7 +37,63 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
     this.id = user_id;
     this.handle = null;
     
-    }, {
+    this.get_features("https://d3436qb9f9xu23.cloudfront.net/yik_yak_features.json");
+    this.get_features("https://d3436qb9f9xu23.cloudfront.net/yikyakurl_android.json");
+}, {
+    get_features: function(url) {
+        var localFolder = Windows.Storage.ApplicationData.current.localFolder;
+        var filename = url.split("/").pop();
+        var file_uri = new Windows.Foundation.Uri("ms-appdata:///local/" + filename);
+
+        function fetch_new() {
+            var httpClient = new Windows.Web.Http.HttpClient();
+            httpClient.getAsync(Windows.Foundation.Uri(url)).then(
+                function (response) {
+                    console.log(response);
+                    return response.content.readAsStringAsync();
+                }).then(function (content) {
+                    localFolder.createFileAsync(filename, Windows.Storage.CreationCollisionOption.replaceExisting).done(function (file) {
+                        Windows.Storage.FileIO.writeTextAsync(file, content);
+                    });
+                    return WinJS.Promise.as(content);
+                }
+            );
+        }
+
+        Windows.Storage.StorageFile.getFileFromApplicationUriAsync(file_uri).then(
+            function (file) {
+                return file.getBasicPropertiesAsync().then(
+                    function (properties) {
+                        return properties.dateModified;
+                    }).then(function (date) {
+                        var httpClient = new Windows.Web.Http.HttpClient();
+                        var headers = httpClient.defaultRequestHeaders;
+                        headers.ifModifiedSince = date;
+                        return httpClient.getAsync(Windows.Foundation.Uri(url));
+                    }).then(function (response) {
+                        console.log(response);
+                        if (response.statusCode == 304) {
+                            // Remote file isn't modified, load cached file
+                            return localFolder.getFileAsync(filename).then(function (file) {
+                                return Windows.Storage.FileIO.readTextAsync(file);
+                            });
+                        }
+                        else {
+                            // Remote file is modified, load anew
+                            return fetch_new();
+                        }
+                    }
+                );
+            },
+            function () {
+                // No cached file exists, load anew
+                return fetch_new();
+            }
+        ).done(function (content) {
+            content = JSON.parse(content);
+            WinJS.Class.mix(Yakker, content.configuration);
+        });
+    },
     gen_id: function () {
         var buf = new Uint16Array(8);
         window.msCrypto.getRandomValues(buf);
@@ -119,7 +175,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         return query;
     },
     get: function(page, params) {
-        var url = this.base_url + page;
+        var url = this.default_url + "/" + page;
 
         var signed = this.sign_request(page, params);
 
@@ -136,7 +192,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         return httpClient.getAsync(url);
     },
     post: function (page, params) {
-        var url = this.base_url + page;
+        var url = this.default_url + "/" + page;
 
         var signed = this.sign_request(page, {});
         

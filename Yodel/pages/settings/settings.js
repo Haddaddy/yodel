@@ -43,10 +43,6 @@
                     Windows.System.Launcher.launchUriAsync(uri);
                 }
             });
-        },
-        unload: function () {
-            var appbar = $("#appbar")[0].winControl;
-            appbar.disabled = false;
         }
     });
 })();
