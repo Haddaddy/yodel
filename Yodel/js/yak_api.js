@@ -43,7 +43,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         this.handle = appData.roamingSettings.values["handle"];
     }
     
-    //this.get_features("https://d3436qb9f9xu23.cloudfront.net/yik_yak_features.json");
+    this.get_features("https://d3436qb9f9xu23.cloudfront.net/yik_yak_features.json");
     //this.get_features("https://d3436qb9f9xu23.cloudfront.net/yikyakurl_android.json");
 }, {
     get_features: function(url) {
