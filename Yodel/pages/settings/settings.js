@@ -2,6 +2,7 @@
     "use strict";
 
     var appData = Windows.Storage.ApplicationData.current;
+    var appbar = document.getElementById("appbar").winControl;
 
     function _reset_user_id(cmd) {
         var user_id = Yodel.handle.gen_id();
@@ -25,6 +26,8 @@
             return WinJS.Resources.processAll(element);
         },
         ready: function (element, args) {
+            appbar.disabled = true;
+
             $("#settings_general #yak_id").val(appData.roamingSettings.values["yakker_id"]);
             $("#settings_general").on("click", "#reset_id", function (event) {
                 var confirm = new Windows.UI.Popups.MessageDialog("Resetting your user ID will cause you to lose all of your yaks and yakarma!");
@@ -43,6 +46,9 @@
                     Windows.System.Launcher.launchUriAsync(uri);
                 }
             });
+        },
+        unload: function () {
+            appbar.disabled = false;
         }
     });
 })();

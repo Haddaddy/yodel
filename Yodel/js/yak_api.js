@@ -1,4 +1,6 @@
-﻿function parse_time(timestr) {
+﻿var appData = Windows.Storage.ApplicationData.current;
+
+function parse_time(timestr) {
     var format = "YYYY-MM-DD HH:mm:ss";
     return moment.tz(timestr, format, "America/New_York").twitter();
 }
@@ -35,13 +37,17 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
     this.loc = loc;
 
     this.id = user_id;
+
     this.handle = null;
+    if (appData.roamingSettings.values["handle"]) {
+        this.handle = appData.roamingSettings.values["handle"];
+    }
     
-    this.get_features("https://d3436qb9f9xu23.cloudfront.net/yik_yak_features.json");
-    this.get_features("https://d3436qb9f9xu23.cloudfront.net/yikyakurl_android.json");
+    //this.get_features("https://d3436qb9f9xu23.cloudfront.net/yik_yak_features.json");
+    //this.get_features("https://d3436qb9f9xu23.cloudfront.net/yikyakurl_android.json");
 }, {
     get_features: function(url) {
-        var localFolder = Windows.Storage.ApplicationData.current.localFolder;
+        var localFolder = appData.localFolder;
         var filename = url.split("/").pop();
         var file_uri = new Windows.Foundation.Uri("ms-appdata:///local/" + filename);
 

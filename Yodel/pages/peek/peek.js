@@ -2,6 +2,7 @@
     "use strict";
 
     var nav = WinJS.Navigation;
+    var appbar = document.getElementById("appbar").winControl;
 
     WinJS.UI.Pages.define("/pages/peek/peek.html", {
         processed: function (element) {
@@ -9,7 +10,9 @@
 
             return WinJS.Resources.processAll(element);
         },
-        ready: function(element, options) {
+        ready: function (element, options) {
+            appbar.disabled = true;
+
             if (nav.history.forwardStack.length > 0) {
                 var last_yaks = Yodel.data.peek_feed;
                 var feed = new Yodel.feed;
@@ -22,9 +25,8 @@
             }
         },
         unload: function () {
+            appbar.disabled = false;
             Yodel.peek_last_index = $("#peek_feed").scrollTop();
-            //var appbar = $("#appbar")[0].winControl;
-            //appbar.disabled = false;
         }
     });
 })();

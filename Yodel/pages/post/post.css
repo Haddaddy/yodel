@@ -1,0 +1,19 @@
+﻿.post {
+    padding: 3vh 3vw;
+    font-size: 1em;
+}
+
+.post span#charcount {
+    font-weight: 600;
+    font-size: 1.3em;
+    color: #08d7b5;
+    float: right;
+}
+
+.post textarea {
+    min-height: 15vh;
+}
+
+.post textarea, .post #handle {
+    font-size: 1.4em;
+}

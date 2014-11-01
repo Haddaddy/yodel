@@ -12,7 +12,7 @@
 
         ready: function (element, options) {
             var hub = element.querySelector(".hub").winControl;
-            var appbar = element.querySelector("#appbar").winControl;
+            var appbar = document.getElementById("appbar").winControl;
 
             $(".pagetitle").text(hub.selectedItem.header);
             $(".icons").on("click", "a", function (event) {
@@ -20,12 +20,6 @@
                 var index = target.data("index");
                 if (hub.selectedIndex != parseInt(index)) {
                     hub.selectedIndex = index;
-                }
-            });
-            appbar.addEventListener("click", function (event) {
-                var element = event.target;
-                if (element.value) {
-                    nav.navigate(element.value);
                 }
             });
 
@@ -50,7 +44,7 @@
 
                 switch (args.detail.index) {
                     case 0:
-                        appbar.closedDisplayMode = "compact";
+                        appbar.showOnlyCommands(["post", "sortby", "settings"]);
                         break;
                     case 1:
                         var peek_pivot_in = document.getElementById("peek_pivot_in");
@@ -64,7 +58,7 @@
                         }
                     // Intentional fallthrough
                     case 2:
-                        appbar.closedDisplayMode = "minimal";
+                        appbar.showOnlyCommands(["settings"]);
                 }
             }
 

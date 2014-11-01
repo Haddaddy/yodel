@@ -14,6 +14,7 @@
     <link href="/css/phone.css" rel="stylesheet" />
     <script src="/js/navigator.js"></script>
     <script src="/js/app-keys.js"></script>
+    <script src="js/appbar.js"></script>
 
     <script src="/js/ext_lib/moment.min.js"></script>
     <script src="/js/ext_lib/moment-timezone-with-data-2010-2020.js"></script>
@@ -29,5 +30,12 @@
 </head>
 <body class="phone">
     <div id="contenthost" data-win-control="Application.PageControlNavigator" data-win-options="{home: '/pages/hub/hub.html'}"></div>
+
+    <div id="appbar" data-win-control="WinJS.UI.AppBar">
+        <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'post', label:'new post', icon:'add'}" type="button" value="/pages/post/post.html"></button>
+        <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'sortby', label:'sort', icon:'sort'}" type="button"></button>
+        <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'submit', label:'send', icon:'postupdate'}" type="button"></button>
+        <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'settings', label:'settings', icon:'settings', section:'selection'}" type="button" value="/pages/settings/settings.html"></button>
+    </div> 
 </body>
 </html>
