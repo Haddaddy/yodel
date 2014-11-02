@@ -1,6 +1,7 @@
 ﻿(function () {
     "use strict";
 
+    var nav = WinJS.Navigation;
     var appbar = document.getElementById("appbar").winControl;
     var roamingSettings = Windows.Storage.ApplicationData.current.roamingSettings;
 
@@ -18,26 +19,19 @@
     }
 
     function submit_message(event) {
+        // URL regex by John Gruber: https://gist.github.com/gruber/249502
         var url_regex = /\b((?:[a-z][\w\-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]|\((?:[^\s()<>]|(?:\([^\s()<>]+\)))*\))+(?:\((?:[^\s()<>]|(?:\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
-        var word_filter = new RegExp(Yodel.handle.threat_checks[0].expressions.join("|", "gi"));
+        var word_filter = new RegExp(Yodel.handle.threat_checks[0].expressions.join("|"), "gi");
 
         var message_tag = document.getElementById("message");
         var handle_tag = document.getElementById("handle");
         var message = message_tag.value;
         var handle = handle_tag.value;
 
-        if (message.length > 0) {
-            if (handle.length > 0 && !handle_tag.disabled) {
-                roamingSettings.values["handle"] = handle;
-                Yodel.handle.handle = handle;
-            }
-            else {
-                handle = null;
-            }
-
+        if (message.length > 0 && message.length <= 200) {
             if(url_regex.exec(message)) {
-                var error_msg = new Windows.UI.Popups.MessageDialog("Hey, slow down there! You can't have URLs in your message; it's a security hazard. Please remove them and try again.");
-                error_msg.title = "URLs are not allowed";
+                var error_msg = new Windows.UI.Popups.MessageDialog("You can't have URLs in your message; it's a security hazard. Please remove them and try again.");
+                error_msg.title = "Hey, slow down there!";
                 error_msg.showAsync();
                 return;
             }
@@ -51,8 +45,22 @@
                 return;
             }
 
-            Yodel.handle.post_yak(message, handle);
-            WinJS.Navigation.back();
+            if (handle.length > 0 && !handle_tag.disabled) {
+                roamingSettings.values["handle"] = handle;
+                Yodel.handle.handle = handle;
+            }
+            else {
+                handle = null;
+            }
+
+            if (nav.state.type == "comment") {
+                Yodel.handle.post_comment(nav.state.message_id, message);
+            }
+            else {
+                Yodel.handle.post_yak(message, handle);
+            }
+
+            nav.back();
         }
     }
 
@@ -61,11 +69,23 @@
             return WinJS.Resources.processAll(element);
         },
         ready: function (element, args) {
-            appbar.showOnlyCommands(["submit"]);
+            if (!nav.state) {
+                nav.state = { type: "yak" };
+            }
+
             appbar.getCommandById("submit").addEventListener("click", submit_message);
             element.querySelector("#message").addEventListener("keyup", update_char_count);
-            element.querySelector("#handle_toggle").addEventListener("click", toggle_handle);
-            element.querySelector("#handle").value = Yodel.handle.handle;
+
+            if (nav.state.type == "comment") {
+                element.querySelector("#handle_container").style.display = "none";
+            }
+            else {
+                element.querySelector("#handle_toggle").addEventListener("click", toggle_handle);
+                element.querySelector("#handle").value = Yodel.handle.handle;
+            }
+
+            appbar.disabled = false;
+            appbar.showOnlyCommands(["submit"]);
         }
     });
 })();

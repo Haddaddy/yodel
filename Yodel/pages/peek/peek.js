@@ -25,7 +25,6 @@
             }
         },
         unload: function () {
-            appbar.disabled = false;
             Yodel.peek_last_index = $("#peek_feed").scrollTop();
         }
     });

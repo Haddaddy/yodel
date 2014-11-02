@@ -14,6 +14,7 @@
             var hub = element.querySelector(".hub").winControl;
             var appbar = document.getElementById("appbar").winControl;
 
+            appbar.disabled = false;
             $(".pagetitle").text(hub.selectedItem.header);
             $(".icons").on("click", "a", function (event) {
                 var target = $(event.target);

@@ -1,4 +1,11 @@
-﻿#yak_detail {
+﻿#comments_container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #f4f4f4;
+}
+
+#yak_detail {
     height: auto;
     padding: 5px 3vw 0 3vw;
     overflow: hidden;
@@ -7,15 +14,8 @@
 }
 
 #yak_comments {
-    flex-grow: 2;
     height: auto;
-}
-
-#comments_container {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background: #f4f4f4;
+    flex-grow: 2;
 }
 
 #comments_progress {
@@ -29,4 +29,37 @@
     position: relative;
     width: 100%;
     height: 200px;
+}
+
+.comments_reply {
+    position: relative;
+    padding: 5px 8px;
+    background: transparent;
+    border: 3px solid #ccc;
+    color: #ccc;
+    font-size: 1.3em;
+    margin: 10px 3vw 18px 3vw;
+    flex-shrink: 0;
+}
+
+/* triangle border */
+.comments_reply:before {
+    content: "";
+    position: absolute;
+    bottom: -15px; /* value = - border-top-width - border-bottom-width */
+    right: 15px; /* controls horizontal position */
+    border-width: 15px 0 0 15px;
+    border-style: solid;
+    border-color: #ccc transparent;
+}
+
+/* triangle fill */
+.comments_reply:after {
+    content: "";
+    position: absolute;
+    bottom: -8px; /* value = - border-top-width - border-bottom-width */
+    right: 18px; /* value = (:before left) + (:before border-left) - (:after border-left) */
+    border-width: 8px 0 0 8px;
+    border-style: solid;
+    border-color: #f4f4f4 transparent;
 }

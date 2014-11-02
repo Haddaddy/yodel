@@ -53,7 +53,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
 
         function fetch_new() {
             var httpClient = new Windows.Web.Http.HttpClient();
-            httpClient.getAsync(Windows.Foundation.Uri(url)).then(
+            return httpClient.getAsync(Windows.Foundation.Uri(url)).then(
                 function (response) {
                     console.log(response);
                     return response.content.readAsStringAsync();
@@ -386,7 +386,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         }
         return this.get("getMessages", params);
     },
-    post_yak: function(message, showloc, handle) {
+    post_yak: function(message, handle, showloc) {
         params = {
             "userID": this.id,
             "lat": this.loc.latitude,

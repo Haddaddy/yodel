@@ -42,3 +42,7 @@
 .post textarea, .post #handle {
     font-size: 1.4em;
 }
+
+.post #handle {
+    line-height: 1.8em;
+}

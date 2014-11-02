@@ -50,18 +50,24 @@
                         }
                         break;
                     case "comments":
-                        this._bind([opt.prev], "yak_detail");
-                        this._retrieve(Yodel.handle.get_comments(opt.message_id)).then(function (json) {
-                            var comments_list = Yodel.handle.parse_comments(json);
-                            that._bind(comments_list, "yak_comments");
+                        this._bind([opt.yak], "yak_detail");
+                        if ("prev" in opt) {
+                            this._bind(opt.prev, "yak_comments");
                             $("progress").css("display", "none");
-                        });
+                        }
+                        else {
+                            this._retrieve(Yodel.handle.get_comments(opt.message_id)).then(function (json) {
+                                var comments_list = Yodel.handle.parse_comments(json);
+                                that._bind(comments_list, "yak_comments");
+                                $("progress").css("display", "none");
+                            });
+                        }
                 }
             },
             _bind: function (yak_data, list_tag) {
                 var list = document.getElementById(list_tag);
+                Yodel.data[list_tag] = yak_data;
                 if (list) {
-                    Yodel.data[list_tag] = yak_data;
                     if (!list.winControl) {
                         $(list).attr("data-win-options", function (i, val) {
                             return val.slice(0, -1) + ", dataSource:Yodel.data." + list_tag + "}";

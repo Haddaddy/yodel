@@ -22,6 +22,7 @@
                 }
 
                 var loc = new Windows.Devices.Geolocation.Geolocator();
+                Yodel.handle = new Yakker();
 
                 if (loc != null) {
                     console.log("starting geoloc");
@@ -31,8 +32,9 @@
                         appData.localSettings.values["gl_long"] = pos.coordinate.point.position.longitude.toFixed(6);
                         appData.localSettings.values["gl_accuracy"] = pos.coordinate.accuracy;
 
+                        Yodel.handle.update_location(new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
+
                         if (typeof appData.roamingSettings.values["yakker_id"] == "undefined" || appData.roamingSettings.values["yakker_id"].length < 32) {
-                            Yodel.handle = new Yakker(null, new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
                             var user_id = Yodel.handle.gen_id();
                             console.log("Registering new user with id " + user_id);
                             Yodel.handle.register_id_new(user_id).then(function (response) {
@@ -47,7 +49,7 @@
                             });
                         }
                         else {
-                            Yodel.handle = new Yakker(appData.roamingSettings.values["yakker_id"], new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
+                            Yodel.handle.id = appData.roamingSettings.values["yakker_id"];
                             init();
                         }
                     });

@@ -32,15 +32,11 @@ header[role=banner] {
         }
 
 .win-appbar {
-    background-color: #e5e5e5;
+    background-color: #eaeaea;
 }
 
-.win-appbar .win-commandimage {
-    color: #57e2ca;
-}
-
-.win-appbar .win-commandring {
-    border-color: #57e2ca;
+.win-appbar .win-label {
+    color: #07BFA1;
 }
 
 .clear {
