@@ -100,9 +100,7 @@
                     }
                     else {
                         $("progress").css("display", "none");
-                        var http_error_msg = new Windows.UI.Popups.MessageDialog("HTTP Error " + response.statusCode + " " + response.reasonPhrase);
-                        http_error_msg.title = "Unable to load feed";
-                        http_error_msg.showAsync();
+                        Yodel.popup_error("HTTP Error " + response.statusCode + " " + response.reasonPhrase, "Unable to load feed");
                         return null;
                     }
                 }).then(function (res) {

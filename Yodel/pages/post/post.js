@@ -7,7 +7,15 @@
 
     function update_char_count(event) {
         var target = event.target;
-        document.getElementById("charcount").innerText = 200 - target.value.length;
+        var charcount = 200 - target.value.length;
+        document.getElementById("charcount").innerText = charcount;
+
+        if (charcount < 200) {
+            appbar.getCommandById("submit").disabled = false;
+        }
+        else {
+            appbar.getCommandById("submit").disabled = true;
+        }
     }
 
     function toggle_handle(event) {
@@ -30,18 +38,22 @@
 
         if (message.length > 0 && message.length <= 200) {
             if(url_regex.exec(message)) {
-                var error_msg = new Windows.UI.Popups.MessageDialog("You can't have URLs in your message; it's a security hazard. Please remove them and try again.");
-                error_msg.title = "Hey, slow down there!";
-                error_msg.showAsync();
+                Yodel.popup_error(
+                    "You can't have URLs in your message; it's a security hazard. Please remove them and try again.",
+                    "Hey, slow down there!"
+                );
                 return;
             }
 
-            if(!this.threat_override && (word_filter.exec(message) || word_filter.exec(handle))) {
-                var threat_warn = new Windows.UI.Popups.MessageDialog(Yodel.handle.threat_checks[0].message);
-                threat_warn.title = "Hold on a second!";
-                threat_warn.commands.append(new Windows.UI.Popups.UICommand("no"));
-                threat_warn.commands.append(new Windows.UI.Popups.UICommand("yes", submit_message.bind({ threat_override: true })));
-                threat_warn.showAsync();
+            if (!this.threat_override && (word_filter.exec(message) || word_filter.exec(handle))) {
+                Yodel.popup_error(
+                    Yodel.handle.threat_checks[0].message,
+                    "Hold on a second!",
+                    {
+                        "no": null,
+                        "yes": submit_message.bind({ threat_override: true })
+                    }
+                );
                 return;
             }
 
@@ -54,11 +66,18 @@
             }
 
             if (nav.state.type == "comment") {
-                Yodel.handle.post_comment(nav.state.message_id, message);
+                var promise = Yodel.handle.post_comment(nav.state.message_id, message);
             }
             else {
-                Yodel.handle.post_yak(message, handle);
+                var promise = Yodel.handle.post_yak(message, handle);
             }
+
+            promise.then(function (response) {
+                console.log(response);
+                if (!response.isSuccessStatusCode) {
+                    Yodel.popup_error("HTTP Error " + response.statusCode + " " + response.reasonPhrase, "Unable to send message");
+                }
+            });
 
             nav.back();
         }

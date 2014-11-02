@@ -27,6 +27,23 @@
                     });
                 }
             }
+        },
+
+        popup_error: function (msg, title, buttons) {
+            var error_msg = new Windows.UI.Popups.MessageDialog(msg);
+
+            if (title) {
+                error_msg.title = title;
+            }
+            
+            if (buttons) {
+                var button_keys = Object.keys(buttons);
+                for (var i in button_keys) {
+                    error_msg.commands.append(new Windows.UI.Popups.UICommand(button_keys[i], buttons[button_keys[i]]));
+                }
+            }
+
+            error_msg.showAsync();
         }
     });
 })();

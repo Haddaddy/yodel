@@ -30,14 +30,14 @@
 
             $("#settings_general #yak_id").val(appData.roamingSettings.values["yakker_id"]);
             $("#settings_general").on("click", "#reset_id", function (event) {
-                var confirm = new Windows.UI.Popups.MessageDialog("Resetting your user ID will cause you to lose all of your yaks and yakarma!");
-                confirm.title = "Are you sure?";
-                confirm.commands.append(new Windows.UI.Popups.UICommand("no! stop!"));
-                confirm.commands.append(new Windows.UI.Popups.UICommand("that's okay", _reset_user_id));
-                confirm.defaultCommandIndex = 0;
-                confirm.cancelCommandIndex = 0;
-
-                confirm.showAsync();
+                Yodel.popup_error(
+                    "Resetting your user ID will cause you to lose all of your yaks and yakarma!",
+                    "Are you sure?",
+                    {
+                        "no! stop!": null,
+                        "that's okay": _reset_user_id
+                    }
+                );
             });
             $("#settings_about").on("click", "button", function (event) {
                 var target = event.target;
