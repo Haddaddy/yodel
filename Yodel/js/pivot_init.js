@@ -26,6 +26,7 @@
                 var peek_pivot = document.getElementById("peek_pivot");
                 var peek_pivot_in = document.getElementById("peek_pivot_in");
                 var peek_pivot_out = document.getElementById("peek_pivot_out");
+                WinJS.Utilities.markSupportedForProcessing(Yodel.to_peek_feed);
 
                 var peek_list_json = Yodel.handle.get_peek_locations(json);
 
@@ -101,19 +102,15 @@
                         }
                     }
 
-                    if (!peek_pivot.winControl) {
-                        $(peek_pivot_in).attr("data-win-options", function (i, val) {
-                            return val.slice(0, -1) + ",itemDataSource:Yodel.data.peek_pivot.dataSource, groupDataSource:Yodel.data.peek_pivot.groups.dataSource }";
-                        });
-                        $(peek_pivot_out).attr("data-win-options", function (i, val) {
-                            return val.slice(0, -1) + ",itemDataSource:Yodel.data.peek_pivot_headers.groups.dataSource }";
-                        });
-                    }
-                    else {
-                        peek_pivot_in.winControl.itemDataSource = peek_list_grouped.dataSource;
-                        peek_pivot_in.winControl.groupDataSource = peek_list_grouped.groups.dataSource;
-                        peek_pivot_out.winControl.itemDataSource = headers_grouped.groups.dataSource;
-                    }
+                    Yodel.bind_list(peek_pivot_in, {
+                        itemDataSource: "Yodel.data.peek_pivot.dataSource",
+                        groupDataSource: "Yodel.data.peek_pivot.groups.dataSource",
+                        oniteminvoked: "Yodel.to_peek_feed"
+                    });
+
+                    Yodel.bind_list(peek_pivot_out, {
+                        itemDataSource: "Yodel.data.peek_pivot_headers.groups.dataSource"
+                    });
 
                     // If SemanticZoom is zoomed out, hijack back button event and zoom in
                     WinJS.Application.addEventListener("backclick", function (event) {
@@ -127,41 +124,27 @@
                     });
                 }
                 else {
-                    if (peek_pivot) {
-                        if (!peek_pivot.winControl) {
-                            $(peek_pivot_in).attr("data-win-options", function (i, val) {
-                                return val.slice(0, -1) + ",itemDataSource:Yodel.data.peek_pivot.dataSource }";
-                            });
-                        }
-                        else {
-                            peek_pivot_in.winControl.itemDataSource = peek_list_grouped.dataSource;
-                        }
-                    }
+                    Yodel.bind_list(peek_pivot_in, {
+                        itemDataSource: "Yodel.data.peek_pivot.dataSource",
+                        oniteminvoked: "Yodel.to_peek_feed"
+                    });
                 }
-
-                peek_pivot_in.addEventListener("iteminvoked", Yodel.to_peek_feed);
             }
 
             if (me) {
                 var me_pivot = document.getElementById("me_pivot");
                 var me_list = new WinJS.Binding.List([
                     { "title": "Yakarma", "value": json["yakarma"] },
-                    //{ "title": "My Recent Yaks", "link": "recent_yaks", "value": "" },
-                    //{ "title": "My Recent Replies", "link": "recent_replies", "value": "" },
-                    //{ "title": "My Top Yaks", "link": "my_top_yaks", "value": "" }
+                    { "title": "My Recent Yaks", "link": "recent_yaks", "value": "" },
+                    { "title": "My Recent Replies", "link": "recent_replies", "value": "" },
+                    { "title": "My Top Yaks", "link": "my_top_yaks", "value": "" }
                 ]);
 
                 Yodel.data.me_pivot = me_list;
-                if (me_pivot) {
-                    if (!me_pivot.winControl) {
-                        $(me_pivot).attr("data-win-options", function (i, val) {
-                            return val.slice(0, -1) + ",itemDataSource:Yodel.data.me_pivot.dataSource }";
-                        });
-                    }
-                    else {
-                        me_pivot.winControl.itemDataSource = me_list.dataSource;
-                    }
-                }
+
+                Yodel.bind_list(me_pivot, {
+                    itemDataSource: "Yodel.data.me_pivot.dataSource"
+                });
             } 
         }
     });

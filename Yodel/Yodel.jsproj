@@ -60,6 +60,7 @@
     <Content Include="images\Wide310x150Logo.scale-240.png" />
     <Content Include="js\app-keys.js" />
     <Content Include="js\appbar.js" />
+    <Content Include="js\common.js" />
     <Content Include="js\default.js" />
     <Content Include="js\ext_lib\jquery-2.1.1.min.js" />
     <Content Include="js\ext_lib\moment-timezone-with-data-2010-2020.js" />

@@ -68,14 +68,9 @@
                 var list = document.getElementById(list_tag);
                 Yodel.data[list_tag] = yak_data;
                 if (list) {
-                    if (!list.winControl) {
-                        $(list).attr("data-win-options", function (i, val) {
-                            return val.slice(0, -1) + ", dataSource:Yodel.data." + list_tag + "}";
-                        });
-                    }
-                    else {
-                        list.winControl.dataSource = yak_data;
-                    }
+                    Yodel.bind_list(list, {
+                        dataSource: "Yodel.data." + list_tag
+                    });
 
                     var kind = "comment";
                     if (list_tag == "yak_detail") {
