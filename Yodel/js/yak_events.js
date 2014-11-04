@@ -110,12 +110,13 @@
 
         to_me_feed: function(event) {
             var detail = event.detail.itemPromise._value.data;
-
-            nav.navigate("/pages/feed/feed.html", {
-                method: detail.link,
-                title: detail.title,
-                can_submit: true
-            });
+            if (detail.link) {
+                nav.navigate("/pages/feed/feed.html", {
+                    method: detail.link,
+                    title: detail.title,
+                    can_submit: true
+                });
+            }
         },
     });
 })();
