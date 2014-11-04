@@ -28,7 +28,7 @@
                 switch (this.direction) {
                     case "up":
                         vote_count_ele.text(orig_vote_count + 1);
-                        if(this.feed != "comments") {
+                        if (this.feed != "comments") {
                             var promise = yakker.upvote_yak(message_id);
                             datasource[index].upvote += " yak_voted";
                             datasource[index].likes += 1;
@@ -36,6 +36,7 @@
                         else {
                             var promise = yakker.upvote_comment(comment_id);
                         }
+                        break;
                     case "down":
                         vote_count_ele.text(orig_vote_count - 1);
                         if(this.feed != "comments") {

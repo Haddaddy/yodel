@@ -84,7 +84,7 @@
                         dataSource: "Yodel.data." + this.feed
                     });
 
-                    if (this.feed != "comments") {
+                    if (this.feed != "comments" && this.feed != "comments_parent") {
                         $(list).on("click", ".win-template", Yodel.to_comments.bind({ feed: this.feed }));
                     }
 

@@ -56,7 +56,7 @@
                 console.log(Yodel);
 
                 nav.history = app.sessionState.history;
-                Yodel = app.sessionState.yodel;
+                //Yodel = app.sessionState.yodel;
             }
 
             hookUpBackButtonGlobalEventHandlers();

@@ -3,7 +3,7 @@
 
     WinJS.Namespace.define("Yodel", {
         pivot_init: function () {
-            WinJS.Navigation.state = { method: "nearby" };
+            WinJS.Navigation.state = { method: "nearby", can_submit: true };
 
             var feed = new Yodel.feed;
             feed.load("nearby", "nearby_yaks").done(function () {
