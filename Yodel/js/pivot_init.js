@@ -23,15 +23,17 @@
                 var me_pivot = document.getElementById("me_pivot");
                 var me_list = new WinJS.Binding.List([
                     { "title": "Yakarma", "value": Yodel.data.pivot["yakarma"] },
-                    { "title": "My Recent Yaks", "link": "recent_yaks", "value": "" },
-                    { "title": "My Recent Replies", "link": "recent_replies", "value": "" },
+                    { "title": "My Recent Yaks", "link": "my_recent_yaks", "value": "" },
+                    { "title": "My Recent Replies", "link": "my_recent_replies", "value": "" },
                     { "title": "My Top Yaks", "link": "my_top_yaks", "value": "" }
                 ]);
+                WinJS.Utilities.markSupportedForProcessing(Yodel.to_me_feed);
 
                 Yodel.data.me_pivot = me_list;
 
                 Yodel.bind_list(me_pivot, {
-                    itemDataSource: "Yodel.data.me_pivot.dataSource"
+                    itemDataSource: "Yodel.data.me_pivot.dataSource",
+                    oniteminvoked: "Yodel.to_me_feed"
                 });
             });
         }

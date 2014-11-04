@@ -25,7 +25,7 @@
                     case "peek_anywhere":
                         method = Yodel.handle.peek_anywhere(nav.state.lat, nav.state.long);
                         break;
-                    case "my_top":
+                    case "my_top_yaks":
                         method = Yodel.handle.get_my_tops();
                         break;
                     case "my_recent_yaks":

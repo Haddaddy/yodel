@@ -19,6 +19,8 @@
             if (!nav.state.can_submit) {
                 $("#yak_feed").addClass("no_submit");
             }
+
+            appbar.disabled = true;
         },
         unload: function () {
             Yodel.last_index[this.method] = document.getElementById("yak_feed").scrollTop;
