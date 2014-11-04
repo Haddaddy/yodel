@@ -55,7 +55,7 @@
                             });
                         }
                         else {
-                            peek_pivot_in.winControl.indexOfFirstVisible = Yodel.peek_pivot_last_index;
+                            peek_pivot_in.winControl.indexOfFirstVisible = Yodel.last_index.peek_pivot;
                         }
                     // Intentional fallthrough
                     case 2:
@@ -64,14 +64,14 @@
             }
 
             if (nav.history.forwardStack.length > 0) {
-                hub.selectedIndex = Yodel.pivot_last_index;
-                Yodel.pivot_init(Yodel.data.pivot, true, true, true);
+                hub.selectedIndex = Yodel.last_index.pivot;
+                Yodel.pivot_init();
             }
         },
 
         unload: function () {
-            Yodel.nearby_last_index = $("#nearby_yaks").scrollTop();
-            Yodel.pivot_last_index = $(".hub")[0].winControl.selectedIndex;
+            Yodel.last_index.nearby = $("#nearby_yaks").scrollTop();
+            Yodel.last_index.pivot = $(".hub")[0].winControl.selectedIndex;
         },
 
         updateLayout: function (element) {

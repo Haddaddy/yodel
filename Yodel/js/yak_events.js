@@ -16,43 +16,36 @@
                 var orig_vote_count = parseInt(vote_count_ele.text());
                 var promise = null;
 
-                switch (this.type) {
-                    case "yak":
-                        var message_id = target.parents(".yak_container").data("mid");
-                        var index = parseInt(target.parents(".win-template").attr("aria-posinset"));
-                        var datasource = Yodel.data[target.parents(".feed_container").attr("id")];
-                        break;
-                    case "comment":
-                        var comment_id = target.parents(".yak_container").data("cid");
+                if (this.feed != "comments") {
+                    var message_id = target.parents(".yak_container").data("mid");
+                    var index = parseInt(target.parents(".win-template").attr("aria-posinset"));
+                    var datasource = Yodel.data[this.feed];
+                }
+                else {
+                    var comment_id = target.parents(".yak_container").data("cid");
                 }
 
                 switch (this.direction) {
                     case "up":
                         vote_count_ele.text(orig_vote_count + 1);
-                        switch (this.type) {
-                            case "yak":
-                                var promise = yakker.upvote_yak(message_id);
-                                datasource[index].upvote += " yak_voted";
-                                datasource[index].likes += 1;
-                                break;
-                            case "comment":
-                                var promise = yakker.upvote_comment(comment_id);
-                                break;
+                        if(this.feed != "comments") {
+                            var promise = yakker.upvote_yak(message_id);
+                            datasource[index].upvote += " yak_voted";
+                            datasource[index].likes += 1;
                         }
-                        break;
+                        else {
+                            var promise = yakker.upvote_comment(comment_id);
+                        }
                     case "down":
                         vote_count_ele.text(orig_vote_count - 1);
-                        switch (this.type) {
-                            case "yak":
-                                var promise = yakker.downvote_yak(message_id);
-                                datasource[index].downvote += " yak_voted";
-                                datasource[index].likes -= 1;
-                                break;
-                            case "comment":
-                                var promise = yakker.downvote_comment(comment_id);
-                                break;
+                        if(this.feed != "comments") {
+                            var promise = yakker.downvote_yak(message_id);
+                            datasource[index].downvote += " yak_voted";
+                            datasource[index].likes -= 1;
                         }
-                        break;
+                        else {
+                            var promise = yakker.downvote_comment(comment_id);
+                        }
                 }
 
                 Yodel.data.pivot["yakarma"] = parseInt(Yodel.data.pivot["yakarma"]) + 1;
@@ -64,7 +57,7 @@
                         if (!response.isSuccessStatusCode) {
                             target.removeClass("yak_voted");
                             vote_count_ele.text(orig_vote_count);
-                            if (that.type == "yak") {
+                            if (that.feed != "comments") {
                                 datasource[index].likes = orig_vote_count;
                                 datasource[index].upvote = "yak_up";
                                 datasource[index].downvote = "yak_down";
@@ -83,11 +76,13 @@
             var target = $(event.target);
             var peek_id = target.find(".list_item").data("pid");
             var peek_name = target.find(".list_item span").text();
-            WinJS.Namespace.define("Yodel", { peek_pivot_last_index: event.detail.itemIndex });
+            Yodel.last_index.peek_pivot = event.detail.itemIndex;
 
-            nav.navigate("/pages/peek/peek.html", {name: peek_name, id: peek_id, can_submit: false}).done(function () {
-                var feed = new Yodel.feed;
-                feed.load("peek", { "peek_id": peek_id });
+            nav.navigate("/pages/feed/feed.html", {
+                method: "peek",
+                title: peek_name,
+                can_submit: false,
+                id: peek_id
             });
         },
 
@@ -95,17 +90,20 @@
             var target = $(event.target);
             var message_id = target.closest(".yak_container").data("mid");
             var index = parseInt(target.parents(".win-template").attr("aria-posinset"));
-            var feed_container_id = target.parents(".feed_container").attr("id");
-            var yak = Yodel.data[feed_container_id][index];
+            var yak = Yodel.data[this.feed][index];
 
-            nav.navigate("/pages/comments/comments.html", { "message_id": message_id }).done(function () {
-                var feed = new Yodel.feed;
-                feed.load("comments", { "message_id": message_id, "yak": yak });
+            nav.navigate("/pages/comments/comments.html", {
+                "message_id": message_id,
+                "yak": yak,
+                "can_submit": nav.state.can_submit
             });
         },
 
         to_reply: function (event) {
-            nav.navigate("/pages/post/post.html", { "message_id": nav.state.message_id, "type": "comment" });
+            nav.navigate("/pages/post/post.html", {
+                "message_id": nav.state.message_id,
+                "type": "comment"
+            });
         }
     });
 })();

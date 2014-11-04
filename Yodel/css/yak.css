@@ -89,6 +89,15 @@
     color: #626262;
 }
 
+.no_submit .yak_up, .no_submit .yak_down {
+    color: #fff;
+    text-shadow: -1px -1px 0px #ccc, 1px -1px 0px #ccc, -1px 1px 0px #ccc, 1px 1px 0px #ccc;
+}
+
+#yak_comments.no_submit .yak_up, #yak_comments.no_submit .yak_down {
+    color: #f4f4f4;
+}
+
 .yak_container .yak_votecount {
     font-size: 1.3em;
     color: #08d7b5;

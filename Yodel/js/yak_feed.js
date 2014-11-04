@@ -1,89 +1,96 @@
 ﻿(function () {
     "use strict";
 
+    var nav = WinJS.Navigation;
+
     WinJS.Namespace.define("Yodel", {
         feed: WinJS.Class.define(function () {
             var appData = Windows.Storage.ApplicationData.current;
-            WinJS.Namespace.define("Yodel.data");
             //console.log("Registered user with id " + Yodel.handle.id);
 
             $("progress").css("display", "inline");
         }, {
-            load: function (type, opt) {
-                if (!opt) {
-                    opt = {};
-                }
-                this.type = type;
+            load: function (feed, tag, opt) {
+                this.feed = feed;
                 var that = this;
-                switch (type) {
+                var method;
+                var parser = "parse_yaks";
+                switch (feed) {
                     case "nearby":
-                        if ("prev" in opt) {
-                            this._bind(opt.prev, "nearby_yaks");
-                            setImmediate(function () {
-                                $("#nearby_yaks").scrollTop(Yodel.nearby_last_index);
-                            });
-                            $("progress").css("display", "none");
-                        }
-                        else {
-                            return this._retrieve(Yodel.handle.get_yaks()).then(function (json) {
-                                var yak_list = Yodel.handle.parse_yaks(json);
-                                that._bind(yak_list, "nearby_yaks");
-                                $("progress").css("display", "none");
-                                return json;
-                            });
-                        }
+                        method = Yodel.handle.get_yaks();
                         break;
                     case "peek":
-                        if ("prev" in opt) {
-                            this._bind(opt.prev, "peek_feed");
-                            setImmediate(function () {
-                                $("#peek_feed").scrollTop(Yodel.peek_last_index);
-                            });
-                            $("progress").css("display", "none");
-                        }
-                        else {
-                            this._retrieve(Yodel.handle.peek(opt.peek_id)).then(function (json) {
-                                var peek_yak_list = Yodel.handle.parse_yaks(json);
-                                that._bind(peek_yak_list, "peek_feed");
-                                $("progress").css("display", "none");
-                            });
-                        }
+                        method = Yodel.handle.peek(nav.state.id);
+                        break;
+                    case "peek_anywhere":
+                        method = Yodel.handle.peek_anywhere(nav.state.lat, nav.state.long);
+                        break;
+                    case "my_top":
+                        method = Yodel.handle.get_my_tops();
+                        break;
+                    case "my_recent_yaks":
+                        method = Yodel.handle.get_my_recent_yaks();
+                        break;
+                    case "my_recent_replies":
+                        method = Yodel.handle.get_my_recent_replies();
+                        break;
+                    case "area_tops":
+                        method = Yodel.handle.get_area_tops();
+                        break;
+                    case "alltime_tops":
+                        method = Yodel.handle.get_greatest();
                         break;
                     case "comments":
+                        this.feed = "comments_parent";
                         this._bind([opt.yak], "yak_detail");
-                        if ("prev" in opt) {
-                            this._bind(opt.prev, "yak_comments");
-                            $("progress").css("display", "none");
+                        this.feed = "comments";
+                        method = Yodel.handle.get_comments(nav.state.message_id);
+                        parser = "parse_comments";
+                        break;
+                    default:
+                        return;
+                }
+
+                if (feed in Yodel.data && nav.history.forwardStack.length > 0) {
+                    this._bind(Yodel.data[feed], tag);
+                    setImmediate(function () {
+                        $("#" + tag).scrollTop(Yodel.last_index[feed]);
+                    });
+                    $("progress").css("display", "none");
+
+                    return WinJS.Promise.as(new Object);
+                }
+                else {
+                    return this._retrieve(method).then(function (json) {
+                        var yak_list = Yodel.handle[parser](json);
+                        that._bind(yak_list, tag);
+                        $("progress").css("display", "none");
+
+                        if (feed == "nearby") {
+                            Yodel.data.pivot = {
+                                featuredLocations: json.featuredLocations,
+                                otherLocations: json.otherLocations,
+                                yakarma: json.yakarma
+                            }
                         }
-                        else {
-                            this._retrieve(Yodel.handle.get_comments(opt.message_id)).then(function (json) {
-                                var comments_list = Yodel.handle.parse_comments(json);
-                                that._bind(comments_list, "yak_comments");
-                                $("progress").css("display", "none");
-                            });
-                        }
+                    });
                 }
             },
             _bind: function (yak_data, list_tag) {
                 var list = document.getElementById(list_tag);
-                Yodel.data[list_tag] = yak_data;
+                Yodel.data[this.feed] = yak_data;
                 if (list) {
                     Yodel.bind_list(list, {
-                        dataSource: "Yodel.data." + list_tag
+                        dataSource: "Yodel.data." + this.feed
                     });
 
-                    var kind = "comment";
-                    if (list_tag == "yak_detail") {
-                        kind = "yak";
-                    }
-                    if (this.type != "comments" && list_tag != "yak_detail") {
-                        kind = "yak";
-                        $(list).on("click", ".win-template", Yodel.to_comments);
+                    if (this.feed != "comments") {
+                        $(list).on("click", ".win-template", Yodel.to_comments.bind({ feed: this.feed }));
                     }
 
-                    if(this.type != "peek") {
-                        $(list).on("click", ".yak_up", Yodel.vote.bind({ type: kind, direction: "up" }));
-                        $(list).on("click", ".yak_down", Yodel.vote.bind({ type: kind, direction: "down" }));
+                    if("can_submit" in nav.state && nav.state.can_submit !== false) {
+                        $(list).on("click", ".yak_up", Yodel.vote.bind({ feed: this.feed, direction: "up" }));
+                        $(list).on("click", ".yak_down", Yodel.vote.bind({ feed: this.feed, direction: "down" }));
                     }
                    
                     $(list).on("click pointerdown", ".win-interactive", function (e) { e.stopPropagation(); });

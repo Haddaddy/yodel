@@ -2,15 +2,15 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Peek Feed</title>
+    <title>Independent Feed</title>
 
     <link href="/css/phone.css" rel="stylesheet" />
     <link href="/css/yak.css" rel="stylesheet" />
-    <link href="/pages/peek/peek.css" rel="stylesheet" />
-    <script src="/pages/peek/peek.js"></script>
+    <link href="/pages/feed/feed.css" rel="stylesheet" />
+    <script src="/pages/feed/feed.js"></script>
 </head>
 <body>
-    <div id="peek_feed_template" class="yak_template" data-win-control="WinJS.Binding.Template">
+    <div id="yak_feed_template" class="yak_template" data-win-control="WinJS.Binding.Template">
         <div class="yak_container" data-win-bind="dataset.mid: message_id;">
             <div class="yak_text_container">
                 <span class="yak_handle" data-win-bind="textContent: handle;"></span>
@@ -33,9 +33,9 @@
     </header>
 
     <section aria-label="Main content" role="main">
-        <progress id="peek_progress"></progress>
-        <p id="peek_feed_none" class="no_messages">No yaks here. Does anyone even go here?</p>
-        <div id="peek_feed" class="feed_container" data-win-control="Yodel.UI.ItemsControl" data-win-options="{ template: 'peek_feed_template' }"></div>
+        <progress id="feed_progress"></progress>
+        <p id="feed_none" class="no_messages">No yaks here.</p>
+        <div id="yak_feed" class="feed_container" data-win-control="Yodel.UI.ItemsControl" data-win-options="{ template: 'yak_feed_template' }"></div>
     </section>
 </body>
 </html>

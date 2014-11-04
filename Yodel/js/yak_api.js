@@ -214,12 +214,10 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         headers = httpClient.defaultRequestHeaders;
         headers.userAgent.parseAdd(this.user_agent);
         headers.acceptEncoding.parseAdd("gzip");
-
         var post_data = new Windows.Web.Http.HttpFormUrlEncodedContent(post_params);
-        url = Windows.Foundation.Uri(url + query);
 
+        url = Windows.Foundation.Uri(url + query);
         console.log(params);
-        console.log(post_data);
 
         return httpClient.postAsync(url, post_data);
     },
@@ -347,7 +345,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         }
         return this.get("getMyTops", params);
     },
-    get_recent_replied: function() {
+    get_my_recent_replies: function() {
         params = {
             "userID": this.id,
             "lat": this.loc.latitude,

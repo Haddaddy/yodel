@@ -77,9 +77,19 @@
                 if (!response.isSuccessStatusCode) {
                     Yodel.popup_error("HTTP Error " + response.statusCode + " " + response.reasonPhrase, "Unable to send message");
                 }
-            });
+                else {
+                    if (nav.state.type == "comment") {
+                        Yodel.data.comments = null;
+                        Yodel.data.comments_parent = null;
+                    }
+                    else {
+                        var past_state = nav.history.backStack.slice(-1)[0].state;
+                        Yodel.data[past_state.method] = null;
+                    }
 
-            nav.back();
+                    setTimeout(nav.back, 1000);
+                }
+            });
         }
     }
 

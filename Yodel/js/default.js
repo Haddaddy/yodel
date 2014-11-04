@@ -12,17 +12,12 @@
 
     app.addEventListener("activated", function (args) {
         if (args.detail.kind === activation.ActivationKind.launch) {
-            //if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
-
-                function init() {
-                    var feed = new Yodel.feed;
-                    feed.load("nearby").done(function (json) {
-                        Yodel.pivot_init(json, false, true, true);
-                    });
-                }
-
+            if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
                 var loc = new Windows.Devices.Geolocation.Geolocator();
                 Yodel.handle = new Yakker();
+
+                WinJS.Namespace.define("Yodel.data");
+                WinJS.Namespace.define("Yodel.last_index");
 
                 if (loc != null) {
                     console.log("starting geoloc");
@@ -43,21 +38,26 @@
                                     Windows.Storage.ApplicationData.current.roamingSettings.values["yakker_id"] = user_id;
                                     Yodel.handle.id = user_id;
                                     setTimeout(function () {
-                                        init();
+                                        Yodel.pivot_init();
                                     }, 2000);
                                 }
                             });
                         }
                         else {
                             Yodel.handle.id = appData.roamingSettings.values["yakker_id"];
-                            init();
+                            Yodel.pivot_init();
                         }
                     });
                 }
-            //} else {
-            //    // TODO: This application has been reactivated from suspension.
-            //    // Restore application state here.
-            //}
+            } else {
+                // TODO: This application has been reactivated from suspension.
+                // Restore application state here.
+                console.log(WinJS.Navigation.history);
+                console.log(Yodel);
+
+                nav.history = app.sessionState.history;
+                Yodel = app.sessionState.yodel;
+            }
 
             hookUpBackButtonGlobalEventHandlers();
             nav.history = app.sessionState.history || {};
@@ -83,6 +83,7 @@
         // complete an asynchronous operation before your application is 
         // suspended, call args.setPromise().
         app.sessionState.history = nav.history;
+        app.sessionState.yodel = Yodel;
     };
 
     function hookUpBackButtonGlobalEventHandlers() {

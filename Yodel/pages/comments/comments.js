@@ -9,21 +9,23 @@
             return WinJS.Resources.processAll(element);
         },
         ready: function (element, options) {
-            if (nav.history.forwardStack.length > 0) {
-                var message_id = nav.state.message_id;
-                var yak = Yodel.data.yak_detail[0];
-                var last_comments = Yodel.data.yak_comments;
-                var feed = new Yodel.feed;
-                if (last_comments) {
-                    feed.load("comments", { "message_id": message_id, "yak": yak, "prev": last_comments });
-                }
-                else {
-                    feed.load("comments", { "message_id": message_id, "yak": yak });
-                }
+            var message_id = nav.state.message_id;
+            var yak = nav.state.yak;
+            var feed = new Yodel.feed;
+            feed.load("comments", "yak_comments", {
+                "yak": yak
+            });
+
+            if (nav.state.can_submit === false) {
+                $("#yak_comments, #yak_detail").addClass("no_submit");
+                $(".comments_reply").text("this feed is read-only")
+            }
+            else {
+                $(".comments_reply").click(Yodel.to_reply);
             }
 
             appbar.disabled = true;
-            document.querySelector(".comments_reply").addEventListener("click", Yodel.to_reply);
+            
         }
     });
 })();
