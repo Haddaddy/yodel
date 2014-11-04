@@ -19,10 +19,10 @@
 
             if (nav.state.can_submit === false) {
                 $("#yak_comments, #yak_detail").addClass("no_submit");
-                $(".comments_reply").text("this feed is read-only")
+                //$(".comments_reply").text("this feed is read-only");
             }
             else {
-                $(".comments_reply").click(Yodel.to_reply);
+                //$(".comments_reply").click(Yodel.to_reply);
             }
 
             appbar.disabled = true;

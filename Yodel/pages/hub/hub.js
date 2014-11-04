@@ -44,9 +44,9 @@
                 }
 
                 switch (args.detail.index) {
-                    case 0:
-                        appbar.showOnlyCommands(["post", "sortby", "settings"]);
-                        break;
+                    //case 0:
+                    //    appbar.showOnlyCommands(["post", "sortby", "settings"]);
+                    //    break;
                     case 1:
                         var peek_pivot_in = document.getElementById("peek_pivot_in");
                         if (!peek_pivot_in.winControl) {
@@ -58,6 +58,7 @@
                             peek_pivot_in.winControl.indexOfFirstVisible = Yodel.last_index.peek_pivot;
                         }
                     // Intentional fallthrough
+                    case 0:
                     case 2:
                         appbar.showOnlyCommands(["settings"]);
                 }

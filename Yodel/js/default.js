@@ -14,11 +14,11 @@
         if (args.detail.kind === activation.ActivationKind.launch) {
             Yodel.handle = new Yakker();
 
+            WinJS.Namespace.define("Yodel.data");
+            WinJS.Namespace.define("Yodel.last_index");
+
             if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
                 var loc = new Windows.Devices.Geolocation.Geolocator();
-
-                WinJS.Namespace.define("Yodel.data");
-                WinJS.Namespace.define("Yodel.last_index");
 
                 if (loc != null) {
                     console.log("starting geoloc");
@@ -41,6 +41,9 @@
                                     setTimeout(function () {
                                         Yodel.pivot_init();
                                     }, 2000);
+                                }
+                                else {
+                                    Yodel.popup_error("HTTP Error " + response.statusCode + " " + response.reasonPhrase, "Unable to register new user");
                                 }
                             });
                         }

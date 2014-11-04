@@ -43,7 +43,7 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         this.handle = appData.roamingSettings.values["handle"];
     }
     
-    this.get_features("https://d3436qb9f9xu23.cloudfront.net/yik_yak_features.json");
+    //this.get_features("https://d3436qb9f9xu23.cloudfront.net/yik_yak_features.json");
     //this.get_features("https://d3436qb9f9xu23.cloudfront.net/yikyakurl_android.json");
 }, {
     get_features: function(url) {
@@ -192,6 +192,28 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         headers.userAgent.parseAdd(this.user_agent);
         headers.acceptEncoding.parseAdd("gzip");
 
+        //if (WinJS.Navigation.state && "post_cookie" in WinJS.Navigation.state) {
+        //    var post_cookie = WinJS.Navigation.state.post_cookie;
+        //    post_cookie = [
+        //        "lat=" + params.lat,
+        //        "long=" + params.long,
+        //        "pending=" + post_cookie.slice(post_cookie.indexOf("pending=") + 8)
+        //    ];
+        //    for (var i in post_cookie) {
+        //        var equal_index = post_cookie[i].indexOf("=");
+        //        var cookie = [
+        //            post_cookie[i].slice(0, equal_index),
+        //            post_cookie[i].slice(equal_index + 1)
+        //        ];
+        //        headers.cookie.append(new Windows.Web.Http.Headers.HttpCookiePairHeaderValue(cookie[0], cookie[1]));
+        //    }
+        //    console.log(headers);
+        //}
+        //else {
+            headers.cookie.append(new Windows.Web.Http.Headers.HttpCookiePairHeaderValue("lat", params.lat));
+            headers.cookie.append(new Windows.Web.Http.Headers.HttpCookiePairHeaderValue("long", params.long));
+        //}
+
         url = Windows.Foundation.Uri(url + query);
         console.log(params);
 
@@ -204,16 +226,16 @@ var Yakker = WinJS.Class.define(function(user_id, loc) {
         
         var query = this.encode_params(null, signed);
 
+        var httpClient = new Windows.Web.Http.HttpClient();
+        headers = httpClient.defaultRequestHeaders;
+        headers.userAgent.parseAdd(this.user_agent);
+        headers.acceptEncoding.parseAdd("gzip");
+
         var post_params = (new Windows.Web.Http.HttpClient()).defaultRequestHeaders;
         var param_keys = Object.keys(params).sort();
         for (var param in param_keys) {
             post_params[param_keys[param]] = params[param_keys[param]];
         }
-
-        var httpClient = new Windows.Web.Http.HttpClient();
-        headers = httpClient.defaultRequestHeaders;
-        headers.userAgent.parseAdd(this.user_agent);
-        headers.acceptEncoding.parseAdd("gzip");
         var post_data = new Windows.Web.Http.HttpFormUrlEncodedContent(post_params);
 
         url = Windows.Foundation.Uri(url + query);

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="51443soren121.YodelBETA" Version="0.9.1.2" Publisher="CN=F8B31DA9-271A-4F34-A9E6-78DE527FDD91" />
+  <Identity Name="51443soren121.YodelBETA" Version="0.9.1.3" Publisher="CN=F8B31DA9-271A-4F34-A9E6-78DE527FDD91" />
   <mp:PhoneIdentity PhoneProductId="915cf732-4b10-4278-b821-c64dbff2432c" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Yodel BETA</DisplayName>
