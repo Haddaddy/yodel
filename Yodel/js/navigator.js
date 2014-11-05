@@ -20,7 +20,7 @@
                     that._eventHandlerRemover.push(function () {
                         e.removeEventListener(eventName, handler);
                     });
-                };
+                }
 
                 addRemovableEventListener(nav, 'navigating', this._navigating.bind(this), false);
                 addRemovableEventListener(nav, 'navigated', this._navigated.bind(this), false);

@@ -58,7 +58,7 @@
                     });
                     $("progress").css("display", "none");
 
-                    return WinJS.Promise.as(new Object);
+                    return WinJS.Promise.as({});
                 }
                 else {
                     return this._retrieve(method).then(function (json) {
@@ -71,7 +71,7 @@
                                 featuredLocations: json.featuredLocations,
                                 otherLocations: json.otherLocations,
                                 yakarma: json.yakarma
-                            }
+                            };
                         }
                     });
                 }
@@ -115,7 +115,7 @@
                         var res_json = JSON.parse(res);
                         console.log(res_json);
 
-                        if (("messages" in res_json && res_json["messages"].length > 0) || ("comments" in res_json && res_json["comments"].length > 0)) {
+                        if (("messages" in res_json && res_json.messages.length > 0) || ("comments" in res_json && res_json.comments.length > 0)) {
                             return res_json;
                         }
                         else {

@@ -35,6 +35,7 @@
         var handle_tag = document.getElementById("handle");
         var message = message_tag.value;
         var handle = handle_tag.value;
+        var promise = null;
 
         if (message.length > 0 && message.length <= 200) {
             if(url_regex.exec(message)) {
@@ -58,7 +59,7 @@
             }
 
             if (handle.length > 0 && !handle_tag.disabled) {
-                roamingSettings.values["handle"] = handle;
+                roamingSettings.values.handle = handle;
                 Yodel.handle.handle = handle;
             }
             else {
@@ -66,10 +67,10 @@
             }
 
             if (nav.state.type == "comment") {
-                var promise = Yodel.handle.post_comment(nav.state.message_id, message);
+                promise = Yodel.handle.post_comment(nav.state.message_id, message);
             }
             else {
-                var promise = Yodel.handle.post_yak(message, handle);
+                promise = Yodel.handle.post_yak(message, handle);
             }
 
             promise.then(function (response) {

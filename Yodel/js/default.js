@@ -12,7 +12,7 @@
 
     app.addEventListener("activated", function (args) {
         if (args.detail.kind === activation.ActivationKind.launch) {
-            Yodel.handle = new Yakker();
+            Yodel.handle = new API.Yakker();
 
             WinJS.Namespace.define("Yodel.data");
             WinJS.Namespace.define("Yodel.last_index");
@@ -20,23 +20,23 @@
             if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
                 var loc = new Windows.Devices.Geolocation.Geolocator();
 
-                if (loc != null) {
+                if (loc !== null) {
                     console.log("starting geoloc");
                     loc.getGeopositionAsync().then(function (pos) {
                         console.log("geoloc returned");
-                        appData.localSettings.values["gl_lat"] = pos.coordinate.point.position.latitude.toFixed(6);
-                        appData.localSettings.values["gl_long"] = pos.coordinate.point.position.longitude.toFixed(6);
-                        appData.localSettings.values["gl_accuracy"] = pos.coordinate.accuracy;
+                        appData.localSettings.values.gl_lat = pos.coordinate.point.position.latitude.toFixed(6);
+                        appData.localSettings.values.gl_long = pos.coordinate.point.position.longitude.toFixed(6);
+                        appData.localSettings.values.gl_accuracy = pos.coordinate.accuracy;
 
-                        Yodel.handle.update_location(new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
+                        Yodel.handle.update_location(new API.Location(appData.localSettings.values.gl_lat, appData.localSettings.values.gl_long));
 
-                        if (typeof appData.roamingSettings.values["yakker_id"] == "undefined" || appData.roamingSettings.values["yakker_id"].length < 32) {
+                        if (typeof appData.roamingSettings.values.yakker_id == "undefined" || appData.roamingSettings.values.yakker_id.length < 32) {
                             var user_id = Yodel.handle.gen_id();
                             console.log("Registering new user with id " + user_id);
                             Yodel.handle.register_id_new(user_id).then(function (response) {
                                 console.log(response);
                                 if (response.isSuccessStatusCode) {
-                                    Windows.Storage.ApplicationData.current.roamingSettings.values["yakker_id"] = user_id;
+                                    appData.roamingSettings.values.yakker_id = user_id;
                                     Yodel.handle.id = user_id;
                                     setTimeout(function () {
                                         Yodel.pivot_init();
@@ -48,7 +48,7 @@
                             });
                         }
                         else {
-                            Yodel.handle.id = appData.roamingSettings.values["yakker_id"];
+                            Yodel.handle.id = appData.roamingSettings.values.yakker_id;
                             Yodel.pivot_init();
                         }
                     });
@@ -59,8 +59,8 @@
                 Yodel.data = app.sessionState.feed_cache;
                 Yodel.last_index = app.sessionState.last_index;
 
-                Yodel.handle.id = appData.roamingSettings.values["yakker_id"];
-                Yodel.handle.update_location(new Location(appData.localSettings.values["gl_lat"], appData.localSettings.values["gl_long"]));
+                Yodel.handle.id = appData.roamingSettings.values.yakker_id;
+                Yodel.handle.update_location(new API.Location(appData.localSettings.values.gl_lat, appData.localSettings.values.gl_long));
 
                 if (app.sessionState.history.current.location == "/pages/hub/hub.html") {
                     Yodel.pivot_init();
@@ -98,7 +98,7 @@
 
     function hookUpBackButtonGlobalEventHandlers() {
         // Subscribes to global events on the window object
-        window.addEventListener('keyup', backButtonGlobalKeyUpHandler, false)
+        window.addEventListener('keyup', backButtonGlobalKeyUpHandler, false);
     }
 
     // CONSTANTS

@@ -14,16 +14,16 @@
                 target.addClass("yak_voted");
                 var vote_count_ele = target.siblings(".yak_votecount");
                 var orig_vote_count = parseInt(vote_count_ele.text());
-                var promise = null;
+                var promise, message_id, comment_id = null;
 
                 var index = parseInt(target.parents(".win-template").attr("aria-posinset"));
                 var datasource = Yodel.data[this.feed];
 
                 if (this.feed != "comments") {
-                    var message_id = target.parents(".yak_container").data("mid");
+                    message_id = target.parents(".yak_container").data("mid");
                 }
                 else {
-                    var comment_id = target.parents(".yak_container").data("cid");
+                    comment_id = target.parents(".yak_container").data("cid");
                 }
 
                 switch (this.direction) {
@@ -33,10 +33,10 @@
                         datasource[index].likes += 1;
 
                         if (this.feed != "comments") {
-                            var promise = yakker.upvote_yak(message_id);
+                            promise = yakker.upvote_yak(message_id);
                         }
                         else {
-                            var promise = yakker.upvote_comment(comment_id);
+                            promise = yakker.upvote_comment(comment_id);
                         }
                         break;
                     case "down":
@@ -45,17 +45,16 @@
                         datasource[index].likes -= 1;
 
                         if(this.feed != "comments") {
-                            var promise = yakker.downvote_yak(message_id);
+                            promise = yakker.downvote_yak(message_id);
                         }
                         else {
-                            var promise = yakker.downvote_comment(comment_id);
+                            promise = yakker.downvote_comment(comment_id);
                         }
                 }
 
-                Yodel.data.pivot["yakarma"] = parseInt(Yodel.data.pivot["yakarma"]) + 1;
+                Yodel.data.pivot.yakarma = parseInt(Yodel.data.pivot.yakarma) + 1;
 
                 if (promise) {
-                    var that = this;
                     promise.then(function (response) {
                         console.log(response);
                         if (!response.isSuccessStatusCode) {
@@ -64,7 +63,7 @@
                             datasource[index].likes = orig_vote_count;
                             datasource[index].upvote = "yak_up";
                             datasource[index].downvote = "yak_down";
-                            Yodel.data.pivot["yakarma"] = parseInt(Yodel.data.pivot["yakarma"]) - 1;
+                            Yodel.data.pivot.yakarma = parseInt(Yodel.data.pivot.yakarma) - 1;
                         }
                     });
                 }

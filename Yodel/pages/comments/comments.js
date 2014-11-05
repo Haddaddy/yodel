@@ -12,17 +12,17 @@
             this.method = nav.state.method;
             var yak = nav.state.yak;
 
-            var feed = new Yodel.feed;
+            var feed = new Yodel.feed();
             feed.load("comments", "yak_comments", {
                 "yak": yak
             });
 
             if (nav.state.can_submit === false) {
                 $("#yak_comments, #yak_detail").addClass("no_submit");
-                //$(".comments_reply").text("this feed is read-only");
+                $(".comments_reply").text("this feed is read-only");
             }
             else {
-                //$(".comments_reply").click(Yodel.to_reply);
+                $(".comments_reply").click(Yodel.to_reply);
             }
 
             appbar.disabled = true;

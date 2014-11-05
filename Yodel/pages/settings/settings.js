@@ -10,7 +10,7 @@
         Yodel.handle.register_id_new(user_id).then(function (response) {
             console.log(response);
             if (response.isSuccessStatusCode) {
-                Windows.Storage.ApplicationData.current.roamingSettings.values["yakker_id"] = user_id;
+                appData.roamingSettings.values.yakker_id = user_id;
                 Yodel.handle.id = user_id;
                 $("#settings_general #yak_id").val(user_id);
 
@@ -28,7 +28,7 @@
         ready: function (element, args) {
             appbar.disabled = true;
 
-            $("#settings_general #yak_id").val(appData.roamingSettings.values["yakker_id"]);
+            $("#settings_general #yak_id").val(appData.roamingSettings.values.yakker_id);
             $("#settings_general").on("click", "#reset_id", function (event) {
                 Yodel.popup_error(
                     "Resetting your user ID will cause you to lose all of your yaks and yakarma!",

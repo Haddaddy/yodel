@@ -32,7 +32,7 @@
                     hub.onloadingstatechanged = null;
                     hub.element.focus();
                 }
-            }
+            };
             hub.onselectionchanged = function (args) {
                 $(".pagetitle").text(args.detail.item.header);
                 $(".icons a[data-index=" + args.detail.index + "]").addClass("selected").siblings().removeClass("selected");
@@ -44,25 +44,19 @@
                 }
 
                 switch (args.detail.index) {
-                    //case 0:
-                    //    appbar.showOnlyCommands(["post", "sortby", "settings"]);
-                    //    break;
+                    case 0:
+                        appbar.showOnlyCommands(["post", "sortby", "settings"]);
+                        break;
                     case 1:
                         var peek_pivot_in = document.getElementById("peek_pivot_in");
-                        if (!peek_pivot_in.winControl) {
-                            $(peek_pivot_in).attr("data-win-options", function (i, val) {
-                                return val.slice(0, -1) + ",indexOfFirstVisible: Yodel.peek_pivot_last_index }";
-                            });
-                        }
-                        else {
-                            peek_pivot_in.winControl.indexOfFirstVisible = Yodel.last_index.peek_pivot;
-                        }
-                    // Intentional fallthrough
-                    case 0:
+                        Yodel.bind_list(peek_pivot_in, {
+                            indexOfFirstVisible: "Yodel.peek_pivot_last_index"
+                        });
+                        /* falls through */
                     case 2:
                         appbar.showOnlyCommands(["settings"]);
                 }
-            }
+            };
 
             if (nav.history.forwardStack.length > 0) {
                 hub.selectedIndex = Yodel.last_index.pivot;
