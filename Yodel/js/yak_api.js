@@ -6,7 +6,7 @@
     WinJS.Namespace.define("API", {
         parse_time: function(timestr) {
             var format = "YYYY-MM-DD HH:mm:ss";
-            return moment.tz(timestr, format, "America/New_York").twitter();
+            return moment.tz(timestr, format, "America/Guadeloupe").twitter();
         },
 
         Location: WinJS.Class.define(function(latitude, longitude, delta) {
