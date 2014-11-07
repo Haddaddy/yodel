@@ -15,43 +15,14 @@
                 var that = this;
                 var method;
                 var parser = "parse_yaks";
-                switch (feed) {
-                    case "nearby":
-                        method = Yodel.handle.get_yaks();
-                        break;
-                    case "peek":
-                        method = Yodel.handle.peek(nav.state.id);
-                        break;
-                    case "peek_anywhere":
-                        method = Yodel.handle.peek_anywhere(nav.state.lat, nav.state.long);
-                        break;
-                    case "my_top_yaks":
-                        method = Yodel.handle.get_my_tops();
-                        break;
-                    case "my_recent_yaks":
-                        method = Yodel.handle.get_my_recent_yaks();
-                        break;
-                    case "my_recent_replies":
-                        method = Yodel.handle.get_my_recent_replies();
-                        break;
-                    case "area_tops":
-                        method = Yodel.handle.get_area_tops();
-                        break;
-                    case "alltime_tops":
-                        method = Yodel.handle.get_greatest();
-                        break;
-                    case "comments":
-                        this.feed = "comments_parent";
-                        this._bind([opt.yak], "yak_detail");
-                        this.feed = "comments";
-                        method = Yodel.handle.get_comments(nav.state.message_id);
-                        parser = "parse_comments";
-                        break;
-                    default:
-                        return;
+                
+                if(feed == "comments") {
+                    this.feed = "comments_parent";
+                    this._bind([opt.yak], "yak_detail");
+                    this.feed = "comments";
                 }
 
-                if (feed in Yodel.data && nav.history.forwardStack.length > 0) {
+                if (feed in Yodel.data && Yodel.data[feed] && nav.history.forwardStack.length > 0) {
                     this._bind(Yodel.data[feed], tag);
                     setImmediate(function () {
                         $("#" + tag).scrollTop(Yodel.last_index[feed]);
@@ -61,6 +32,39 @@
                     return WinJS.Promise.as({});
                 }
                 else {
+                    switch (feed) {
+                        case "nearby":
+                            method = Yodel.handle.get_yaks();
+                            break;
+                        case "peek":
+                            method = Yodel.handle.peek(nav.state.id);
+                            break;
+                        case "peek_anywhere":
+                            method = Yodel.handle.peek_anywhere(nav.state.lat, nav.state.long);
+                            break;
+                        case "my_top_yaks":
+                            method = Yodel.handle.get_my_tops();
+                            break;
+                        case "my_recent_yaks":
+                            method = Yodel.handle.get_my_recent_yaks();
+                            break;
+                        case "my_recent_replies":
+                            method = Yodel.handle.get_my_recent_replies();
+                            break;
+                        case "area_tops":
+                            method = Yodel.handle.get_area_tops();
+                            break;
+                        case "alltime_tops":
+                            method = Yodel.handle.get_greatest();
+                            break;
+                        case "comments":
+                            method = Yodel.handle.get_comments(nav.state.message_id);
+                            parser = "parse_comments";
+                            break;
+                        default:
+                            return;
+                    }
+
                     return this._retrieve(method).then(function (json) {
                         var yak_list = Yodel.handle[parser](json);
                         that._bind(yak_list, tag);

@@ -6,30 +6,38 @@ header[role=banner] {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: calc(10vh - 5px);
+    height: 10vh;
     background: #08d7b5;
     color: #fff;
-    margin-bottom: 5px;
 }
 
-    header[role=banner] .win-navigation-backbutton {
-        visibility: hidden;
-    }
+header[role=banner] .win-navigation-backbutton {
+    visibility: hidden;
+}
 
-    header[role=banner] .backbutton {
-        visibility: hidden;
-    }
+header[role=banner] .backbutton {
+    visibility: hidden;
+}
 
-    header[role=banner] .titlearea {
-        margin-left: calc(3vw + 5px);
-        font-size: 20pt;
-        overflow: visible;
-    }
+header[role=banner] .titlearea {
+    margin-left: calc(3vw + 5px);
+    font-size: 20pt;
+    overflow: visible;
+}
 
-        header[role=banner] .titlearea .pagetitle {
-            /*width: calc(100% - 20px);*/
-            font-weight: 400;
-        }
+header[role=banner] .titlearea .pagetitle {
+    /*width: calc(100% - 20px);*/
+    font-weight: 400;
+}
+
+progress {
+    margin: 0;
+    width: 100%;
+    display: none;
+    color: #07BFA1;
+    position: absolute;
+    top: 0;
+}
 
 .win-appbar {
     background-color: #eaeaea;

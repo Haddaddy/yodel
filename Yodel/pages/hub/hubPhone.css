@@ -47,17 +47,9 @@
     display: none;
 }
 
-.hubpage section[role=main] progress {
-    position: absolute;
-    top: -5px;
-    margin: 0;
-    width: 100%;
-    display: none;
-    color: #07BFA1;
-}
-
 .hubpage .hub {
     height: 100%;
+    padding-top: 5px;
 }
 
     .hubpage .hub .win-hub-surface {

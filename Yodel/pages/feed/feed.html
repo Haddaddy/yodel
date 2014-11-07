@@ -5,8 +5,8 @@
     <title>Independent Feed</title>
 
     <link href="/css/phone.css" rel="stylesheet" />
-    <link href="/css/yak.css" rel="stylesheet" />
     <link href="/pages/feed/feed.css" rel="stylesheet" />
+    <link href="/css/yak.css" rel="stylesheet" />
     <script src="/pages/feed/feed.js"></script>
 </head>
 <body>
@@ -35,7 +35,13 @@
     <section aria-label="Main content" role="main">
         <progress id="feed_progress"></progress>
         <p id="feed_none" class="no_messages">No yaks here.</p>
-        <div id="yak_feed" class="feed_container" data-win-control="Yodel.UI.ItemsControl" data-win-options="{ template: 'yak_feed_template' }"></div>
-    </section>
+        <div class="outer_scroller">
+            <!--<div class="pull_box">
+                <div class="pull_arrow"></div>
+                <div class="pull_label">Pull down to refresh</div>
+            </div>-->
+            <div id="yak_feed" class="feed_container inner_scroller" data-win-control="Yodel.UI.ItemsControl" data-win-options="{ template: 'yak_feed_template' }"></div>
+        </div>
+</section>
 </body>
 </html>

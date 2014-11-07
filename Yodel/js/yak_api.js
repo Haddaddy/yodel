@@ -79,7 +79,7 @@
                                 var httpClient = new Windows.Web.Http.HttpClient();
                                 var headers = httpClient.defaultRequestHeaders;
                                 headers.ifModifiedSince = date;
-                                return httpClient.getAsync(Windows.Foundation.Uri(url));
+                                return httpClient.getAsync(new Windows.Foundation.Uri(url));
                             }).then(function (response) {
                                 console.log(response);
                                 if (response.statusCode == 304) {
@@ -184,7 +184,7 @@
                 }
                 return query;
             },
-            get: function(page, params) {
+            get: function (page, params) {
                 var url = this.default_url + "/" + page;
 
                 var signed = this.sign_request(page, params);
@@ -196,56 +196,52 @@
                 headers.userAgent.parseAdd(this.user_agent);
                 headers.acceptEncoding.parseAdd("gzip");
 
-                if (WinJS.Navigation.state && "post_cookie" in WinJS.Navigation.state) {
-                    var post_cookie = WinJS.Navigation.state.post_cookie;
-                    post_cookie = [
-                        "lat=" + params.lat,
-                        "long=" + params.long,
-                        "pending=" + post_cookie.slice(post_cookie.indexOf("pending=") + 8).split(";")[0]
-                    ];
-                    for (var i in post_cookie) {
-                        var equal_index = post_cookie[i].indexOf("=");
-                        var cookie = [
-                            post_cookie[i].slice(0, equal_index),
-                            post_cookie[i].slice(equal_index + 1)
-                        ];
-                        headers.cookie.append(new Windows.Web.Http.Headers.HttpCookiePairHeaderValue(cookie[0], cookie[1]));
-                    }
-                    console.log(headers);
-                }
-                else {
+                if ("lat" in params && "long" in params) {
                     headers.cookie.append(new Windows.Web.Http.Headers.HttpCookiePairHeaderValue("lat", params.lat));
                     headers.cookie.append(new Windows.Web.Http.Headers.HttpCookiePairHeaderValue("long", params.long));
                 }
 
-                url = Windows.Foundation.Uri(url + query);
+                //if (WinJS.Navigation.state && "post_cookie" in WinJS.Navigation.state) {
+                //    var post_cookie = WinJS.Navigation.state.post_cookie;
+                //    headers.cookie.append(new Windows.Web.Http.Headers.HttpCookiePairHeaderValue("pending", post_cookie.slice(post_cookie.indexOf("pending=") + 8).split(";")[0]));
+                //}
+
+                url = new Windows.Foundation.Uri(url + query);
+                console.log(headers);
                 console.log(params);
 
                 return httpClient.getAsync(url);
             },
-            post: function (page, params) {
+            post: function (page, params, post_data) {
                 var url = this.default_url + "/" + page;
 
-                var signed = this.sign_request(page, {});
+                var signed = this.sign_request(page, params);
         
-                var query = this.encode_params(null, signed);
+                var query = this.encode_params(params, signed);
 
                 var httpClient = new Windows.Web.Http.HttpClient();
                 var headers = httpClient.defaultRequestHeaders;
                 headers.userAgent.parseAdd(this.user_agent);
                 headers.acceptEncoding.parseAdd("gzip");
 
-                var post_params = (new Windows.Web.Http.HttpClient()).defaultRequestHeaders;
-                var param_keys = Object.keys(params).sort();
-                for (var param in param_keys) {
-                    post_params[param_keys[param]] = params[param_keys[param]];
+                if ("lat" in params && "long" in params) {
+                    headers.cookie.append(new Windows.Web.Http.Headers.HttpCookiePairHeaderValue("lat", params.lat));
+                    headers.cookie.append(new Windows.Web.Http.Headers.HttpCookiePairHeaderValue("long", params.long));
                 }
-                var post_data = new Windows.Web.Http.HttpFormUrlEncodedContent(post_params);
 
-                url = Windows.Foundation.Uri(url + query);
+                var post_params = (new Windows.Web.Http.HttpClient()).defaultRequestHeaders;
+                var param_keys = Object.keys(post_data).sort();
+                for (var param in param_keys) {
+                    post_params[param_keys[param]] = post_data[param_keys[param]];
+                }
+                var post_content = new Windows.Web.Http.HttpFormUrlEncodedContent(post_params);
+
+                url = new Windows.Foundation.Uri(url + query);
+                console.log(headers);
                 console.log(params);
+                console.log(post_content);
 
-                return httpClient.postAsync(url, post_data);
+                return httpClient.postAsync(url, post_content);
             },
             parse_yaks: function(text) {
                 var raw_yaks = text.messages;
@@ -410,20 +406,24 @@
                 };
                 return this.get("getMessages", params);
             },
-            post_yak: function(message, handle, showloc) {
+            post_yak: function (message, handle, showloc) {
                 var params = {
+                    "userID": this.id,
+                    "version": this.version
+                };
+                var post_data = {
                     "userID": this.id,
                     "lat": this.loc.latitude,
                     "long": this.loc.longitude,
                     "message": message
                 };
                 if(!showloc) {
-                    params.hidePin = "1";
+                    post_data.hidePin = "1";
                 }
                 if(handle && this.handle) {
-                    params.hndl = this.handle;
+                    post_data.hndl = this.handle;
                 }
-                return this.post("sendMessage", params);
+                return this.post("sendMessage", params, post_data);
             },
             get_comments: function(message_id) {
                 var params = {
@@ -435,15 +435,19 @@
                 };
                 return this.get("getComments", params);
             },
-            post_comment: function(message_id, comment) {
+            post_comment: function (message_id, comment) {
                 var params = {
+                    "userID": this.id,
+                    "version": this.version
+                };
+                var post_data = {
                     "userID": this.id,
                     "messageID": message_id,
                     "comment": comment,
                     "lat": this.loc.latitude,
                     "long": this.loc.longitude
                 };
-                return this.post("postComment", params);
+                return this.post("postComment", params, post_data);
             },
             get_peek_locations: function(data) {
                 var peeks = [];

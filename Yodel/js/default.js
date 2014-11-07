@@ -56,8 +56,8 @@
             } else {
                 // TODO: This application has been reactivated from suspension.
                 // Restore application state here.
-                Yodel.data = app.sessionState.feed_cache;
-                Yodel.last_index = app.sessionState.last_index;
+                //Yodel.data = app.sessionState.feed_cache;
+                //Yodel.last_index = app.sessionState.last_index;
 
                 Yodel.handle.id = appData.roamingSettings.values.yakker_id;
                 Yodel.handle.update_location(new API.Location(appData.localSettings.values.gl_lat, appData.localSettings.values.gl_long));
@@ -92,8 +92,8 @@
         // suspended, call args.setPromise().
 
         app.sessionState.history = nav.history;   
-        app.sessionState.feed_cache = Yodel.data;
-        app.sessionState.last_index = Yodel.last_index;
+        //app.sessionState.feed_cache = Yodel.data;
+        //app.sessionState.last_index = Yodel.last_index;
     };
 
     function hookUpBackButtonGlobalEventHandlers() {
