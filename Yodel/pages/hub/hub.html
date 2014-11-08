@@ -16,7 +16,7 @@
                 <span class="yak_handle" data-win-bind="textContent: handle;"></span>
                 <p class="yak_text" data-win-bind="textContent: message;"></p>
             </div>
-            <span class="yak_time" data-win-bind="textContent: time;"></span>
+            <span class="yak_time" data-win-bind="textContent: time_pretty;"></span>
             <span class="yak_comments" data-win-bind="textContent: comments_pretty;"></span>
             <div class="yak_vote win-interactive">
                 <a data-win-bind="className: upvote;">&#xE0A0;</a>
@@ -65,15 +65,7 @@
             <div class="hub" data-win-control="WinJS.UI.Pivot">
                 <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ header: 'nearby' }">
                     <p id="nearby_yaks_none" class="no_messages">No yaks around to speak of.<br/>Pretty boring here, eh?</p>
-                    <div class="outer_scroller">
-                        <!--<div class="pull_box">
-                            <div class="pull_arrow"></div>
-                            <div class="pull_label">Pull down to refresh</div>
-                        </div>-->
-
-                        <div id="nearby_yaks" class="feed_container inner_scroller" data-win-control="Yodel.UI.ItemsControl" data-win-options="{ template: 'nearby_yak_template' }"></div>
-                    </div>
-                    
+                    <div id="nearby_yaks" class="feed_container" data-win-control="Yodel.UI.ItemsControl" data-win-options="{ template: 'nearby_yak_template' }"></div>
                 </div>
 
                 <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ header: 'peek: popular' }">

@@ -29,7 +29,7 @@
                 switch (this.direction) {
                     case "up":
                         vote_count_ele.text(orig_vote_count + 1);
-                        datasource[index].upvote += " yak_voted";
+                        datasource[index].liked = 1;
                         datasource[index].likes += 1;
 
                         if (this.feed != "comments") {
@@ -41,7 +41,7 @@
                         break;
                     case "down":
                         vote_count_ele.text(orig_vote_count - 1);
-                        datasource[index].downvote += " yak_voted";
+                        datasource[index].liked = -1;
                         datasource[index].likes -= 1;
 
                         if(this.feed != "comments") {
@@ -61,8 +61,7 @@
                             target.removeClass("yak_voted");
                             vote_count_ele.text(orig_vote_count);
                             datasource[index].likes = orig_vote_count;
-                            datasource[index].upvote = "yak_up";
-                            datasource[index].downvote = "yak_down";
+                            datasource[index].liked = 0;
                             Yodel.data.pivot.yakarma = parseInt(Yodel.data.pivot.yakarma) - 1;
                         }
                     });

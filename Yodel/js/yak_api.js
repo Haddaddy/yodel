@@ -504,7 +504,7 @@
             this.delivery_id = raw.deliveryID;
             this.longitude = raw.longitude;
             this.comments = parseInt(raw.comments);
-            this.time = API.parse_time(raw.time);
+            this.time = raw.time;
             this.latitude = raw.latitude;
             this.likes = parseInt(raw.numberOfLikes);
             this.message = raw.message;
@@ -512,27 +512,58 @@
             this.liked = parseInt(raw.liked);
             this.reyaked = raw.reyaked;
 
-            this.comments_pretty = "";
-            if (this.comments > 0) {
-                this.comments_pretty = this.comments;
-                if (this.comments > 1) {
-                    this.comments_pretty += " replies";
-                }
-                else {
-                    this.comments_pretty += " reply";
-                }
-            }
+            Object.defineProperties(this, {
+                "comments_pretty": {
+                    enumerable: true,
+                    get: function () {
+                        if (this.comments > 0) {
+                            var comments_pretty = this.comments;
+                            if (this.comments > 1) {
+                                comments_pretty += " replies";
+                            }
+                            else {
+                                comments_pretty += " reply";
+                            }
 
-            this.upvote = "yak_up";
-            this.downvote = "yak_down";
-            switch (this.liked) {
-                case 1:
-                    this.upvote = "yak_up yak_voted";
-                    break;
-                case -1:
-                    this.downvote = "yak_down yak_voted";
-                    break;
-            }
+                            return comments_pretty;
+                        }
+                        else {
+                            return "";
+                        }
+                    }
+                },
+
+                "time_pretty": {
+                    enumerable: true,
+                    get: function () {
+                        return API.parse_time(this.time);
+                    }
+                },
+
+                "upvote": {
+                    enumerable: true,
+                    get: function () {
+                        if (this.liked === 1) {
+                            return "yak_up yak_voted";
+                        }
+                        else {
+                            return "yak_up";
+                        }
+                    }
+                },
+
+                "downvote": {
+                    enumerable: true,
+                    get: function () {
+                        if (this.liked === -1) {
+                            return "yak_down yak_voted";
+                        }
+                        else {
+                            return "yak_down";
+                        }
+                    }
+                }
+            });
 
         }, {
             upvote_yak: function () {
@@ -571,21 +602,43 @@
             this.message_id = message_id;
             this.comment_id = raw.commentID.replace('\\', '');
             this.comment = raw.comment;
-            this.time = API.parse_time(raw.time);
+            this.time = raw.time;
             this.likes = parseInt(raw.numberOfLikes);
             this.poster_id = raw.posterID;
             this.liked = parseInt(raw.liked);
 
-            this.upvote = "yak_up";
-            this.downvote = "yak_down";
-            switch (this.liked) {
-                case 1:
-                    this.upvote = "yak_up yak_voted";
-                    break;
-                case -1:
-                    this.downvote = "yak_down yak_voted";
-                    break;
-            }
+            Object.defineProperties(this, {
+                "time_pretty": {
+                    enumerable: true,
+                    get: function () {
+                        return API.parse_time(this.time);
+                    }
+                },
+
+                "upvote": {
+                    enumerable: true,
+                    get: function () {
+                        if (this.liked === 1) {
+                            return "yak_up yak_voted";
+                        }
+                        else {
+                            return "yak_up";
+                        }
+                    }
+                },
+
+                "downvote": {
+                    enumerable: true,
+                    get: function () {
+                        if (this.liked === -1) {
+                            return "yak_down yak_voted";
+                        }
+                        else {
+                            return "yak_down";
+                        }
+                    }
+                }
+            });
 
         }, {
             upvote_comment: function() {
