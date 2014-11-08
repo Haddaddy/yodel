@@ -11,7 +11,9 @@
 }
 
 .post textarea {
-    min-height: 15vh;
+    min-height: 87px;
+    max-height: 30vh;
+    box-sizing: border-box;
 }
 
 .post #handle_container {

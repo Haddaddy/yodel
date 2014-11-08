@@ -114,6 +114,8 @@
             appbar.getCommandById("submit").addEventListener("click", submit_message);
             element.querySelector("#message").addEventListener("keyup", update_char_count);
 
+            $("#message").textareaAutoSize();
+
             if (nav.state.type == "comment") {
                 element.querySelector("#handle_container").style.display = "none";
             }

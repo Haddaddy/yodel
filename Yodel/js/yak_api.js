@@ -240,7 +240,7 @@
                 url = new Windows.Foundation.Uri(url + query);
                 console.log(headers);
                 console.log(params);
-                console.log(post_content);
+                console.log(post_params);
 
                 return httpClient.postAsync(url, post_content);
             },
