@@ -6,7 +6,7 @@ header[role=banner] {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 10vh;
+    height: 55px;
     background: #08d7b5;
     color: #fff;
 }
@@ -37,6 +37,7 @@ progress {
     color: #07BFA1;
     position: absolute;
     top: 0;
+    color: #07BFA1;
 }
 
 .win-appbar {

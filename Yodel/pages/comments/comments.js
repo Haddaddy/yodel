@@ -9,7 +9,7 @@
             return WinJS.Resources.processAll(element);
         },
         ready: function (element, options) {
-            this.method = nav.state.method;
+            //this.method = nav.state.method;
             var yak = nav.state.yak;
 
             var feed = new Yodel.feed();

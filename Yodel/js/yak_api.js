@@ -201,10 +201,11 @@
                     headers.cookie.append(new Windows.Web.Http.Headers.HttpCookiePairHeaderValue("long", params.long));
                 }
 
-                //if (WinJS.Navigation.state && "post_cookie" in WinJS.Navigation.state) {
-                //    var post_cookie = WinJS.Navigation.state.post_cookie;
-                //    headers.cookie.append(new Windows.Web.Http.Headers.HttpCookiePairHeaderValue("pending", post_cookie.slice(post_cookie.indexOf("pending=") + 8).split(";")[0]));
-                //}
+                if (WinJS.Navigation.state && "post_cookie" in WinJS.Navigation.state) {
+                    var post_cookie = WinJS.Navigation.state.post_cookie;
+                    headers.cookie.append(new Windows.Web.Http.Headers.HttpCookiePairHeaderValue("pending", post_cookie.slice(post_cookie.indexOf("pending=") + 8).split(";")[0]));
+                    delete WinJS.Navigation.state.post_cookie;
+                }
 
                 url = new Windows.Foundation.Uri(url + query);
                 console.log(headers);

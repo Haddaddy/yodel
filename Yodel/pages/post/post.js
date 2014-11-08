@@ -27,6 +27,9 @@
     }
 
     function submit_message(event) {
+        $("progress").css("display", "inline");
+        $("form").blur();
+
         // URL regex by John Gruber: https://gist.github.com/gruber/249502
         var url_regex = /\b((?:[a-z][\w\-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]|\((?:[^\s()<>]|(?:\([^\s()<>]+\)))*\))+(?:\((?:[^\s()<>]|(?:\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
         var word_filter = new RegExp(Yodel.handle.threat_checks[0].expressions.join("|"), "gi");
@@ -72,6 +75,8 @@
             else {
                 promise = Yodel.handle.post_yak(message, handle);
             }
+
+            appbar.getCommandById("submit").disabled = true;
 
             promise.then(function (response) {
                 console.log(response);
