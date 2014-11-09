@@ -44,7 +44,7 @@
 
                 switch (args.detail.index) {
                     case 0:
-                        appbar.showOnlyCommands(["post", "sortby", "settings"]);
+                        appbar.showOnlyCommands(["post", "settings"]);
                         break;
                     case 1:
                         var peek_pivot_in = document.getElementById("peek_pivot_in");

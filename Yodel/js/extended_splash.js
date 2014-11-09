@@ -46,7 +46,7 @@
 
             var appbar = document.getElementById("appbar").winControl;
             appbar.disabled = false;
-            appbar.showOnlyCommands(["post", "sortby", "settings"]);
+            appbar.showOnlyCommands(["post", "settings"]);
         }
     }
 

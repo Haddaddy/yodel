@@ -112,9 +112,8 @@
             }
 
             if ("registration_date" in roamingSettings.values && roamingSettings.values.registration_date) {
-                var registration_moment = moment(roamingSettings.values.registration_date);
-                var waiting_period = registration_moment.add(5, 'm');
-                if (!registration_moment.isAfter(waiting_period)) {
+                var waiting_period = moment(roamingSettings.values.registration_date).add(5, 'm');
+                if (moment().isBefore(waiting_period)) {
                     Yodel.popup_error(
                         "Newly-registered users need to wait at least 5 minutes before posting. It's a spam protection thing. You can start posting " + waiting_period.fromNow() + ".",
                         "Hold on a second!",
