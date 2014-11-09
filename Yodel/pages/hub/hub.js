@@ -14,7 +14,6 @@
             var hub = element.querySelector(".hub").winControl;
             var appbar = document.getElementById("appbar").winControl;
 
-            appbar.disabled = false;
             $(".pagetitle").text(hub.selectedItem.header);
             $(".icons").on("click", "a", function (event) {
                 var target = $(event.target);
@@ -49,7 +48,7 @@
                         break;
                     case 1:
                         var peek_pivot_in = document.getElementById("peek_pivot_in");
-                        Yodel.bind_list(peek_pivot_in, {
+                        Yodel.bind_options(peek_pivot_in, {
                             indexOfFirstVisible: "Yodel.peek_pivot_last_index"
                         });
                         /* falls through */
@@ -59,6 +58,8 @@
             };
 
             if (nav.history.forwardStack.length > 0) {
+                appbar.disabled = false;
+
                 hub.selectedIndex = Yodel.last_index.pivot;
                 Yodel.pivot_init();
             }

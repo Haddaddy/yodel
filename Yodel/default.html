@@ -16,6 +16,7 @@
     <script src="/js/app-keys.js"></script>
     <script src="/js/appbar.js"></script>
     <script src="/js/common.js"></script>
+    <script src="/js/extended_splash.js"></script>
 
     <script src="/js/ext_lib/moment.min.js"></script>
     <script src="/js/ext_lib/moment-timezone-with-data-2010-2020.js"></script>
@@ -30,6 +31,12 @@
     <script src="/js/default.js"></script>
 </head>
 <body class="phone">
+    <div id="extendedSplashScreen" class="extendedSplashScreen hidden">
+        <img id="extendedSplashImage" src="/images/SplashScreen.scale-240.png" alt="Splash screen image" onload="" />
+
+        <progress id="extendedSplashProgress" style="color: white;" class="win-medium win-ring"></progress>
+    </div>
+
     <div id="contenthost" data-win-control="Application.PageControlNavigator" data-win-options="{home: '/pages/hub/hub.html'}"></div>
 
     <div id="appbar" data-win-control="WinJS.UI.AppBar">

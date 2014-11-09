@@ -8,7 +8,7 @@
             var appData = Windows.Storage.ApplicationData.current;
             //console.log("Registered user with id " + Yodel.handle.id);
 
-            $("progress").css("display", "inline");
+            $(".page_progress").css("display", "inline");
         }, {
             load: function (feed, tag, opt) {
                 this.feed = feed;
@@ -27,7 +27,7 @@
                     setImmediate(function () {
                         $("#" + tag).scrollTop(Yodel.last_index[feed]);
                     });
-                    $("progress").css("display", "none");
+                    $(".page_progress").css("display", "none");
 
                     return WinJS.Promise.as({});
                 }
@@ -68,7 +68,7 @@
                     return this._retrieve(method).then(function (json) {
                         var yak_list = Yodel.handle[parser](json);
                         that._bind(yak_list, tag);
-                        $("progress").css("display", "none");
+                        $(".page_progress").css("display", "none");
 
                         if (feed == "nearby") {
                             Yodel.data.pivot = {
@@ -84,7 +84,7 @@
                 var list = document.getElementById(list_tag);
                 Yodel.data[this.feed] = yak_data;
                 if (list) {
-                    Yodel.bind_list(list, {
+                    Yodel.bind_options(list, {
                         dataSource: "Yodel.data." + this.feed
                     });
 
@@ -110,7 +110,7 @@
                         return response.content.readAsStringAsync();
                     }
                     else {
-                        $("progress").css("display", "none");
+                        $(".page_progress").css("display", "none");
                         Yodel.popup_error("HTTP Error " + response.statusCode + " " + response.reasonPhrase, "Unable to load feed");
                         return null;
                     }
@@ -124,7 +124,7 @@
                         }
                         else {
                             $(".no_messages").css("display", "block");
-                            $("progress").css("display", "none");
+                            $(".page_progress").css("display", "none");
                             return [];
                         }
                     }

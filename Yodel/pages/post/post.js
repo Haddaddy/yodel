@@ -27,7 +27,7 @@
     }
 
     function submit_message(event) {
-        $("progress").css("display", "inline");
+        $(".page_progress").css("display", "inline");
         $("form").blur();
 
         // URL regex by John Gruber: https://gist.github.com/gruber/249502

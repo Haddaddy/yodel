@@ -2,7 +2,7 @@
     "use strict";
 
     WinJS.Namespace.define("Yodel", {
-        bind_list: function (tag, options) {
+        bind_options: function (tag, options) {
             if (tag) {
                 if (!tag.winControl) {
                     var options_str;

@@ -18,8 +18,9 @@
     flex-grow: 2;
 }
 
-#comments_progress {
+progress#comments_progress {
     position: inherit;
+    top: 0;
 }
 
 #map {

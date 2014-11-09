@@ -15,7 +15,7 @@
                 var peek_list_json = Yodel.handle.get_peek_locations(Yodel.data.pivot);
                 Yodel.data.peek_pivot = new WinJS.Binding.List(peek_list_json);
 
-                Yodel.bind_list(peek_pivot_in, {
+                Yodel.bind_options(peek_pivot_in, {
                     itemDataSource: "Yodel.data.peek_pivot.dataSource",
                     oniteminvoked: "Yodel.to_peek_feed"
                 });
@@ -31,7 +31,7 @@
 
                 Yodel.data.me_pivot = me_list;
 
-                Yodel.bind_list(me_pivot, {
+                Yodel.bind_options(me_pivot, {
                     itemDataSource: "Yodel.data.me_pivot.dataSource",
                     oniteminvoked: "Yodel.to_me_feed"
                 });

@@ -9,6 +9,7 @@ header[role=banner] {
     height: 55px;
     background: #08d7b5;
     color: #fff;
+    margin-bottom: 5px;
 }
 
 header[role=banner] .win-navigation-backbutton {
@@ -30,13 +31,13 @@ header[role=banner] .titlearea .pagetitle {
     font-weight: 400;
 }
 
-progress {
+progress.page_progress {
     margin: 0;
     width: 100%;
     display: none;
     color: #07BFA1;
     position: absolute;
-    top: 0;
+    top: -5px;
     color: #07BFA1;
 }
 
@@ -50,4 +51,25 @@ progress {
 
 .clear {
     clear: both;
+}
+
+.extendedSplashScreen {
+    background-color: #08d7b5;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    text-align: center;
+    z-index: 10;
+}
+
+.extendedSplashScreen.hidden {
+    display: none;
+}
+
+#extendedSplashImage {
+    position: absolute;
+    max-width: 100%;
+    max-height: 100%;
 }

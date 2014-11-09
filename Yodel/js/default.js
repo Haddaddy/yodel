@@ -18,6 +18,8 @@
             WinJS.Namespace.define("Yodel.last_index");
 
             if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
+                ExtendedSplash.show(args.detail.splashScreen);
+
                 var loc = new Windows.Devices.Geolocation.Geolocator();
 
                 if (loc !== null) {
@@ -39,6 +41,7 @@
                                     appData.roamingSettings.values.yakker_id = user_id;
                                     Yodel.handle.id = user_id;
                                     setTimeout(function () {
+                                        ExtendedSplash.remove();
                                         Yodel.pivot_init();
                                     }, 2000);
                                 }
@@ -48,6 +51,8 @@
                             });
                         }
                         else {
+                            ExtendedSplash.remove();
+
                             Yodel.handle.id = appData.roamingSettings.values.yakker_id;
                             Yodel.pivot_init();
                         }
