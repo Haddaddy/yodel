@@ -18,12 +18,6 @@
         extendedSplashImage.style.height = splash.imageLocation.height + "px";
         extendedSplashImage.style.width = splash.imageLocation.width + "px";
 
-        // Position the extended splash screen's progress ring. Note: In this sample, the progress ring is not used.
-        ////
-        var extendedSplashProgress = document.getElementById("extendedSplashProgress");
-        extendedSplashProgress.style.marginTop = "50vh";
-        ////
-
         // Once the extended splash screen is setup, apply the CSS style that will make the extended splash screen visible.
         var extendedSplashScreen = document.getElementById("extendedSplashScreen");
         WinJS.Utilities.removeClass(extendedSplashScreen, "hidden");
@@ -31,6 +25,11 @@
         Yodel.bind_options(document.getElementById("appbar"), {
             disabled: "true"
         });
+    }
+
+    function showProgress() {
+        var extendedSplashProgress = document.getElementById("extendedSplashProgress");
+        extendedSplashProgress.style.visibility = "visible";
     }
 
     // Checks whether the extended splash screen is visible and returns a boolean.
@@ -53,6 +52,7 @@
 
     WinJS.Namespace.define("ExtendedSplash", {
         show: show,
+        showProgress: showProgress,
         isVisible: isVisible,
         remove: remove
     });

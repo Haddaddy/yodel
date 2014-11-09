@@ -35,10 +35,14 @@
                         if (typeof appData.roamingSettings.values.yakker_id == "undefined" || appData.roamingSettings.values.yakker_id.length < 32) {
                             var user_id = Yodel.handle.gen_id();
                             console.log("Registering new user with id " + user_id);
+
+                            ExtendedSplash.showProgress();
+
                             Yodel.handle.register_id_new(user_id).then(function (response) {
                                 console.log(response);
                                 if (response.isSuccessStatusCode) {
                                     appData.roamingSettings.values.yakker_id = user_id;
+                                    appData.roamingSettings.values.registration_date = moment().format();
                                     Yodel.handle.id = user_id;
                                     setTimeout(function () {
                                         ExtendedSplash.remove();

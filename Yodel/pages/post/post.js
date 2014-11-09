@@ -111,6 +111,22 @@
                 nav.state = { type: "yak" };
             }
 
+            if ("registration_date" in roamingSettings.values && roamingSettings.values.registration_date) {
+                var registration_moment = moment(roamingSettings.values.registration_date);
+                var waiting_period = registration_moment.add(5, 'm');
+                if (!registration_moment.isAfter(waiting_period)) {
+                    Yodel.popup_error(
+                        "Newly-registered users need to wait at least 5 minutes before posting. It's a spam protection thing. You can start posting " + waiting_period.fromNow() + ".",
+                        "Hold on a second!",
+                        {
+                            "okay": function () {
+                                nav.back()
+                            }
+                        }
+                    );
+                }
+            }
+
             appbar.getCommandById("submit").addEventListener("click", submit_message);
             element.querySelector("#message").addEventListener("keyup", update_char_count);
 
