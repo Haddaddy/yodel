@@ -11,6 +11,7 @@
             console.log(response);
             if (response.isSuccessStatusCode) {
                 appData.roamingSettings.values.yakker_id = user_id;
+                appData.roamingSettings.values.registration_date = moment().format();
                 Yodel.handle.id = user_id;
                 $("#settings_general #yak_id").val(user_id);
 

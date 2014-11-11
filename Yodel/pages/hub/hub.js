@@ -15,6 +15,9 @@
             var appbar = document.getElementById("appbar").winControl;
 
             $(".pagetitle").text(hub.selectedItem.header);
+            $(".icons a[data-index=0]").dblclick(function (event) {
+                element.querySelector("#nearby_yaks").scrollTop = 0;
+            });
             $(".icons").on("click", "a", function (event) {
                 var target = $(event.target);
                 var index = target.data("index");

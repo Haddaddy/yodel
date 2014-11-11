@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * jQuery Textarea AutoSize plugin
  * Author: Javier Julio
  * Licensed under the MIT license

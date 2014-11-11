@@ -38,11 +38,14 @@
 .post #handle_toggle.selected {
     color: #fff;
     background: #08d7b5;
-    border-color: #08d7b5;
 }
 
 .post textarea, .post #handle {
     font-size: 1.4em;
+}
+
+.post input:active, .post textarea:active, .post input:focus, .post textarea:focus, .post #handle_toggle.selected {
+    border-color: #08d7b5;
 }
 
 .post #handle {

@@ -26,8 +26,8 @@
                     console.log("starting geoloc");
                     loc.getGeopositionAsync().then(function (pos) {
                         console.log("geoloc returned");
-                        appData.localSettings.values.gl_lat = pos.coordinate.point.position.latitude.toFixed(6);
-                        appData.localSettings.values.gl_long = pos.coordinate.point.position.longitude.toFixed(6);
+                        appData.localSettings.values.gl_lat = pos.coordinate.point.position.latitude.toFixed(7);
+                        appData.localSettings.values.gl_long = pos.coordinate.point.position.longitude.toFixed(7);
                         appData.localSettings.values.gl_accuracy = pos.coordinate.accuracy;
 
                         Yodel.handle.update_location(new API.Location(appData.localSettings.values.gl_lat, appData.localSettings.values.gl_long));
@@ -52,6 +52,10 @@
                                 else {
                                     Yodel.popup_error("HTTP Error " + response.statusCode + " " + response.reasonPhrase, "Unable to register new user");
                                 }
+
+                                return response.content.readAsStringAsync();
+                            }).then(function (content) {
+                                console.log(content);
                             });
                         }
                         else {

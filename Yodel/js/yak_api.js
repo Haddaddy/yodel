@@ -195,8 +195,9 @@
                 var headers = httpClient.defaultRequestHeaders;
                 headers.userAgent.parseAdd(this.user_agent);
                 headers.acceptEncoding.parseAdd("gzip");
+                headers.connection.parseAdd("Keep-Alive");
 
-                if ("lat" in params && "long" in params) {
+                if (page != "registerUser" && "lat" in params && "long" in params) {
                     headers.cookie.append(new Windows.Web.Http.Headers.HttpCookiePairHeaderValue("lat", params.lat));
                     headers.cookie.append(new Windows.Web.Http.Headers.HttpCookiePairHeaderValue("long", params.long));
                 }
