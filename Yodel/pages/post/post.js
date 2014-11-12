@@ -33,6 +33,7 @@
         // URL regex by John Gruber: https://gist.github.com/gruber/249502
         var url_regex = /\b((?:[a-z][\w\-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]|\((?:[^\s()<>]|(?:\([^\s()<>]+\)))*\))+(?:\((?:[^\s()<>]|(?:\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
         var word_filter = new RegExp(Yodel.handle.threat_checks[0].expressions.join("|"), "gi");
+        var newline_regex = /(\r\n|\n|\r)/gm;
 
         var message_tag = document.getElementById("message");
         var handle_tag = document.getElementById("handle");
@@ -60,6 +61,9 @@
                 );
                 return;
             }
+
+            // Filter out newlines (causes crashes)
+            message = message.replace(newline_regex, " ");
 
             if (handle.length > 0 && !handle_tag.disabled) {
                 roamingSettings.values.handle = handle;

@@ -10,6 +10,43 @@
     var ui = WinJS.UI;
     var appData = Windows.Storage.ApplicationData.current;
 
+    function getStatusString(locStatus) {
+        switch (locStatus) {
+            case Windows.Devices.Geolocation.PositionStatus.ready:
+                // Location data is available
+                return "Location is available.";
+                break;
+            case Windows.Devices.Geolocation.PositionStatus.initializing:
+                // This status indicates that a GPS is still acquiring a fix
+                return "The GPS device is still initializing.";
+                break;
+            case Windows.Devices.Geolocation.PositionStatus.noData:
+                // No location data is currently available 
+                return "Data from location services is currently unavailable.";
+                break;
+            case Windows.Devices.Geolocation.PositionStatus.disabled:
+                // The app doesn't have permission to access location,
+                // either because location has been turned off.
+                return "Your location is currently turned off. " +
+                    "Use the Settings app to turn it back on.";
+                break;
+            case Windows.Devices.Geolocation.PositionStatus.notInitialized:
+                // This status indicates that the app has not yet requested
+                // location data by calling GetGeolocationAsync() or 
+                // registering an event handler for the positionChanged event. 
+                return "Location status is not initialized because " +
+                    "the app has not requested location data.";
+                break;
+            case Windows.Devices.Geolocation.PositionStatus.notAvailable:
+                // Location is not available on this version of Windows
+                return "You do not have the required location services " +
+                    "present on your phone.";
+                break;
+            default:
+                break;
+        }
+    }
+
     app.addEventListener("activated", function (args) {
         if (args.detail.kind === activation.ActivationKind.launch) {
             Yodel.handle = new API.Yakker();
@@ -20,9 +57,12 @@
             if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
                 ExtendedSplash.show(args.detail.splashScreen);
 
-                var loc = new Windows.Devices.Geolocation.Geolocator();
+                var loc = null;
 
-                if (loc !== null) {
+                if (loc == null) {
+                    loc = new Windows.Devices.Geolocation.Geolocator();
+                }
+                if (loc != null) {
                     console.log("starting geoloc");
                     loc.getGeopositionAsync().then(function (pos) {
                         console.log("geoloc returned");
@@ -64,6 +104,13 @@
                             Yodel.handle.id = appData.roamingSettings.values.yakker_id;
                             Yodel.pivot_init();
                         }
+                    },
+                    function (error) {
+                        Yodel.popup_error(getStatusString(loc.locationStatus), "Geolocation error", {
+                            "okay": function () {
+                                window.close();
+                            }
+                        });
                     });
                 }
             } else {
