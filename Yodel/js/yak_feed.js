@@ -76,7 +76,7 @@
                         }
                         if (feed == "comments") {
                             var comments = opt.yak.comments;
-                            if (comments != json.comments.length) {
+                            if (json.comments && comments != json.comments.length) {
                                 opt.yak.comments = json.comments.length;
                                 that._bind("comments_parent", [opt.yak], "yak_detail");
                             }
@@ -90,22 +90,27 @@
                 var list = document.getElementById(list_tag);
                 Yodel.data[feed] = yak_data;
                 if (list) {
-                    Yodel.bind_options(list, {
-                        dataSource: "Yodel.data." + feed
-                    });
-
-                    if (feed != "comments" && feed != "comments_parent") {
-                        $(list).on("click", ".win-template", Yodel.to_comments.bind({ feed: feed }));
+                    if (yak_data.length == 0) {
+                        $(".no_messages").css("display", "block");
                     }
+                    else {
+                        Yodel.bind_options(list, {
+                            dataSource: "Yodel.data." + feed
+                        });
 
-                    if("can_submit" in nav.state && nav.state.can_submit !== false) {
-                        $(list).on("click", ".yak_up", Yodel.vote.bind({ feed: feed, direction: "up" }));
-                        $(list).on("click", ".yak_down", Yodel.vote.bind({ feed: feed, direction: "down" }));
+                        if (feed != "comments" && feed != "comments_parent") {
+                            $(list).on("click", ".win-template", Yodel.to_comments.bind({ feed: feed }));
+                        }
+
+                        if ("can_submit" in nav.state && nav.state.can_submit !== false) {
+                            $(list).on("click", ".yak_up", Yodel.vote.bind({ feed: feed, direction: "up" }));
+                            $(list).on("click", ".yak_down", Yodel.vote.bind({ feed: feed, direction: "down" }));
+                        }
+
+                        $(list).on("click pointerdown", ".win-interactive", function (e) { e.stopPropagation(); });
+                        $(list).on("click pointerdown", ".win-template", function (e) { WinJS.UI.Animation.pointerDown($(e.target).closest(".yak_container")[0]); });
+                        $(list).on("pointerout pointercancel", ".win-template", function (e) { WinJS.UI.Animation.pointerUp($(e.target).closest(".yak_container")[0]); });
                     }
-                   
-                    $(list).on("click pointerdown", ".win-interactive", function (e) { e.stopPropagation(); });
-                    $(list).on("click pointerdown", ".win-template", function (e) { WinJS.UI.Animation.pointerDown($(e.target).closest(".yak_container")[0]); });
-                    $(list).on("pointerout pointercancel", ".win-template", function (e) { WinJS.UI.Animation.pointerUp($(e.target).closest(".yak_container")[0]); });
                 }
             },
             _retrieve: function (promise) {
@@ -129,7 +134,6 @@
                             return res_json;
                         }
                         else {
-                            $(".no_messages").css("display", "block");
                             $(".page_progress").css("display", "none");
                             return [];
                         }
