@@ -90,7 +90,7 @@
                 var list = document.getElementById(list_tag);
                 Yodel.data[feed] = yak_data;
                 if (list) {
-                    if (yak_data.length == 0) {
+                    if (yak_data && !yak_data.length) {
                         $(".no_messages").css("display", "block");
                     }
                     else {
