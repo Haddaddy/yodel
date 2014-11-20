@@ -1,7 +1,5 @@
 ﻿.feed_container {
     padding: 0 3vw;
-    height: 90vh;
-    overflow-y: scroll;
 }
 
 .no_messages {
@@ -103,4 +101,52 @@
     color: #08d7b5;
     display: block;
     text-align: center;
+}
+
+.outer_scroller {
+    -ms-scroll-snap-y: mandatory snapList(80px);
+    -ms-overflow-style: none;
+    overflow: scroll;
+    height: 100%;
+}
+
+    .outer_scroller.loading {
+        -ms-scroll-snap-y: proximity snapList(80px);
+    }
+
+.inner_scroller {
+    height: 100%;
+    overflow: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.pull_box {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    font-size: 1.5em;
+    color: #626262;
+    visibility: hidden;
+}
+
+.pull_arrow {
+    padding: 0 3vw;
+    font-family: 'Segoe UI Symbol';
+    z-index: -1;
+    transform-origin: center center;
+    transform: rotate(90deg);
+    width: 45px;
+    height: 45px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url('/images/arrow.svg');
+}
+
+.loading .pull_arrow {
+    opacity: 0.2;
+}
+
+.pull_label {
+    flex-grow: 2;
 }

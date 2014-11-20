@@ -64,8 +64,14 @@
             <progress class="page_progress"></progress>
             <div class="hub" data-win-control="WinJS.UI.Pivot">
                 <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ header: 'nearby' }">
-                    <p id="nearby_yaks_none" class="no_messages">No yaks around to speak of.<br/>Pretty boring here, eh?</p>
-                    <div id="nearby_yaks" class="feed_container" data-win-control="Yodel.UI.ItemsControl" data-win-options="{ template: 'nearby_yak_template' }"></div>
+                    <p id="nearby_yaks_none" class="no_messages">No yaks around to speak of.<br />Pretty boring here, eh?</p>
+                    <div class="outer_scroller">
+                        <div class="pull_box">
+                            <div class="pull_arrow"></div>
+                            <div class="pull_label">Pull to refresh</div>
+                        </div>
+                        <div id="nearby_yaks" class="feed_container inner_scroller" data-win-control="Yodel.UI.ItemsControl" data-win-options="{ template: 'nearby_yak_template' }"></div>
+                    </div>
                 </div>
 
                 <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ header: 'peek: popular' }">
@@ -79,7 +85,7 @@
                     <div id="me_pivot" data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.ListLayout }, itemTemplate: me_pivot_template, selectionMode: 'none' }"></div>
                 </div>
             </div>
-        </section>
+</section>
     </div>
 </body>
 </html>

@@ -20,13 +20,14 @@
                 }
 
                 if (feed in Yodel.data && Yodel.data[feed] && nav.history.forwardStack.length > 0) {
-                    this._bind(feed, Yodel.data[feed], tag);
-                    setImmediate(function () {
-                        $("#" + tag).scrollTop(Yodel.last_index[feed]);
+                    promise = new WinJS.Promise(function (complete) {
+                        $("#" + tag).on("itemsLoaded.cacheReturn", complete);
+                        that._bind(feed, Yodel.data[feed], tag);
+                        $(".page_progress").css("display", "none");
+                    }).then(function (event) {
+                        event.target.scrollTop = Yodel.last_index[feed];
+                        $("#" + tag).off("itemsLoaded.cacheReturn");
                     });
-                    $(".page_progress").css("display", "none");
-
-                    promise = WinJS.Promise.as({});
                 }
                 else {
                     switch (feed) {
@@ -98,18 +99,22 @@
                             dataSource: "Yodel.data." + feed
                         });
 
+                        // Clean out event listeners, in case we're re-binding to the same list
+                        // e.g. what would happen after pull-to-refresh
+                        $(list).off(".binding");
+
                         if (feed != "comments" && feed != "comments_parent") {
-                            $(list).on("click", ".win-template", Yodel.to_comments.bind({ feed: feed }));
+                            $(list).on("click.binding", ".win-template", Yodel.to_comments.bind({ feed: feed }));
                         }
 
                         if ("can_submit" in nav.state && nav.state.can_submit !== false) {
-                            $(list).on("click", ".yak_up", Yodel.vote.bind({ feed: feed, direction: "up" }));
-                            $(list).on("click", ".yak_down", Yodel.vote.bind({ feed: feed, direction: "down" }));
+                            $(list).on("click.binding", ".yak_up", Yodel.vote.bind({ feed: feed, direction: "up" }));
+                            $(list).on("click.binding", ".yak_down", Yodel.vote.bind({ feed: feed, direction: "down" }));
                         }
 
-                        $(list).on("click pointerdown", ".win-interactive", function (e) { e.stopPropagation(); });
-                        $(list).on("click pointerdown", ".win-template", function (e) { WinJS.UI.Animation.pointerDown($(e.target).closest(".yak_container")[0]); });
-                        $(list).on("pointerout pointercancel", ".win-template", function (e) { WinJS.UI.Animation.pointerUp($(e.target).closest(".yak_container")[0]); });
+                        $(list).on("click.binding pointerdown.binding", ".win-interactive", function (e) { e.stopPropagation(); });
+                        $(list).on("click.binding pointerdown.binding", ".win-template", function (e) { WinJS.UI.Animation.pointerDown($(e.target).closest(".yak_container")[0]); });
+                        $(list).on("pointerout.binding pointercancel.binding", ".win-template", function (e) { WinJS.UI.Animation.pointerUp($(e.target).closest(".yak_container")[0]); });
                     }
                 }
             },
@@ -162,6 +167,8 @@
             _renderItems: function (source) {
                 WinJS.Utilities.empty(this.domElement);
                 var template = document.getElementById(this.template).winControl;
+                $(this.domElement).bind("itemsLoaded");
+
                 if (Array.isArray(source)) {
                     source.forEach(function (item, index) {
                         var newElement = document.createElement("div");
@@ -170,6 +177,8 @@
 
                         template.render(item, newElement);
                     }.bind(this));
+
+                    $(this.domElement).trigger("itemsLoaded");
                 }
             }
         })

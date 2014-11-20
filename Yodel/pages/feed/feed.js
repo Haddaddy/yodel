@@ -14,7 +14,10 @@
             this.method = nav.state.method;
 
             var feed = new Yodel.feed();
-            feed.load(this.method, "yak_feed");
+            feed.load(this.method, "yak_feed").done(function () {
+                var ptr = new Yodel.UI.PTR();
+                ptr.init();
+            });
 
             if (!nav.state.can_submit) {
                 $("#yak_feed").addClass("no_submit");

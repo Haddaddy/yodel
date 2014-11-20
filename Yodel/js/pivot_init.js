@@ -7,6 +7,9 @@
 
             var feed = new Yodel.feed();
             feed.load("nearby", "nearby_yaks").done(function () {
+                var ptr = new Yodel.UI.PTR();
+                ptr.init();
+
                 //var peek_pivot = document.getElementById("peek_pivot");
                 var peek_pivot_in = document.getElementById("peek_pivot_in");
                 //var peek_pivot_out = document.getElementById("peek_pivot_out");
