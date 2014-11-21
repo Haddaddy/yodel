@@ -24,7 +24,7 @@
                 var peek_pivot_in = document.getElementById("peek_pivot_in");
                 //var peek_pivot_out = document.getElementById("peek_pivot_out");
 
-                if (!peek_pivot_in || (peek_pivot_in && peek_pivot_in.childElementCount == 0)) {
+                if (!peek_pivot_in || !("winControl" in peek_pivot_in) || peek_pivot_in.winControl.itemDataSource.list.length == 0) {
                     WinJS.Utilities.markSupportedForProcessing(Yodel.to_peek_feed);
 
                     var peek_list_json = Yodel.handle.get_peek_locations(Yodel.data.pivot);

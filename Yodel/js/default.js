@@ -133,7 +133,7 @@
                 Yodel.handle.id = appData.roamingSettings.values.yakker_id;
                 Yodel.handle.update_location(new API.Location(appData.localSettings.values.gl_lat, appData.localSettings.values.gl_long));
 
-                if (nav.location == "/pages/hub/hub.html") {
+                if (app.sessionState.history.current.location == "/pages/hub/hub.html") {
                     Yodel.pivot_init();
                 }
             }

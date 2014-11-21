@@ -28,7 +28,7 @@
 
     // Pivot/hub
     "pivot_header-nearby": "nearby",
-    "pivot_header-peek": "peek",
+    "pivot_header-peek": "peek: popular",
     "pivot_header-me": "me",
 
     // Nearby feed
