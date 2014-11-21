@@ -1,24 +1,86 @@
-﻿// For details on localizing a Windows app, see: http://go.microsoft.com/fwlink/?LinkId=212836
+﻿// 
+//  Yodel - an unofficial Yik Yak client for Windows Phone
+//  (c) 2014 soren121 and contributors.
+//
+//  strings/en-US/resources.resjson
+// 
+//  Licensed under the terms of the MIT license.
+//  See LICENSE.txt for more information.
+// 
+//  http://github.com/soren121/yodel
+// 
 
 {
-    "Section1": "Section 1",
-    "Section1Title": "Section 1 Title",
-    "Section1Subtext": "Lorem ipsum dolor sit amet",
-    "Section1Description": "Lorem ipsum dolor sit amet, consectetur ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis nisl ut wisi quipexerci quis consequat minim veniam, quis nostrud. exerci tation ullam corper.",
+    // General
+    "general_replies-singular": "%i reply",
+    "general_replies-plural": "%i replies",
 
-    "Section2": "Section 2",
-    "Section2ItemTitle": "Item Title",
-    "Section2ItemSubtitle": "Item Sub Title",
-    "Section2Subtext": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa.",
-    "Section2Description": "Lorem ipsum dolor sit amet, consectetur ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis nisl ut wisi quipexerci quis consequat minim veniam, quis nostrud. exerci tation ullam corper.",
-    
-    "Section3": "Section 3",
-    "Section3ItemTitle": "Item Title",
-    "Section3Description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
-    
-    "Section4": "Section 4",
-    "Section4Description": "Lorem ipsum dolor sit amet, consectetur ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis nisl ut wisi quipexerci quis consequat minim veniam, quis nostrud.",
+    // Appbar
+    "appbar_post": "new post",
+    "appbar_sortby": "sort by",
+    "appbar_send": "send",
+    "appbar_settings": "settings",
 
-    "DescriptionText": "Lorem ipsum dolor sit amet:",
-    "SectionSubtitle": "Section subtitle"
+    // Pull to refresh
+    "ptr_label-default": "Pull to refresh",
+    "ptr_label-active": "Release to refresh",
+    "ptr_label-loading": "Loading...",
+
+    // Pivot/hub
+    "pivot_header-nearby": "nearby",
+    "pivot_header-peek": "peek",
+    "pivot_header-me": "me",
+
+    // Nearby feed
+    "nearby_no-messages": "No yaks around to speak of.<br />Pretty boring here, eh?",
+
+    // Comments
+    "comments_no-messages": "No comments yet.",
+    "comments_reply": "Your comment",
+
+    // Generic feed
+    "feed_no-messages": "No yaks here.",
+
+    // Posting
+    "post_handle-label": "Add a handle",
+
+    // Settings
+    "settings_title": "Settings",
+    "settings_header-general": "General",
+    "settings_header-about": "About",
+
+    "settings_user-id-title": "User ID",
+    "settings_user-id-info": "Yik Yak uses a randomly-generated ID, in lieu of a username and password, to keep track of your activity. You can reset your user ID if you feel like starting over.",
+    "settings_user-id-label": "Your current user ID",
+    "settings_user-id-reset": "reset user ID",
+
+    "settings_contact": "contact the dev",
+    "settings_report": "report an issue",
+    "settings_view-github": "view on github",
+    "settings_view-license": "view license",
+
+    // Error/warning/status messages
+    "msg_geolocation-ready": "Location is available.",
+    "msg_geolocation-init": "The GPS device is still initializing.",
+    "msg_geolocation-nodata": "Data from location services is currently unavailable.",
+    "msg_geolocation-disabled": "Your location is currently turned off. Use the Settings app to turn it back on.",
+    "msg_geolocation-noinit": "Location status is not initialized because the app has not requested location data.",
+    "msg_geolocation-unavailable": "You do not have the required location services present on your phone.",
+
+    "msg_generic-title": "Hold on a second!",
+    "msg_doublecheck": "Are you sure?",
+    "msg_register-user-fail": "Unable to register new user",
+    "msg_geolocation-fail": "Geolocation error",
+    "msg_posting-fail": "Unable to send message",
+
+    "msg_new-user-post": "Newly-registered users need to wait at least 5 minutes before posting. It's a spam protection thing. You can start posting %s.",
+    "msg_url-in-post": "You can't have URLs in your message; it's a security hazard. Please remove them and try again.",
+    "msg_threat-in-post": "Pump the brakes, this yak may contain threatening language. Now it's probably nothing and you're probably an awesome person but just know that Yik Yak and law enforcement take threats seriously. So you tell us, is this yak cool to post?",
+
+    "msg_reset-user-id": "Resetting your user ID will cause you to lose all of your yaks and yakarma!",
+
+    // Popup message buttons
+    "popup_yes": "yes",
+    "popup_okay": "okay",
+    "popup_no": "no"
 }

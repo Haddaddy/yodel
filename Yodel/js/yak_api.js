@@ -1,7 +1,24 @@
-﻿(function () {
+﻿/*
+ * 
+ * Yodel - an unofficial Yik Yak client for Windows Phone
+ * (c) 2014 soren121 and contributors.
+ *
+ * js/yak_api.js
+ *
+ * Forked from Joseph Connor's pyak Python API library.
+ * 
+ * Licensed under the terms of the MIT license.
+ * See LICENSE.txt for more information.
+ * 
+ * http://github.com/soren121/yodel
+ * 
+ */
+
+(function () {
     "use strict";
 
     var appData = Windows.Storage.ApplicationData.current;
+    var lang = WinJS.Resources;
 
     WinJS.Namespace.define("API", {
         parse_time: function(timestr) {
@@ -518,12 +535,12 @@
                     enumerable: true,
                     get: function () {
                         if (this.comments > 0) {
-                            var comments_pretty = this.comments;
+                            var comments_pretty;
                             if (this.comments > 1) {
-                                comments_pretty += " replies";
+                                comments_pretty = sprintf(lang.getString("general_replies-plural").value, this.comments);
                             }
                             else {
-                                comments_pretty += " reply";
+                                comments_pretty = sprintf(lang.getString("general_replies-singular").value, this.comments);
                             }
 
                             return comments_pretty;

@@ -1,7 +1,26 @@
-﻿(function () {
+﻿/*
+ * 
+ * Yodel - an unofficial Yik Yak client for Windows Phone
+ * (c) 2014 soren121 and contributors.
+ *
+ * js/pulltorefresh.js
+ *
+ * Forked from David Washington's PTR implementation:
+ * http://github.com/dwcares/pulltorefresh
+ * 
+ * Licensed under the terms of the MIT license.
+ * See LICENSE.txt for more information.
+ * 
+ * http://github.com/soren121/yodel
+ * 
+ */
+
+
+(function () {
     "use strict";
 
     var nav = WinJS.Navigation;
+    var lang = WinJS.Resources;
 
     var _pullBoxHeight = 80;
     var MS_MANIPULATION_STATE_ACTIVE = 1; // A contact is touching the surface and interacting with content
@@ -17,14 +36,16 @@
         }, {
             init: function () {
                 // Set the initial scroll past the pull box
-                document.querySelector(".pull_box").style.visibility = "visible";
-                this._outerScroller.scrollTop = _pullBoxHeight;
+                if (this._outerScroller) {
+                    document.querySelector(".pull_box").style.visibility = "visible";
+                    this._outerScroller.scrollTop = _pullBoxHeight;
 
-                // Update the arrow rotation based on scroll postion
-                this._outerScroller.addEventListener("scroll", this.onScroll.bind({ context: this }));
+                    // Update the arrow rotation based on scroll postion
+                    this._outerScroller.addEventListener("scroll", this.onScroll.bind({ context: this }));
 
-                // Listen for panning events (different than scroll) and detect when we're in the over pan state
-                this._outerScroller.addEventListener("MSManipulationStateChanged", this.onManipualationStateChanged.bind({ context: this }));
+                    // Listen for panning events (different than scroll) and detect when we're in the over pan state
+                    this._outerScroller.addEventListener("MSManipulationStateChanged", this.onManipualationStateChanged.bind({ context: this }));
+                }
             },
 
             onScroll: function (e) {
@@ -33,10 +54,10 @@
 
                 // Change the label once you pull to the top
                 if (e.target.scrollTop === 0) {
-                    this.context._pullLabel.innerText = "Release to refresh";
+                    this.context._pullLabel.innerText = lang.getString("ptr_label-active").value;
                 }
                 else {
-                    this.context._pullLabel.innerText = "Pull to refresh";
+                    this.context._pullLabel.innerText = lang.getString("ptr_label-default").value;
                 }
             },
 
@@ -49,7 +70,7 @@
                     // Change the loading state and prevent panning
                     WinJS.Utilities.addClass(e.target, "loading");
                     e.target.disabled = true;
-                    this.context._pullLabel.innerText = "Loading...";
+                    this.context._pullLabel.innerText = lang.getString("ptr_label-loading").value;
 
                     this.context.refreshItemsAsync().then(function () {
                         // After the refresh, return to the default state

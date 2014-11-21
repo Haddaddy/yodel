@@ -1,9 +1,23 @@
-﻿//// THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
-//// ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
-//// THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
-//// PARTICULAR PURPOSE.
-////
-//// Copyright (c) Microsoft Corporation. All rights reserved
+﻿/*
+ * 
+ * Yodel - an unofficial Yik Yak client for Windows Phone
+ * (c) 2014 soren121 and contributors.
+ *
+ * js/extended_splash.js
+ *
+ * Forked from Windows sample code, (c) Microsoft Corporation.
+ * Original license:
+ *     THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
+ *     ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ *     THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+ *     PARTICULAR PURPOSE.
+ * 
+ * Licensed under the terms of the MIT license.
+ * See LICENSE.txt for more information.
+ * 
+ * http://github.com/soren121/yodel
+ * 
+ */
 
 (function () {
     "use strict";

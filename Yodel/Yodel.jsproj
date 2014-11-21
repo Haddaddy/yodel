@@ -69,6 +69,7 @@
     <Content Include="js\ext_lib\moment-timezone-with-data-2010-2020.js" />
     <Content Include="js\ext_lib\moment-twitter.js" />
     <Content Include="js\ext_lib\moment.min.js" />
+    <Content Include="js\ext_lib\sprintf.min.js" />
     <Content Include="js\navigator.js" />
     <Content Include="js\pivot_init.js" />
     <Content Include="js\pulltorefresh.js" />

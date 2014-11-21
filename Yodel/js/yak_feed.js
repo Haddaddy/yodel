@@ -1,4 +1,18 @@
-﻿(function () {
+﻿/*
+ * 
+ * Yodel - an unofficial Yik Yak client for Windows Phone
+ * (c) 2014 soren121 and contributors.
+ *
+ * js/yak_feed.js
+ * 
+ * Licensed under the terms of the MIT license.
+ * See LICENSE.txt for more information.
+ * 
+ * http://github.com/soren121/yodel
+ * 
+ */
+
+(function () {
     "use strict";
 
     var nav = WinJS.Navigation;

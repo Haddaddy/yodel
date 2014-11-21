@@ -1,4 +1,18 @@
-﻿<!DOCTYPE html>
+﻿<!--
+ *
+ * Yodel - an unofficial Yik Yak client for Windows Phone
+ * (c) 2014 soren121 and contributors.
+ *
+ * pages/hub/hub.html
+ *
+ * Licensed under the terms of the MIT license.
+ * See LICENSE.txt for more information.
+ *
+ * http://github.com/soren121/yodel
+ *
+-->
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -63,29 +77,29 @@
         <section aria-label="Main content" role="main">
             <progress class="page_progress"></progress>
             <div class="hub" data-win-control="WinJS.UI.Pivot">
-                <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ header: 'nearby' }">
-                    <p id="nearby_yaks_none" class="no_messages">No yaks around to speak of.<br />Pretty boring here, eh?</p>
+                <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-res="{winControl: {header: 'pivot_header-nearby'}}">
+                    <p id="nearby_yaks_none" class="no_messages" data-win-res="{innerHTML: 'nearby_no-messages'}"></p>
                     <div class="outer_scroller">
                         <div class="pull_box">
                             <div class="pull_arrow"></div>
-                            <div class="pull_label">Pull to refresh</div>
+                            <div class="pull_label" data-win-res="{textContent: 'ptr_label-default'}"></div>
                         </div>
                         <div id="nearby_yaks" class="feed_container inner_scroller" data-win-control="Yodel.UI.ItemsControl" data-win-options="{ template: 'nearby_yak_template' }"></div>
                     </div>
                 </div>
 
-                <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ header: 'peek: popular' }">
+                <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-res="{winControl: {header: 'pivot_header-peek'}}">
                     <div id="peek_pivot" data-win-control="WinJS.UI.SemanticZoom">
                         <div id="peek_pivot_in" data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.ListLayout }, itemTemplate: peek_pivot_template, groupHeaderTemplate: peek_pivot_block_template }"></div>
                         <div id="peek_pivot_out" data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.GridLayout }, itemTemplate: peek_pivot_jumplist_template }"></div>
                     </div>
                 </div>
 
-                <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ header: 'me' }">
+                <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-res="{winControl: {header: 'pivot_header-me'}}">
                     <div id="me_pivot" data-win-control="WinJS.UI.ListView" data-win-options="{ layout: { type: WinJS.UI.ListLayout }, itemTemplate: me_pivot_template, selectionMode: 'none' }"></div>
                 </div>
             </div>
-</section>
+        </section>
     </div>
 </body>
 </html>

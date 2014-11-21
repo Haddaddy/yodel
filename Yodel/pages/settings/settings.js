@@ -1,6 +1,21 @@
-﻿(function () {
+﻿/*
+ * 
+ * Yodel - an unofficial Yik Yak client for Windows Phone
+ * (c) 2014 soren121 and contributors.
+ *
+ * pages/settings/settings.js
+ * 
+ * Licensed under the terms of the MIT license.
+ * See LICENSE.txt for more information.
+ * 
+ * http://github.com/soren121/yodel
+ * 
+ */
+
+(function () {
     "use strict";
 
+    var lang = WinJS.Resources;
     var appData = Windows.Storage.ApplicationData.current;
     var appbar = document.getElementById("appbar").winControl;
 
@@ -31,13 +46,14 @@
 
             $("#settings_general #yak_id").val(appData.roamingSettings.values.yakker_id);
             $("#settings_general").on("click", "#reset_id", function (event) {
+                var buttons = {};
+                buttons[lang.getString("popup_no").value] = null;
+                buttons[lang.getString("popup_yes").value] = _reset_user_id;
+
                 Yodel.popup_error(
-                    "Resetting your user ID will cause you to lose all of your yaks and yakarma!",
-                    "Are you sure?",
-                    {
-                        "no! stop!": null,
-                        "that's okay": _reset_user_id
-                    }
+                    lang.getString("msg_reset-user-id").value,
+                    lang.getString("msg_doublecheck").value,
+                    buttons
                 );
             });
             $("#settings_about").on("click", "button", function (event) {

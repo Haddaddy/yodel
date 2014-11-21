@@ -1,7 +1,22 @@
-﻿(function () {
+﻿/*
+ * 
+ * Yodel - an unofficial Yik Yak client for Windows Phone
+ * (c) 2014 soren121 and contributors.
+ *
+ * pages/post/post.js
+ * 
+ * Licensed under the terms of the MIT license.
+ * See LICENSE.txt for more information.
+ * 
+ * http://github.com/soren121/yodel
+ * 
+ */
+
+(function () {
     "use strict";
 
     var nav = WinJS.Navigation;
+    var lang = WinJS.Resources;
     var appbar = document.getElementById("appbar").winControl;
     var roamingSettings = Windows.Storage.ApplicationData.current.roamingSettings;
 
@@ -32,7 +47,6 @@
 
         // URL regex by John Gruber: https://gist.github.com/gruber/249502
         var url_regex = /\b((?:[a-z][\w\-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]|\((?:[^\s()<>]|(?:\([^\s()<>]+\)))*\))+(?:\((?:[^\s()<>]|(?:\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
-        var word_filter = new RegExp(Yodel.handle.threat_checks[0].expressions.join("|"), "gi");
         var newline_regex = /(\r\n|\n|\r)/gm;
 
         var message_tag = document.getElementById("message");
@@ -44,22 +58,41 @@
         if (message.length > 0 && message.length <= 200) {
             if(url_regex.exec(message)) {
                 Yodel.popup_error(
-                    "You can't have URLs in your message; it's a security hazard. Please remove them and try again.",
-                    "Hey, slow down there!"
+                    lang.getString("msg_url-in-post").value,
+                    lang.getString("msg_generic-title").value
                 );
                 return;
             }
 
-            if (!this.threat_override && (word_filter.exec(message) || word_filter.exec(handle))) {
-                Yodel.popup_error(
-                    Yodel.handle.threat_checks[0].message,
-                    "Hold on a second!",
-                    {
-                        "no": null,
-                        "yes": submit_message.bind({ threat_override: true })
-                    }
-                );
-                return;
+            if (!this.threat_override) {
+                if ("threat_checks" in Yodel.handle && Yodel.handle.threat_checks && Yodel.handle.threat_checks.length > 0) {
+                    var threat_warning = Yodel.handle.threat_checks[0].message;
+                    var word_filter = new RegExp(Yodel.handle.threat_checks[0].expressions.join("|"), "gi");
+                }
+                else {
+                    var threat_warning = lang.getString("msg_threat-in-post").value;
+                    var threat_dict = [
+                        "gun\\b",
+                        "shoot\\b",
+                        "bomb\\b",
+                        "columbine\\b",
+                        "sandy hook\\b"
+                    ];
+
+                    var word_filter = new RegExp(threat_dict.join("|"), "gi");
+                }
+
+                if ((word_filter.exec(message) || word_filter.exec(handle))) {
+                    Yodel.popup_error(
+                        threat_warning,
+                        lang.getString("msg_generic-title").value,
+                        {
+                            "no": null,
+                            "yes": submit_message.bind({ threat_override: true })
+                        }
+                    );
+                    return;
+                }
             }
 
             // Filter out newlines (causes crashes)
@@ -85,7 +118,7 @@
             promise.then(function (response) {
                 console.log(response);
                 if (!response.isSuccessStatusCode) {
-                    Yodel.popup_error("HTTP Error " + response.statusCode + " " + response.reasonPhrase, "Unable to send message");
+                    Yodel.popup_error("HTTP Error " + response.statusCode + " " + response.reasonPhrase, lang.getString("msg_posting-fail").value);
                 }
                 else {
                     var past_state = nav.history.backStack.slice(-1)[0].state;
@@ -118,14 +151,15 @@
             if ("registration_date" in roamingSettings.values && roamingSettings.values.registration_date) {
                 var waiting_period = moment(roamingSettings.values.registration_date).add(5, 'm');
                 if (moment().isBefore(waiting_period)) {
+                    var buttons = {};
+                    buttons[lang.getString("popup_okay").value] = function() {
+                        nav.back()
+                    };
+
                     Yodel.popup_error(
-                        "Newly-registered users need to wait at least 5 minutes before posting. It's a spam protection thing. You can start posting " + waiting_period.fromNow() + ".",
-                        "Hold on a second!",
-                        {
-                            "okay": function () {
-                                nav.back()
-                            }
-                        }
+                        sprintf(lang.getString("msg_new-user-post").value, waiting_period.fromNow()),
+                        lang.getString("msg_generic-title").value,
+                        buttons
                     );
                 }
             }

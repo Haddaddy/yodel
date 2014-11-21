@@ -1,5 +1,17 @@
-﻿// For an introduction to the Pivot template, see the following documentation:
-// http://go.microsoft.com/fwlink/?LinkID=392284
+﻿/*
+ * 
+ * Yodel - an unofficial Yik Yak client for Windows Phone
+ * (c) 2014 soren121 and contributors.
+ *
+ * js/default.js
+ * 
+ * Licensed under the terms of the MIT license.
+ * See LICENSE.txt for more information.
+ * 
+ * http://github.com/soren121/yodel
+ * 
+ */
+
 (function () {
     "use strict";
 
@@ -9,38 +21,36 @@
     var sched = WinJS.Utilities.Scheduler;
     var ui = WinJS.UI;
     var appData = Windows.Storage.ApplicationData.current;
+    var lang = WinJS.Resources;
 
     function getStatusString(locStatus) {
         switch (locStatus) {
             case Windows.Devices.Geolocation.PositionStatus.ready:
                 // Location data is available
-                return "Location is available.";
+                return lang.getString("msg_geolocation-ready").value;
                 break;
             case Windows.Devices.Geolocation.PositionStatus.initializing:
                 // This status indicates that a GPS is still acquiring a fix
-                return "The GPS device is still initializing.";
+                return lang.getString("msg_geolocation-init").value;
                 break;
             case Windows.Devices.Geolocation.PositionStatus.noData:
                 // No location data is currently available 
-                return "Data from location services is currently unavailable.";
+                return lang.getString("msg_geolocation-nodata").value;
                 break;
             case Windows.Devices.Geolocation.PositionStatus.disabled:
                 // The app doesn't have permission to access location,
                 // either because location has been turned off.
-                return "Your location is currently turned off. " +
-                    "Use the Settings app to turn it back on.";
+                return lang.getString("msg_geolocation-disabled").value;
                 break;
             case Windows.Devices.Geolocation.PositionStatus.notInitialized:
                 // This status indicates that the app has not yet requested
                 // location data by calling GetGeolocationAsync() or 
                 // registering an event handler for the positionChanged event. 
-                return "Location status is not initialized because " +
-                    "the app has not requested location data.";
+                return lang.getString("msg_geolocation-noinit").value;
                 break;
             case Windows.Devices.Geolocation.PositionStatus.notAvailable:
                 // Location is not available on this version of Windows
-                return "You do not have the required location services " +
-                    "present on your phone.";
+                return lang.getString("msg_geolocation-unavailable").value;
                 break;
             default:
                 break;
@@ -90,7 +100,7 @@
                                     }, 2000);
                                 }
                                 else {
-                                    Yodel.popup_error("HTTP Error " + response.statusCode + " " + response.reasonPhrase, "Unable to register new user");
+                                    Yodel.popup_error("HTTP Error " + response.statusCode + " " + response.reasonPhrase, lang.getString("msg_register-user-fail").value);
                                 }
 
                                 return response.content.readAsStringAsync();
@@ -106,11 +116,12 @@
                         }
                     },
                     function (error) {
-                        Yodel.popup_error(getStatusString(loc.locationStatus), "Geolocation error", {
-                            "okay": function () {
-                                window.close();
-                            }
-                        });
+                        var buttons = {};
+                        buttons[lang.getString("popup_okay").value] = function () {
+                            window.close();
+                        };
+
+                        Yodel.popup_error(getStatusString(loc.locationStatus), lang.getString("msg_geolocation-fail").value, buttons);
                     });
                 }
             } else {
@@ -122,7 +133,7 @@
                 Yodel.handle.id = appData.roamingSettings.values.yakker_id;
                 Yodel.handle.update_location(new API.Location(appData.localSettings.values.gl_lat, appData.localSettings.values.gl_long));
 
-                if (app.sessionState.history.current.location == "/pages/hub/hub.html") {
+                if (nav.location == "/pages/hub/hub.html") {
                     Yodel.pivot_init();
                 }
             }
@@ -134,6 +145,8 @@
             // Optimize the load of the application and while the splash screen is shown, execute high priority scheduled work.
             ui.disableAnimations();
             var p = ui.processAll().then(function () {
+                return lang.processAll(document);
+            }).then(function () {
                 return nav.navigate(nav.location || Application.navigator.home, nav.state);
             }).then(function () {
                 return sched.requestDrain(sched.Priority.aboveNormal + 1);

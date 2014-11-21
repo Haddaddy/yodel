@@ -1,4 +1,18 @@
-﻿<!DOCTYPE html>
+﻿<!--
+ *
+ * Yodel - an unofficial Yik Yak client for Windows Phone
+ * (c) 2014 soren121 and contributors.
+ *
+ * pages/settings/settings.html
+ *
+ * Licensed under the terms of the MIT license.
+ * See LICENSE.txt for more information.
+ *
+ * http://github.com/soren121/yodel
+ *
+-->
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -11,21 +25,21 @@
 <body>
     <div class="settings fragment">
         <section aria-label="Main content" role="main">
-            <div class="settings_pivot" data-win-control="WinJS.UI.Pivot" data-win-options="{ 'title': 'Settings' }">
-                <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': 'general' }">
+            <div class="settings_pivot" data-win-control="WinJS.UI.Pivot" data-win-res="{winControl: {title: 'settings_title'}}">
+                <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-res="{winControl: {header: 'settings_header-general'}}">
                     <div id="settings_general">
                         <!--<div id="locToggle" data-win-control="WinJS.UI.ToggleSwitch" data-win-options="{title: 'Allow location services', checked: true}"></div>-->
 
-                        <h4>User ID</h4>
-                        <p>Yik Yak uses a randomly-generated ID, in lieu of a username and password, to keep track of your activity.
-                        You can reset your user ID if you feel like starting over.</p>
-                        <label for="yak_id">Your current user ID</label>
+                        <h4 data-win-res="{textContent: 'settings_user-id-title'}"></h4>
+                        <p data-win-res="{textContent: 'settings_user-id-info'}"></p>
+
+                        <label for="yak_id" data-win-res="{textContent: 'settings_user-id-label'}"></label>
                         <input id="yak_id" type="text" readonly="readonly" />
-                        <button id="reset_id">reset user ID</button>
+                        <button id="reset_id" data-win-res="{textContent: 'settings_user-id-reset'}"></button>
                     </div>
                 </div>
 
-                <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': 'about' }">
+                <div class="listviewpivotitem" data-win-control="WinJS.UI.PivotItem" data-win-res="{winControl: {header: 'settings_header-about'}}">
                     <div id="settings_about">
                         <p>
                             version 0.9.2.1<br />
@@ -34,14 +48,14 @@
 
                         <p>
                             This is alpha software. It is not feature-complete and you may encounter bugs. <em>Please do not ask about missing features.</em><br />
-                            <button value="mailto:soren121@sorenstudios.com">contact the dev</button>
-                            <button value="https://github.com/soren121/yodel/issues">report an issue</button>
+                            <button value="mailto:soren121@sorenstudios.com" data-win-res="{textContent: 'settings_contact'}"></button>
+                            <button value="https://github.com/soren121/yodel/issues" data-win-res="{textContent: 'settings_report'}"></button>
                         </p>
 
                         <p>
                             Yodel is open-source software, licensed under the terms of the MIT License.<br />
-                            <button value="https://github.com/soren121/yodel">view on github</button>
-                            <button value="http://soren121.mit-license.org/">view license</button>
+                            <button value="https://github.com/soren121/yodel" data-win-res="{textContent: 'settings_view-github'}"></button>
+                            <button value="http://soren121.mit-license.org/" data-win-res="{textContent: 'settings_view-license'}"></button>
                         </p>
                     </div>
                 </div>
