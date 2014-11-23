@@ -40,22 +40,24 @@
         </div>
     </div>
 
-    <header aria-label="Header content" role="banner">
-        <h1 class="titlearea win-type-ellipsis">
-            <span class="pagetitle win-type-ellipsis"></span>
-        </h1>
-    </header>
+    <div class="page_flex">
+        <header aria-label="Header content" role="banner">
+            <h1 class="titlearea win-type-ellipsis">
+                <span class="pagetitle win-type-ellipsis"></span>
+            </h1>
+        </header>
 
-    <section aria-label="Main content" role="main">
-        <progress class="page_progress"></progress>
-        <p id="feed_none" class="no_messages" data-win-res="{textContent: 'feed_no-messages'}"></p>
-        <div class="outer_scroller">
-            <div class="pull_box">
-                <div class="pull_arrow"></div>
-                <div class="pull_label" data-win-res="{textContent: 'ptr_label-default'}"></div>
+        <section aria-label="Main content" role="main">
+            <progress class="page_progress"></progress>
+            <p id="feed_none" class="no_messages" data-win-res="{textContent: 'feed_no-messages'}"></p>
+            <div class="outer_scroller">
+                <div class="pull_box">
+                    <div class="pull_arrow"></div>
+                    <div class="pull_label" data-win-res="{textContent: 'ptr_label-default'}"></div>
+                </div>
+                <div id="yak_feed" class="feed_container inner_scroller" data-win-control="Yodel.UI.ItemsControl" data-win-options="{ template: 'yak_feed_template' }"></div>
             </div>
-            <div id="yak_feed" class="feed_container inner_scroller" data-win-control="Yodel.UI.ItemsControl" data-win-options="{ template: 'yak_feed_template' }"></div>
-        </div>
-    </section>
+        </section>
+    </div>
 </body>
 </html>

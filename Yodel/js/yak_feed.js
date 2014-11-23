@@ -34,13 +34,8 @@
                 }
 
                 if (feed in Yodel.data && Yodel.data[feed] && nav.history.forwardStack.length > 0) {
-                    promise = new WinJS.Promise(function (complete) {
-                        $("#" + tag).on("itemsLoaded.cacheReturn", complete);
-                        that._bind(feed, Yodel.data[feed], tag);
-                        $(".page_progress").css("display", "none");
-                    }).then(function (event) {
+                    promise = this._bind(feed, Yodel.data[feed], tag).then(function (event) {
                         event.target.scrollTop = Yodel.last_index[feed];
-                        $("#" + tag).off("itemsLoaded.cacheReturn");
                     });
                 }
                 else {
@@ -79,8 +74,6 @@
 
                     promise = this._retrieve(method).then(function (json) {
                         var yak_list = Yodel.handle[parser](json);
-                        that._bind(feed, yak_list, tag);
-                        $(".page_progress").css("display", "none");
 
                         if (feed == "nearby") {
                             Yodel.data.pivot = {
@@ -96,6 +89,8 @@
                                 that._bind("comments_parent", [opt.yak], "yak_detail");
                             }
                         }
+                        
+                        return that._bind(feed, yak_list, tag);
                     });
                 }
 
@@ -104,33 +99,43 @@
             _bind: function (feed, yak_data, list_tag) {
                 var list = document.getElementById(list_tag);
                 Yodel.data[feed] = yak_data;
-                if (list) {
-                    if (yak_data && !yak_data.length) {
-                        $(".no_messages").css("display", "block");
-                    }
-                    else {
-                        Yodel.bind_options(list, {
-                            dataSource: "Yodel.data." + feed
-                        });
+                return new WinJS.Promise(function (complete) {
+                    if (list) {
+                        if (yak_data && !yak_data.length) {
+                            $(".no_messages").css("display", "block");
+                            complete({ target: list });
+                        }
+                        else {
+                            $(list).on("itemsLoaded.cacheReturn", complete);
 
-                        // Clean out event listeners, in case we're re-binding to the same list
-                        // e.g. what would happen after pull-to-refresh
-                        $(list).off(".binding");
+                            Yodel.bind_options(list, {
+                                dataSource: "Yodel.data." + feed
+                            });
 
-                        if (feed != "comments" && feed != "comments_parent") {
-                            $(list).on("click.binding", ".win-template", Yodel.to_comments.bind({ feed: feed }));
+                            // Clean out event listeners, in case we're re-binding to the same list
+                            // e.g. what would happen after pull-to-refresh
+                            $(list).off(".binding");
+
+                            if (feed != "comments" && feed != "comments_parent") {
+                                $(list).on("click.binding", ".win-template", Yodel.to_comments.bind({ feed: feed }));
+                            }
+
+                            if ("can_submit" in nav.state && nav.state.can_submit !== false) {
+                                $(list).on("click.binding", ".yak_up", Yodel.vote.bind({ feed: feed, direction: "up" }));
+                                $(list).on("click.binding", ".yak_down", Yodel.vote.bind({ feed: feed, direction: "down" }));
+                            }
+
+                            $(list).on("click.binding pointerdown.binding", ".win-interactive", function (e) { e.stopPropagation(); });
+                            $(list).on("click.binding pointerdown.binding", ".win-template", function (e) { WinJS.UI.Animation.pointerDown($(e.target).closest(".yak_container")[0]); });
+                            $(list).on("pointerout.binding pointercancel.binding", ".win-template", function (e) { WinJS.UI.Animation.pointerUp($(e.target).closest(".yak_container")[0]); });
                         }
 
-                        if ("can_submit" in nav.state && nav.state.can_submit !== false) {
-                            $(list).on("click.binding", ".yak_up", Yodel.vote.bind({ feed: feed, direction: "up" }));
-                            $(list).on("click.binding", ".yak_down", Yodel.vote.bind({ feed: feed, direction: "down" }));
-                        }
-
-                        $(list).on("click.binding pointerdown.binding", ".win-interactive", function (e) { e.stopPropagation(); });
-                        $(list).on("click.binding pointerdown.binding", ".win-template", function (e) { WinJS.UI.Animation.pointerDown($(e.target).closest(".yak_container")[0]); });
-                        $(list).on("pointerout.binding pointercancel.binding", ".win-template", function (e) { WinJS.UI.Animation.pointerUp($(e.target).closest(".yak_container")[0]); });
+                        $(".page_progress").css("display", "none");
                     }
-                }
+                }).then(function (event) {
+                    $(list).off("itemsLoaded.cacheReturn");
+                    return event;
+                });
             },
             _retrieve: function (promise) {
                 var that = this;

@@ -24,6 +24,7 @@ header[role=banner] {
     background: #08d7b5;
     color: #fff;
     margin-bottom: 5px;
+    flex-shrink: 0;
 }
 
 header[role=banner] .win-navigation-backbutton {
@@ -45,14 +46,24 @@ header[role=banner] .titlearea .pagetitle {
     font-weight: 400;
 }
 
+.page_flex {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.page_flex > section[role=main] {
+    flex-grow: 2;
+}
+
 progress.page_progress {
     margin: 0;
     width: 100%;
     display: none;
     color: #07BFA1;
     position: absolute;
-    top: -5px;
-    color: #07BFA1;
+    top: 55px;
 }
 
 .win-appbar {

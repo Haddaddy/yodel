@@ -13,7 +13,7 @@
  */
 
 .win-pivot .win-pivot-surface, .win-listview, .win-semanticzoom {
-    height: 90vh;
+    height: 100%;
 }
 
 .win-pivot .win-pivot-viewport {
@@ -34,46 +34,29 @@
     top: 0;
 }
 
-.hubpage header[role=banner] .icons {
+.page_flex header[role=banner] .icons {
     margin-right: 2vw;
     font-size: 16pt;
 }
 
-.hubpage header[role=banner] .icons a {
+.page_flex header[role=banner] .icons a {
     padding: 10px 15px;
     color: #fff;
     text-decoration: none;
     opacity: 0.8;
 }
 
-.hubpage header[role=banner] .icons a.selected {
+.page_flex header[role=banner] .icons a.selected {
     opacity: 1;
 }
 
-.hubpage section[role=main] {
-    -ms-grid-row: 1;
-    -ms-grid-row-span: 2;
-    z-index: 1;
-    position: relative;
-}
-
-.hubpage div[role=tablist] div.win-pivot-headers {
+.page_flex div[role=tablist] div.win-pivot-headers {
     display: none;
 }
 
-.hubpage .hub {
+.page_flex .hub {
     height: 100%;
 }
-
-    .hubpage .hub .win-hub-surface {
-        height: 100%;
-    }
-
-    .hubpage .hub .section {
-        margin-left: 0px;
-        margin-right: 0px;
-        width: 100vw;
-    }
 
 .list_item {
     color: #333;
