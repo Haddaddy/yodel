@@ -65,9 +65,11 @@
             }
 
             if (!this.threat_override) {
-                if ("threat_checks" in Yodel.handle && Yodel.handle.threat_checks && Yodel.handle.threat_checks.length > 0) {
-                    var threat_warning = Yodel.handle.threat_checks[0].message;
-                    var word_filter = new RegExp(Yodel.handle.threat_checks[0].expressions.join("|"), "gi");
+                if ("threat_checks" in Yodel.handle &&
+                    Yodel.handle.service_config.features.threat_checks &&
+                    Yodel.handle.service_config.features.threat_checks.length > 0) {
+                    var threat_warning = Yodel.handle.service_config.features.threat_checks[0].message;
+                    var word_filter = new RegExp(Yodel.handle.service_config.features.threat_checks[0].expressions.join("|"), "gi");
                 }
                 else {
                     var threat_warning = lang.getString("msg_threat-in-post").value;

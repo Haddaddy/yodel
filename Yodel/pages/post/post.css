@@ -17,6 +17,10 @@
     position: relative;
 }
 
+.post .page_progress {
+    top: -5px;
+}
+
 .post form {
     padding: 3vh 3vw;
     font-size: 1em;

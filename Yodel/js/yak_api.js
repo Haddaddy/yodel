@@ -63,14 +63,12 @@
             if (appData.roamingSettings.values.handle) {
                 this.handle = appData.roamingSettings.values.handle;
             }
-    
-            this.get_features("https://d3436qb9f9xu23.cloudfront.net/yik_yak_features.json");
-            //this.get_features("https://d3436qb9f9xu23.cloudfront.net/yikyakurl_android.json");
         }, {
-            get_features: function(url) {
+            get_features: function(name, url) {
                 var localFolder = appData.localFolder;
                 var filename = url.split("/").pop();
                 var file_uri = new Windows.Foundation.Uri("ms-appdata:///local/" + filename);
+                var that = this;
 
                 function fetch_new() {
                     var httpClient = new Windows.Web.Http.HttpClient();
@@ -87,39 +85,45 @@
                     );
                 }
 
-                Windows.Storage.StorageFile.getFileFromApplicationUriAsync(file_uri).then(
-                    function (file) {
-                        return file.getBasicPropertiesAsync().then(
-                            function (properties) {
-                                return properties.dateModified;
-                            }).then(function (date) {
-                                var httpClient = new Windows.Web.Http.HttpClient();
-                                var headers = httpClient.defaultRequestHeaders;
-                                headers.ifModifiedSince = date;
-                                return httpClient.getAsync(new Windows.Foundation.Uri(url));
-                            }).then(function (response) {
-                                console.log(response);
-                                if (response.statusCode == 304) {
-                                    // Remote file isn't modified, load cached file
-                                    return localFolder.getFileAsync(filename).then(function (file) {
-                                        return Windows.Storage.FileIO.readTextAsync(file);
-                                    });
+                if (!("service_config" in this) || !(name in this.service_config)) {
+                    Windows.Storage.StorageFile.getFileFromApplicationUriAsync(file_uri).then(
+                        function (file) {
+                            return file.getBasicPropertiesAsync().then(
+                                function (properties) {
+                                    return properties.dateModified;
+                                }).then(function (date) {
+                                    var httpClient = new Windows.Web.Http.HttpClient();
+                                    var headers = httpClient.defaultRequestHeaders;
+                                    headers.ifModifiedSince = date;
+                                    return httpClient.getAsync(new Windows.Foundation.Uri(url));
+                                }).then(function (response) {
+                                    console.log(response);
+                                    if (response.statusCode == 304) {
+                                        // Remote file isn't modified, load cached file
+                                        return localFolder.getFileAsync(filename).then(function (file) {
+                                            return Windows.Storage.FileIO.readTextAsync(file);
+                                        });
+                                    }
+                                    else {
+                                        // Remote file is modified, load anew
+                                        return fetch_new();
+                                    }
                                 }
-                                else {
-                                    // Remote file is modified, load anew
-                                    return fetch_new();
-                                }
-                            }
-                        );
-                    },
-                    function () {
-                        // No cached file exists, load anew
-                        return fetch_new();
-                    }
-                ).done(function (content) {
-                    content = JSON.parse(content);
-                    WinJS.Class.mix(API.Yakker, content.configuration);
-                });
+                            );
+                        },
+                        function () {
+                            // No cached file exists, load anew
+                            return fetch_new();
+                        }
+                    ).done(function (content) {
+                        if (!("service_config" in that)) {
+                            that.service_config = {};
+                        }
+
+                        content = JSON.parse(content);
+                        that.service_config[name] = content.configuration;
+                    });
+                }
             },
             gen_id: function () {
                 var buf = new Uint16Array(8);
@@ -215,13 +219,12 @@
                 headers.connection.parseAdd("Keep-Alive");
 
                 if (page != "registerUser" && "lat" in params && "long" in params) {
-                    headers.cookie.append(new Windows.Web.Http.Headers.HttpCookiePairHeaderValue("lat", params.lat));
-                    headers.cookie.append(new Windows.Web.Http.Headers.HttpCookiePairHeaderValue("long", params.long));
+                    headers.cookie.parseAdd("lat=" + params.lat + "; long=" + params.long);
                 }
 
                 if (WinJS.Navigation.state && "post_cookie" in WinJS.Navigation.state) {
                     var post_cookie = WinJS.Navigation.state.post_cookie;
-                    headers.cookie.append(new Windows.Web.Http.Headers.HttpCookiePairHeaderValue("pending", post_cookie.slice(post_cookie.indexOf("pending=") + 8).split(";")[0]));
+                    headers.cookie.parseAdd("pending=" + post_cookie.slice(post_cookie.indexOf("pending=") + 8).split(";")[0]);
                     delete WinJS.Navigation.state.post_cookie;
                 }
 
@@ -244,8 +247,7 @@
                 headers.acceptEncoding.parseAdd("gzip");
 
                 if ("lat" in params && "long" in params) {
-                    headers.cookie.append(new Windows.Web.Http.Headers.HttpCookiePairHeaderValue("lat", params.lat));
-                    headers.cookie.append(new Windows.Web.Http.Headers.HttpCookiePairHeaderValue("long", params.long));
+                    headers.cookie.parseAdd("lat=" + params.lat + "; long=" + params.long);
                 }
 
                 var post_params = (new Windows.Web.Http.HttpClient()).defaultRequestHeaders;

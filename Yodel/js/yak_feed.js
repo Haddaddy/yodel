@@ -30,14 +30,17 @@
                 var parser = "parse_yaks";
 
                 if (feed == "comments") {
+                    // If loading the comments page, first bind the selected yak from cache
                     this._bind("comments_parent", [opt.yak], "yak_detail");
                 }
 
+                // Load feed from cache
                 if (feed in Yodel.data && Yodel.data[feed] && nav.history.forwardStack.length > 0) {
                     promise = this._bind(feed, Yodel.data[feed], tag).then(function (event) {
                         event.target.scrollTop = Yodel.last_index[feed];
                     });
                 }
+                // Load new feed
                 else {
                     switch (feed) {
                         case "nearby":
@@ -73,8 +76,7 @@
                     }
 
                     promise = this._retrieve(method).then(function (json) {
-                        var yak_list = Yodel.handle[parser](json);
-
+                        // Cache associated data from the nearby yaks API call
                         if (feed == "nearby") {
                             Yodel.data.pivot = {
                                 featuredLocations: json.featuredLocations,
@@ -82,6 +84,8 @@
                                 yakarma: json.yakarma
                             };
                         }
+                        // Update comments total if it's different from what the API reports
+                        // For some reason, the API does not consistently report correct totals
                         if (feed == "comments") {
                             var comments = opt.yak.comments;
                             if (json.comments && comments != json.comments.length) {
@@ -90,6 +94,7 @@
                             }
                         }
                         
+                        var yak_list = Yodel.handle[parser](json);
                         return that._bind(feed, yak_list, tag);
                     });
                 }
@@ -106,6 +111,7 @@
                             complete({ target: list });
                         }
                         else {
+                            // Declare Promise complete once the list has been loaded
                             $(list).on("itemsLoaded.cacheReturn", complete);
 
                             Yodel.bind_options(list, {

@@ -57,6 +57,11 @@
         }
     }
 
+    function download_configs() {
+        Yodel.handle.get_features("features", "https://d3436qb9f9xu23.cloudfront.net/yik_yak_features.json");
+        Yodel.handle.get_features("urls", "https://d3436qb9f9xu23.cloudfront.net/yikyakurl_android.json");
+    }
+
     app.addEventListener("activated", function (args) {
         if (args.detail.kind === activation.ActivationKind.launch) {
             Yodel.handle = new API.Yakker();
@@ -66,6 +71,7 @@
 
             if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
                 ExtendedSplash.show(args.detail.splashScreen);
+                download_configs();
 
                 var loc = null;
 
@@ -76,8 +82,8 @@
                     console.log("starting geoloc");
                     loc.getGeopositionAsync().then(function (pos) {
                         console.log("geoloc returned");
-                        appData.localSettings.values.gl_lat = pos.coordinate.point.position.latitude.toFixed(7);
-                        appData.localSettings.values.gl_long = pos.coordinate.point.position.longitude.toFixed(7);
+                        appData.localSettings.values.gl_lat = pos.coordinate.point.position.latitude.toFixed(6);
+                        appData.localSettings.values.gl_long = pos.coordinate.point.position.longitude.toFixed(6);
                         appData.localSettings.values.gl_accuracy = pos.coordinate.accuracy;
 
                         Yodel.handle.update_location(new API.Location(appData.localSettings.values.gl_lat, appData.localSettings.values.gl_long));
@@ -125,10 +131,11 @@
                     });
                 }
             } else {
-                // TODO: This application has been reactivated from suspension.
-                // Restore application state here.
-                //Yodel.data = app.sessionState.feed_cache;
-                //Yodel.last_index = app.sessionState.last_index;
+                // This application has been reactivated from suspension.
+                Yodel.handle.service_config = app.sessionState.service_config;
+                if (Yodel.handle.service_config == {}) {
+                    download_configs();
+                }
 
                 Yodel.handle.id = appData.roamingSettings.values.yakker_id;
                 Yodel.handle.update_location(new API.Location(appData.localSettings.values.gl_lat, appData.localSettings.values.gl_long));
@@ -164,9 +171,14 @@
         // complete an asynchronous operation before your application is 
         // suspended, call args.setPromise().
 
-        app.sessionState.history = nav.history;   
-        //app.sessionState.feed_cache = Yodel.data;
-        //app.sessionState.last_index = Yodel.last_index;
+        app.sessionState.history = nav.history;
+
+        if (!("service_config" in Yodel.handle)) {
+            app.sessionState.service_config = {};
+        }
+        else {
+            app.sessionState.service_config = Yodel.handle.service_config;
+        }
     };
 
     function hookUpBackButtonGlobalEventHandlers() {

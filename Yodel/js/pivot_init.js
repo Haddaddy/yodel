@@ -24,6 +24,8 @@
                 var peek_pivot_in = document.getElementById("peek_pivot_in");
                 //var peek_pivot_out = document.getElementById("peek_pivot_out");
 
+                // Only load peek list if it hasn't already been loaded
+                // It only changes about once a day, no need to re-bind it every time nearby yaks are fetched
                 if (!peek_pivot_in || !("winControl" in peek_pivot_in) || peek_pivot_in.winControl.itemDataSource.list.length == 0) {
                     WinJS.Utilities.markSupportedForProcessing(Yodel.to_peek_feed);
 
@@ -55,6 +57,7 @@
 
             var feed = new Yodel.feed();
             var promise = feed.load("nearby", "nearby_yaks");
+
             if ("pivot" in Yodel.data && Yodel.data.pivot) {
                 promise.done(function () {
                     var ptr = new Yodel.UI.PTR();
