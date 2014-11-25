@@ -112,7 +112,7 @@
                         }
                         else {
                             // Declare Promise complete once the list has been loaded
-                            $(list).on("itemsLoaded.cacheReturn", complete);
+                            $(list).on("itemsLoaded.cr_" + feed, complete);
 
                             Yodel.bind_options(list, {
                                 dataSource: "Yodel.data." + feed
@@ -136,10 +136,12 @@
                             $(list).on("pointerout.binding pointercancel.binding", ".win-template", function (e) { WinJS.UI.Animation.pointerUp($(e.target).closest(".yak_container")[0]); });
                         }
 
-                        $(".page_progress").css("display", "none");
+                        if (feed != "comments_parent") {
+                            $(".page_progress").css("display", "none");
+                        }
                     }
                 }).then(function (event) {
-                    $(list).off("itemsLoaded.cacheReturn");
+                    $(list).off("itemsLoaded.cr_" + feed);
                     return event;
                 });
             },

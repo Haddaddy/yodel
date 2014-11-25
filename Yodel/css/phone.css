@@ -23,7 +23,6 @@ header[role=banner] {
     height: 55px;
     background: #08d7b5;
     color: #fff;
-    margin-bottom: 5px;
     flex-shrink: 0;
 }
 
@@ -57,13 +56,19 @@ header[role=banner] .titlearea .pagetitle {
     flex-grow: 2;
 }
 
+.progress_container {
+    height: 6px;
+    width: 100%;
+    line-height: 1px;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
 progress.page_progress {
     margin: 0;
     width: 100%;
     display: none;
     color: #07BFA1;
-    position: absolute;
-    top: 55px;
 }
 
 .win-appbar {

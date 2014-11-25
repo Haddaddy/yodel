@@ -120,7 +120,7 @@
 .outer_scroller {
     -ms-scroll-snap-y: mandatory snapList(80px);
     -ms-overflow-style: none;
-    overflow: scroll;
+    overflow-y: scroll;
     height: 100%;
 }
 
@@ -130,7 +130,7 @@
 
 .inner_scroller {
     height: 100%;
-    overflow: auto;
+    overflow-y: auto;
     -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 

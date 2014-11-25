@@ -39,6 +39,13 @@
         Yodel.bind_options(document.getElementById("appbar"), {
             disabled: "true"
         });
+
+        // If extended splash screen is not disabled within 3 seconds, show progress
+        setTimeout(function () {
+            if (isVisible()) {
+                showProgress();
+            }
+        }, 3000);
     }
 
     function showProgress() {

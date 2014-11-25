@@ -30,11 +30,6 @@
     overflow-y: scroll;
 }
 
-progress#comments_progress {
-    position: inherit;
-    top: 0;
-}
-
 #map {
     position: relative;
     width: 100%;
