@@ -15,6 +15,7 @@
 (function () {
     "use strict";
 
+    var lang = WinJS.Resources;
     var nav = WinJS.Navigation;
 
     WinJS.Namespace.define("Yodel", {
@@ -112,7 +113,7 @@
                         }
                         else {
                             // Declare Promise complete once the list has been loaded
-                            $(list).on("itemsLoaded.cr_" + feed, complete);
+                            $(list).on("itemsLoaded.b_" + feed, complete);
 
                             Yodel.bind_options(list, {
                                 dataSource: "Yodel.data." + feed
@@ -141,7 +142,7 @@
                         }
                     }
                 }).then(function (event) {
-                    $(list).off("itemsLoaded.cr_" + feed);
+                    $(list).off("itemsLoaded.b_" + feed);
                     return event;
                 });
             },
@@ -154,7 +155,7 @@
                     }
                     else {
                         $(".page_progress").css("display", "none");
-                        Yodel.popup_error("HTTP Error " + response.statusCode + " " + response.reasonPhrase, "Unable to load feed");
+                        Yodel.popup_error("HTTP Error " + response.statusCode + " " + response.reasonPhrase, lang.getString("msg_feed-fail").value);
                         return null;
                     }
                 }).then(function (res) {

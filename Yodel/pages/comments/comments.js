@@ -15,6 +15,7 @@
 (function () {
     "use strict";
 
+    var lang = WinJS.Resources;
     var nav = WinJS.Navigation;
     var appbar = document.getElementById("appbar").winControl;
 
@@ -33,7 +34,7 @@
 
             if (nav.state.can_submit === false) {
                 $("#yak_comments, #yak_detail").addClass("no_submit");
-                $(".comments_reply").text("this feed is read-only");
+                $(".comments_reply").text(lang.getString("comments_read-only").value);
             }
             else {
                 $(".comments_reply").click(Yodel.to_reply);

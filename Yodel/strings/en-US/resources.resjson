@@ -37,6 +37,7 @@
     // Comments
     "comments_no-messages": "No comments yet.",
     "comments_reply": "Your comment",
+    "comments_read-only": "this feed is read-only",
 
     // Generic feed
     "feed_no-messages": "No yaks here.",
@@ -54,8 +55,10 @@
     "settings_user-id-label": "Your current user ID",
     "settings_user-id-reset": "reset user ID",
 
+    "settings_prerelease-warning": "This is alpha software. It is not feature-complete and you may encounter bugs. <em>Please do not ask about missing features.</em>",
     "settings_contact": "contact the dev",
     "settings_report": "report an issue",
+    "settings_foss-info": "Yodel is open-source software, licensed under the terms of the MIT License.",
     "settings_view-github": "view on github",
     "settings_view-license": "view license",
 
@@ -68,9 +71,11 @@
     "msg_geolocation-unavailable": "You do not have the required location services present on your phone.",
 
     "msg_generic-title": "Hold on a second!",
+    "msg_generic-fail": "Uh-oh.",
     "msg_doublecheck": "Are you sure?",
     "msg_register-user-fail": "Unable to register new user",
     "msg_geolocation-fail": "Geolocation error",
+    "msg_feed-fail": "Unable to load feed",
     "msg_posting-fail": "Unable to send message",
 
     "msg_new-user-post": "Newly-registered users need to wait at least 5 minutes before posting. It's a spam protection thing. You can start posting %s.",

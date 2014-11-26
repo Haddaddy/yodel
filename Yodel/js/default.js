@@ -59,7 +59,7 @@
 
     function download_configs() {
         Yodel.handle.get_features("features", "https://d3436qb9f9xu23.cloudfront.net/yik_yak_features.json");
-        Yodel.handle.get_features("urls", "https://d3436qb9f9xu23.cloudfront.net/yikyakurl_android.json");
+        //Yodel.handle.get_features("urls", "https://d3436qb9f9xu23.cloudfront.net/yikyakurl_android.json");
     }
 
     app.addEventListener("activated", function (args) {

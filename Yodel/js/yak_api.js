@@ -86,7 +86,7 @@
                 }
 
                 if (!("service_config" in this) || !(name in this.service_config)) {
-                    Windows.Storage.StorageFile.getFileFromApplicationUriAsync(file_uri).then(
+                    return Windows.Storage.StorageFile.getFileFromApplicationUriAsync(file_uri).then(
                         function (file) {
                             return file.getBasicPropertiesAsync().then(
                                 function (properties) {

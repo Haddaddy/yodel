@@ -45,7 +45,7 @@
             if (isVisible()) {
                 showProgress();
             }
-        }, 3000);
+        }, 4000);
     }
 
     function showProgress() {

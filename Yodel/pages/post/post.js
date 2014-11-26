@@ -167,7 +167,7 @@
             }
 
             appbar.getCommandById("submit").addEventListener("click", submit_message);
-            element.querySelector("#message").addEventListener("keyup", update_char_count);
+            element.querySelector("#message").addEventListener("input", update_char_count);
 
             $("#message").textareaAutoSize();
 

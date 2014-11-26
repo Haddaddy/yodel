@@ -15,6 +15,7 @@
 (function () {
     "use strict";
 
+    var lang = WinJS.Resources;
     var nav = WinJS.Navigation;
 
     WinJS.Namespace.define("Yodel", {
@@ -81,7 +82,7 @@
                     });
                 }
                 else {
-                    Yodel.popup_error("Something's gone horribly wrong. Error: no Promise in yak_events.vote", "Uh-oh.");
+                    Yodel.popup_error("Error: no Promise in yak_events.vote", lang.getString("msg_generic-fail").value);
                 }
             }
         },
