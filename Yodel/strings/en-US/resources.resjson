@@ -16,7 +16,7 @@
     "general_replies-plural": "%i replies",
 
     // Appbar
-    "appbar_post": "new post",
+    "appbar_post": "new yak",
     "appbar_sortby": "sort by",
     "appbar_send": "send",
     "appbar_settings": "settings",
@@ -37,7 +37,7 @@
     // Comments
     "comments_no-messages": "No comments yet.",
     "comments_reply": "Your comment",
-    "comments_read-only": "this feed is read-only",
+    "comments_read-only": "This feed is read-only",
 
     // Generic feed
     "feed_no-messages": "No yaks here.",

@@ -56,7 +56,7 @@
 
     <section aria-label="Main content" role="main" id="comments_container" class="page_flex">
         <!--<div id="map"></div>-->
-        <p id="yak_comments_none" class="no_messages" data-win-res="{textContent: 'comments_no-messages'}"></p>
+        <p id="yak_comments_none" class="no_messages" data-win-res="{innerHTML: 'comments_no-messages'}"></p>
         <div id="yak_detail" class="feed_container" data-win-control="Yodel.UI.ItemsControl" data-win-options="{ template: 'yak_detail_template' }"></div>
         <progress id="comments_progress" class="page_progress"></progress>
         <div id="yak_comments" class="feed_container" data-win-control="Yodel.UI.ItemsControl" data-win-options="{ template: 'comments_template' }"></div>

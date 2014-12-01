@@ -44,12 +44,11 @@
     initialize = function (moment) {
         var twitterFormat;
         twitterFormat = function (format, noPrefix) {
-            var diff, now, num, prefix, unit, unitStr;
+            var diff, now, num, unit, unitStr;
             now = moment();
             diff = Math.abs(this.diff(now));
             unit = null;
             num = null;
-            prefix = '';
             if (diff <= second) {
                 unit = 'seconds';
                 num = 1;
@@ -78,9 +77,10 @@
                 unitStr += 's';
             }
             if (now.diff(this) < 0 && noPrefix !== true) {
-                prefix = '-';
+                num = 0;
+                unitStr = 's';
             }
-            return prefix + num + unitStr;
+            return num + unitStr;
         };
         moment.fn.twitterLong = function (noPrefix) {
             return twitterFormat.call(this, 'long', noPrefix);

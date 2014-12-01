@@ -147,7 +147,6 @@
                 });
             },
             _retrieve: function (promise) {
-                var that = this;
                 return promise.then(function (response) {
                     console.log(response);
                     if (response.isSuccessStatusCode) {

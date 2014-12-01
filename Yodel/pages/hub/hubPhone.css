@@ -40,7 +40,8 @@
 }
 
 .page_flex header[role=banner] .icons a {
-    padding: 10px 15px;
+    padding: 10px;
+    margin-left: 5px;
     color: #fff;
     text-decoration: none;
     opacity: 0.8;
